@@ -23,14 +23,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="To pole nie może być puste")
      * @Assert\Length(max=36, maxMessage="Imię nie może mieć więcej niż {{ limit }} znaków")
      */
     private $firstName;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string", length=255)
      * @Assert\NotBlank(message="To pole nie może być puste")
      * @Assert\Length(max=36, maxMessage="Nazwisko nie może mieć więcej niż {{ limit }} znaków") 
      */
