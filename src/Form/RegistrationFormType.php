@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -19,6 +20,20 @@ class RegistrationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('firstName', TextType::class, [
+                'label' => "Imię",
+                'attr' => [
+                    'placeholder' => "Wprowadź imię",
+                    'class' => "form-control"
+                ],
+            ])
+            ->add('lastName', TextType::class, [
+                'label' => "Nazwisko",
+                'attr' => [
+                    'placeholder' => "Wprowadź nazwisko",
+                    'class' => "form-control"
+                ],
+            ])
             ->add('email', EmailType::class, [
                 'label' => "Adres email",
                 'attr' => [
@@ -28,8 +43,8 @@ class RegistrationFormType extends AbstractType
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
+                'label' => "Hasło",
                 'attr' => [
-                    'autocomplete' => 'new-password',
                     'placeholder' => "Wprowadź hasło",
                     'class' => "form-control"
                 ],
@@ -43,10 +58,18 @@ class RegistrationFormType extends AbstractType
                         'max' => 4096,
                     ]),
                 ],
-                'label' => "Hasło"
+            ])
+            ->add('passwordRepeat', PasswordType::class, [
+                'label' => 'Powtórz hasło',
+                'mapped' => false,
+                'attr' => [
+                    'placeholder' => "Powtórz hasło",
+                    'class' => "form-control"
+                ],
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
+                'label' => "Akceptuję regulamin",
                 'constraints' => [
                     new IsTrue([
                         'message' => 'Nie zaakceptowano regulaminu',
@@ -55,9 +78,6 @@ class RegistrationFormType extends AbstractType
                 'attr' => [
                     'class' => "form-check-input"
                 ],
-
-                'label' => "Akceptuję regulamin",
-
                 'label_attr' => [
                     'class' => "form-check-label"
                 ]
