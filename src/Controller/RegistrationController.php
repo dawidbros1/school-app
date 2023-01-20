@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -23,8 +24,8 @@ class RegistrationController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+        if ($form->isSubmitted() && $form->isValid() && $this->passwordsAreIdentical($form)) {
+
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -34,15 +35,25 @@ class RegistrationController extends AbstractController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            // do anything else you need here, like send an email
 
             $this->addFlash('success', "Konto zostało założone, możesz się na nie zalogować.");
 
             return $this->redirectToRoute('app_login');
+
         }
 
         return $this->render('registration/register.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+
+    private function passwordsAreIdentical($form)
+    {
+        if ($form->get('plainPassword')->getData() !== $form->get('passwordRepeat')->getData()) {
+            $form->get('passwordRepeat')->addError(new FormError('Hasła nie są takie same'));
+            return false;
+        }
+
+        return true;
     }
 }
