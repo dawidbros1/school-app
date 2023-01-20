@@ -25,6 +25,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && $this->passwordsAreIdentical($form)) {
+            $user->setRoles([$form->get('role')->getData()->getName()]);
 
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
@@ -39,7 +40,6 @@ class RegistrationController extends AbstractController
             $this->addFlash('success', "Konto zostało założone, możesz się na nie zalogować.");
 
             return $this->redirectToRoute('app_login');
-
         }
 
         return $this->render('registration/register.html.twig', [

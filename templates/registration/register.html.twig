@@ -26,6 +26,12 @@
 		</div>
 
 		<div class="w-100 mb-2">
+			<label class="fw-bold w-100">{{ form_label(form.role) }}</label>
+			{{ form_widget(form.role) }}
+			{{ form_errors(form.role) }}
+		</div>
+
+		<div class="w-100 mb-2">
 			<label class="fw-bold w-100">{{ form_label(form.email) }}</label>
 			{{ form_widget(form.email) }}
 			{{ form_errors(form.email) }}

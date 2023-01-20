@@ -2,9 +2,13 @@
 
 namespace App\Form;
 
+use App\Entity\Roles;
 use App\Entity\User;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -40,6 +44,23 @@ class RegistrationFormType extends AbstractType
                     'placeholder' => "Wprowadź adres email",
                     'class' => "form-control"
                 ],
+            ])
+            ->add('role', EntityType::class, [
+                'mapped' => false,
+                'class' => Roles::class,
+                'choice_label' => 'description',
+                'choice_value' => 'name',
+                'placeholder' => 'Wybierz rolę',
+                'label' => 'Rola',
+                'required' => true,
+                'attr' => [
+                    'class' => "form-control"
+                ],
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('r')
+                        ->where('r.name != :admin')
+                        ->setParameter('admin', 'ROLE_ADMIN');
+                },
             ])
             ->add('plainPassword', PasswordType::class, [
                 'mapped' => false,
