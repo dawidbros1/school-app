@@ -23,6 +23,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $id;
 
     /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="To pole nie może być puste")
+     * @Assert\Length(max=36, maxMessage="Imię nie może mieć więcej niż {{ limit }} znaków")
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank(message="To pole nie może być puste")
+     * @Assert\Length(max=36, maxMessage="Nazwisko nie może mieć więcej niż {{ limit }} znaków") 
+     */
+    private $lastName;
+
+    /**
      * @ORM\Column(type="string", length=180, unique=true)
      * @Assert\NotBlank(message="To pole nie może być puste")
      * @Assert\Length(min=6, minMessage="email musi mieć co najmniej {{ limit }} znaków")
@@ -45,6 +59,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+
+        return $this;
     }
 
     public function getEmail(): ?string
