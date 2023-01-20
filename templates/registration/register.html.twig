@@ -11,6 +11,20 @@
 		<h1 class="fw-bold text-center fs-3 w-100">Rejestracja</h1>
 
 		{{ form_start(form)}}
+		<div class="w-100 mb-2 d-flex">
+			<div class="w-50 me-2">
+				<label class="fw-bold w-100">{{ form_label(form.firstName) }}</label>
+				{{ form_widget(form.firstName) }}
+				{{ form_errors(form.firstName) }}
+			</div>
+
+			<div class="w-50 ms-2">
+				<label class="fw-bold w-100">{{ form_label(form.lastName) }}</label>
+				{{ form_widget(form.lastName) }}
+				{{ form_errors(form.lastName) }}
+			</div>
+		</div>
+
 		<div class="w-100 mb-2">
 			<label class="fw-bold w-100">{{ form_label(form.email) }}</label>
 			{{ form_widget(form.email) }}
@@ -21,6 +35,12 @@
 			<label class="fw-bold w-100">{{ form_label(form.plainPassword) }}</label>
 			{{ form_widget(form.plainPassword) }}
 			{{ form_errors(form.plainPassword) }}
+		</div>
+
+		<div class="w-100 mb-2">
+			<label class="fw-bold w-100">{{ form_label(form.passwordRepeat) }}</label>
+			{{ form_widget(form.passwordRepeat) }}
+			{{ form_errors(form.passwordRepeat) }}
 		</div>
 
 		<div class="w-100 mb-2">
