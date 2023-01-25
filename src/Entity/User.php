@@ -37,8 +37,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     * @Assert\NotBlank(message="To pole nie może być puste")
+     * @ORM\Column(type="string", length=180, unique=true, nullable=true)
      * @Assert\Length(min=6, minMessage="email musi mieć co najmniej {{ limit }} znaków")
      * @Assert\Length(max=36, maxMessage="email nie może mieć więcej niż {{ limit }} znaków")
      */
@@ -51,10 +50,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @var string The hashed password
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string" , nullable=true)
      */
 
     private $password;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $code;
+
+    /**
+     * @ORM\Column(type="string", length=11)
+     * @Assert\Length(min=11, max=11)
+     * @Assert\Regex(pattern="/^\d+$/", message="Pesel może zawierać tylko cyfry")
+     */
+    private $pesel;
 
     public function getId(): ?int
     {
@@ -136,16 +147,45 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(?string $password): self
     {
         $this->password = $password;
 
         return $this;
+    }
+
+    public function getCode(): ?string
+    {
+        return $this->code;
+    }
+
+    public function setCode(?string $code): self
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    public function getPesel()
+    {
+        return $this->pesel;
+    }
+
+    public function setPesel($pesel)
+    {
+        $this->pesel = $pesel;
+
+        return $this;
+    }
+
+    public function isActive()
+    {
+        return ($this->code == null);
     }
 
     /**
