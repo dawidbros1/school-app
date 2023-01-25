@@ -71,6 +71,56 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * @IsGranted("IS_ANONYMOUS")
+     * @Route("/register", name="app_register")
+     */
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    {
+        if ($request->query->has('pesel') && $request->query->has('code')) {
+            $pesel = $request->get('pesel');
+            $code = $request->get('code');
+
+            $user = $entityManager->getRepository(User::class)->findOneBy(['pesel' => $pesel, 'code' => $code]);
+
+            if ($user != null) {
+                $role = $entityManager->getRepository(Roles::class)->findOneBy(['name' => $user->getRoles()[0]]);
+                $form = $this->createForm(RegistrationFormType::class, $user, []);
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid() && $this->passwordsAreIdentical($form)) {
+
+                    $user->setPassword(
+                        $userPasswordHasher->hashPassword(
+                            $user,
+                            $form->get('plainPassword')->getData()
+                        )
+                    );
+
+                    $user->setCode(null);
+
+                    $entityManager->persist($user);
+                    $entityManager->flush();
+
+                    $this->addFlash('success', "Konto zostało założone, możesz się na nie zalogować.");
+
+                    return $this->redirectToRoute('app_login');
+                }
+
+                return $this->render('registration/register.html.twig', [
+                    'form' => $form->createView(),
+                    'role' => $role->getDescription(),
+                    'user' => $user
+                ]);
+            } else {
+                $this->addFlash('error', "Dane autoryzacyjne są nie poprawne");
+                return $this->redirectToRoute("app_register");
+            }
+        }
+
+        return $this->render('registration/authRegistration.html.twig');
+    }
+
     private function passwordsAreIdentical($form)
     {
         if ($form->get('plainPassword')->getData() !== $form->get('passwordRepeat')->getData()) {
