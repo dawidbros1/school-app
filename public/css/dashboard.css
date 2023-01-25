@@ -1,0 +1,48 @@
+#dashboard {
+   width: 80%;
+ 
+   display: flex;
+   flex-wrap: wrap;
+
+   padding: 10px; 
+   margin: 0 auto;
+}
+
+#dashboard a {
+   text-decoration: none;
+   color:black;
+}
+
+#dashboard .item:hover{
+   opacity: 0.5;
+}
+
+#dashboard .item{
+   padding: 10px; 
+   margin: 5px;
+   border: 2px solid black;
+}
+
+#dashboard .item .title{
+   font-weight: bold;
+   margin-bottom: 10px;
+}
+
+#dashboard .item .content{
+   display: flex;
+   height: 50px;
+}
+
+#dashboard .item .content img{
+   width: 50px;
+   height: 50px;
+
+   padding: 3px;
+}
+
+#dashboard .item .content .description{
+   margin-left: 10px;
+}
+
+
+/* DASHBOARD AND ITEM MEDIA */
