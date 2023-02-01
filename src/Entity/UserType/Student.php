@@ -2,6 +2,7 @@
 
 namespace App\Entity\UserType;
 
+use App\Entity\Role;
 use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -16,6 +17,8 @@ use App\Repository\UserType\StudentRepository;
  */
 class Student extends User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+   private static $role = null;
+
    /**
     * @see UserInterface
     */
@@ -24,5 +27,14 @@ class Student extends User implements UserInterface, PasswordAuthenticatedUserIn
       $roles = parent::getRoles();
       $roles[] = 'ROLE_STUDENT';
       return array_unique($roles);
+   }
+
+   public static function getRole()
+   {
+      if (self::$role == null) {
+         self::$role = new Role("student", "Uczeń");
+      }
+
+      return self::$role;
    }
 }
