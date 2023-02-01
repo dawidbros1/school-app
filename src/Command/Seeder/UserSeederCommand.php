@@ -3,9 +3,7 @@
 namespace App\Command\Seeder;
 
 use App\DataFixtures\Factory\UserFactory;
-use Doctrine\DBAL\Driver\IBMDB2\Exception\Factory as ExceptionFactory;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
