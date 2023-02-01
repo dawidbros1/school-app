@@ -3,69 +3,63 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Repository\UserRepository;
 
-/**
- * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(fields={"email"}, message="There is already an account with this email")
- */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="To pole nie może być puste")
-     * @Assert\Length(max=36, maxMessage="Imię nie może mieć więcej niż {{ limit }} znaków")
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank(message="To pole nie może być puste")
-     * @Assert\Length(max=36, maxMessage="Nazwisko nie może mieć więcej niż {{ limit }} znaków") 
-     */
-    private $lastName;
+    protected $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true, nullable=true)
      * @Assert\Length(min=6, minMessage="email musi mieć co najmniej {{ limit }} znaków")
      * @Assert\Length(max=36, maxMessage="email nie może mieć więcej niż {{ limit }} znaków")
      */
-    private $email;
-
-    /**
-     * @ORM\Column(type="json")
-     */
-    private $roles = [];
+    protected $email;
 
     /**
      * @var string The hashed password
      * @ORM\Column(type="string" , nullable=true)
      */
 
-    private $password;
+    protected $password;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="json")
      */
-    private $code;
+    protected $roles = [];
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="To pole nie może być puste")
+     * @Assert\Length(max=36, maxMessage="Imię nie może mieć więcej niż {{ limit }} znaków")
+     */
+    protected $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank(message="To pole nie może być puste")
+     * @Assert\Length(max=36, maxMessage="Nazwisko nie może mieć więcej niż {{ limit }} znaków") 
+     */
+    protected $lastName;
 
     /**
      * @ORM\Column(type="string", length=11)
      * @Assert\Length(min=11, max=11)
      * @Assert\Regex(pattern="/^\d+$/", message="Pesel może zawierać tylko cyfry")
      */
-    private $pesel;
+    protected $pesel;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $code;
 
     public function getId(): ?int
     {
