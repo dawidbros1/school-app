@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Roles;
+use App\Entity\UserType\Admin;
+use App\Entity\UserType\Student;
+use App\Entity\UserType\Teacher;
 use App\Form\InitRegistrationFormType;
 use App\Form\RegistrationFormType;
 use App\Service\EmailGenerator;
@@ -18,24 +21,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-
 class RegistrationController extends AbstractController
 {
+    private $em;
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+    }
+
     /**
      * @IsGranted("ROLE_ADMIN")
-     * @Route("/register/init/{role_name}", name="app_register_init")
+     * @Route("/init/register/{type}", name="app_register_init")
      */
     public function initRegister(Request $request, EntityManagerInterface $entityManager, EmailGenerator $emailGenerator, UserCodeGenerator $codeGenerator): Response
     {
         // TODO: Jeżeli użytkownik ma rolę owner to wymagaj rangi ROLE_OWNER
 
-        $user = new User();
-        $role = $entityManager->getRepository(Roles::class)->findOneBy(['name' => $request->get('role_name')]);
-
-        if ($role == null) {
-            dump("Rola nie istnieje");
-            exit();
-        }
+        $user = $this->getUserEntity($request->get('type'));
 
         $form = $this->createForm(InitRegistrationFormType::class, $user, []);
 
@@ -49,7 +51,6 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setRoles([$role->getName()]);
             $user->setEmail($emailGenerator->generate($user));
             $user->setCode($codeGenerator->generate($user));
 
@@ -67,24 +68,26 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/initRegistration.html.twig', [
             'form' => $form->createView(),
-            'role' => $role
+            'role' => $user->getRole()->getName()
         ]);
     }
 
     /**
      * @IsGranted("IS_ANONYMOUS")
-     * @Route("/register", name="app_register")
+     * @Route("/complete/register/{type}", name="app_register")
      */
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        if ($request->query->has('pesel') && $request->query->has('code')) {
+        if ($request->query->has('pesel') && $request->query->has('code') && ($type = $request->get('type'))) {
             $pesel = $request->get('pesel');
             $code = $request->get('code');
 
-            $user = $entityManager->getRepository(User::class)->findOneBy(['pesel' => $pesel, 'code' => $code]);
+            // TYPE CAN BE ONLY: student, teacher, admin
+
+            $repository = $this->getUserRepository($type);
+            $user = $repository->findOneBy(['pesel' => $pesel, 'code' => $code]);
 
             if ($user != null) {
-                $role = $entityManager->getRepository(Roles::class)->findOneBy(['name' => $user->getRoles()[0]]);
                 $form = $this->createForm(RegistrationFormType::class, $user, []);
                 $form->handleRequest($request);
 
@@ -109,16 +112,16 @@ class RegistrationController extends AbstractController
 
                 return $this->render('registration/register.html.twig', [
                     'form' => $form->createView(),
-                    'role' => $role->getDescription(),
                     'user' => $user
                 ]);
             } else {
                 $this->addFlash('error', "Dane autoryzacyjne są nie poprawne");
-                return $this->redirectToRoute("app_register");
+                return $this->redirectToRoute("app_register", ['type' => $type]);
             }
         }
 
-        return $this->render('registration/authRegistration.html.twig');
+        dump("ERROR: MISSING PARAMETERS");
+        die();
     }
 
     private function passwordsAreIdentical($form)
@@ -129,5 +132,33 @@ class RegistrationController extends AbstractController
         }
 
         return true;
+    }
+
+    private function getUserEntity($type)
+    {
+        switch ($type) {
+            case 'student':
+                return new Student();
+            case 'teacher':
+                return new Teacher();
+            case 'admin':
+                return new Admin();
+        }
+
+        // THROW EXCEPTION
+    }
+
+    private function getUserRepository($type)
+    {
+        switch ($type) {
+            case 'student':
+                return $this->em->getRepository(Student::class);
+            case 'teacher':
+                return $this->em->getRepository(Teacher::class);
+            case 'admin':
+                return $this->em->getRepository(Admin::class);
+        }
+
+        // THROW EXCEPTION
     }
 }
