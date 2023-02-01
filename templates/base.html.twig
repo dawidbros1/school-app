@@ -40,9 +40,6 @@
 					<ul class="navbar-nav">
 						{% if app.user == null %}
 							<li class="nav-item">
-								<a class="nav-link" href="{{path("app_register")}}">Rejestracja</a>
-							</li>
-							<li class="nav-item">
 								<a class="nav-link" href="{{path("app_login")}}">Logowanie</a>
 							</li>
 						{% else %}
