@@ -113,7 +113,7 @@ class DashboardController extends AbstractController
          'title' => "Dodaj administratowa systemu",
          'description' => "Tutaj dodasz nowego admiinstratora systemu",
          'route' => "app_register_init",
-         'params' => ["role_name" => "ROLE_ADMIN"],
+         'params' => ["type" => "admin"],
          'image' => "plus.png"
       ]);
    }
@@ -124,7 +124,7 @@ class DashboardController extends AbstractController
          'title' => "Dodaj nauczyciela",
          'description' => "Tutaj dodasz nowego nauczyciel",
          'route' => "app_register_init",
-         'params' => ["role_name" => "ROLE_TEACHER"],
+         'params' => ["type" => "teacher"],
          'image' => "plus.png"
       ]);
    }
@@ -135,7 +135,7 @@ class DashboardController extends AbstractController
          'title' => "Dodaj ucznia",
          'description' => "Tutaj dodasz nowego ucznia",
          'route' => "app_register_init",
-         'params' => ["role_name" => "ROLE_STUDENT"],
+         'params' => ["type" => "student"],
          'image' => "plus.png"
       ]);
    }
