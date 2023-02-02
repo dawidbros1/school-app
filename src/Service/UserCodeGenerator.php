@@ -2,11 +2,11 @@
 
 namespace App\Service;
 
-use App\Entity\User;
+use App\Interfaces\CustomUserInterface as UserInterface;
 
 class UserCodeGenerator
 {
-   public function generate(User $user)
+   public function generate(UserInterface $user)
    {
       return hash('md5', time() + $user->getPesel());
    }

@@ -2,11 +2,11 @@
 
 namespace App\Service;
 
-use App\Entity\User;
+use App\Interfaces\CustomUserInterface as UserInterface;
 
 class EmailGenerator
 {
-   public function generate(User $user)
+   public function generate(UserInterface $user)
    {
       $firstName = $user->getFirstName();
       $lastName = $user->getLastName();
