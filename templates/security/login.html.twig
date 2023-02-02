@@ -17,12 +17,12 @@
 					You are logged in as
 					{{ app.user.userIdentifier }},
 					<a href="{{ path('app_logout') }}">Logout</a>
-				</div>	
+				</div>
 			{% endif %}
 
 			<div class="w-100 mb-2">
 				<label class="fw-bold w-100">Email</label>
-				<input type="email" value="{{ last_username }}" name="email" class="form-control" autocomplete="email" required autofocus>
+				<input type="email" value="{{ email ?? last_username }}" name="email" class="form-control" autocomplete="email" required autofocus>
 			</div>
 
 			<div class="w-100 mb-2">

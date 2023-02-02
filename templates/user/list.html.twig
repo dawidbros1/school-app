@@ -49,12 +49,12 @@
 
 						<td>
 							{% if user.isActive == false %}
-								<img class="copy-wrapper" src="{{ asset("images/copy.png") }}" data-link="{{ url('app_register', { pesel: user.pesel, code: user.code, type: user.role.name }) }}">
+								<img class="copy-wrapper" src="{{ asset("images/copy.png") }}" data-link="{{ url('app_complete_register', { pesel: user.pesel, code: user.code, UserType: user.role.name }) }}">
 							{% endif %}
 						</td>
 
 						<td>
-							<a href="{{ path('app_user_edit', { id: user.id }) }}">
+							<a href="{{ path('app_user_edit', { id: user.id, UserType: user.role.name }) }}">
 								<img src="{{ asset("images/edit.png") }}">
 							</a>
 						</td>
