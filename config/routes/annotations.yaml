@@ -1,6 +1,8 @@
 controllers:
     resource: ../../src/Controller/
     type: annotation
+    requirements:
+        UserType: 'student|teacher|admin|owner'
 
 kernel:
     resource: ../../src/Kernel.php
