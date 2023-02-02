@@ -2,31 +2,40 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
-use App\Entity\Roles;
-use App\Form\InitRegistrationFormType;
+use App\Form\RegistrationFormType;
 use App\Service\EmailGenerator;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
- * @Route("/user")
+ * @Route("/{UserType}")
  */
 class UserController extends AbstractController
 {
    /**
     * @IsGranted("ROLE_ADMIN")
-    * @Route("/edit/{id}", name="app_user_edit")
+    * @Route("/edit/{id}", name="app_user_edit") 
     */
-   public function edit(User $user, Request $request, EntityManagerInterface $entityManager, EmailGenerator $emailGenerator)
+   public function edit(Request $request, EmailGenerator $emailGenerator, AuthorizationCheckerInterface $authorizationChecker, UserManager $userManager)
    {
-      // TODO: Jeżeli użytkownik ma rolę owner to wymagaj rangi ROLE_OWNER
+      $userType = $request->get('UserType');
 
-      $form = $this->createForm(InitRegistrationFormType::class, $user, []);
+      if ($userType == "admin") {
+         if (!$authorizationChecker->isGranted('ROLE_OWNER')) {
+            throw new AccessDeniedException('Nie masz uprawnień do tworzenia użytkownika typu "admin".');
+         }
+      }
+
+      $repository = $userManager->getRepository($userType);
+
+      $user = $repository->findOneBy(['id' => $request->get('id')]);
+      $form = $this->createForm(RegistrationFormType::class, $user, []);
 
       $form->add('submit', SubmitType::class, [
          'label' => "Zaktualizuj dane",
@@ -37,23 +46,19 @@ class UserController extends AbstractController
 
       $form->handleRequest($request);
 
-      $role = $entityManager->getRepository(Roles::class)->findOneBy(['name' => $user->getRoles()[0]]);
-
       if ($form->isSubmitted() && $form->isValid()) {
 
          $user->setEmail($emailGenerator->generate($user));
-         $entityManager->persist($user);
-         $entityManager->flush();
+         $repository->add($user, true);
 
          $this->addFlash('success', "Dane zostały zaktualizowane");
 
-         return $this->redirectToRoute('app_user_edit', ['id' => $user->getId()]);
+         return $this->redirectToRoute('app_user_edit', ['id' => $user->getId(), "UserType" => $userType]);
       }
 
       return $this->render('user/edit.html.twig', [
          'form' => $form->createView(),
          'user' => $user,
-         'role' => $role
       ]);
    }
 }
