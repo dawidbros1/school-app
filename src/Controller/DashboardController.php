@@ -112,8 +112,8 @@ class DashboardController extends AbstractController
       return $this->create([
          'title' => "Dodaj administratowa systemu",
          'description' => "Tutaj dodasz nowego admiinstratora systemu",
-         'route' => "app_register_init",
-         'params' => ["type" => "admin"],
+         'route' => "app_register",
+         'params' => ["UserType" => "admin"],
          'image' => "plus.png"
       ]);
    }
@@ -123,8 +123,8 @@ class DashboardController extends AbstractController
       return $this->create([
          'title' => "Dodaj nauczyciela",
          'description' => "Tutaj dodasz nowego nauczyciel",
-         'route' => "app_register_init",
-         'params' => ["type" => "teacher"],
+         'route' => "app_register",
+         'params' => ["UserType" => "teacher"],
          'image' => "plus.png"
       ]);
    }
@@ -134,8 +134,8 @@ class DashboardController extends AbstractController
       return $this->create([
          'title' => "Dodaj ucznia",
          'description' => "Tutaj dodasz nowego ucznia",
-         'route' => "app_register_init",
-         'params' => ["type" => "student"],
+         'route' => "app_register",
+         'params' => ["UserType" => "student"],
          'image' => "plus.png"
       ]);
    }
