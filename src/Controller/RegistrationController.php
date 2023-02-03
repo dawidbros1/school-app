@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\CompleteRegistrationFormType;
 use App\Form\RegistrationFormType;
 use App\Service\EmailGenerator;
+use App\Service\FormPasswordManager;
 use App\Service\UserCodeGenerator;
 use App\Service\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -73,7 +74,7 @@ class RegistrationController extends AbstractController
 
         return $this->render('registration/register.html.twig', [
             'form' => $form->createView(),
-            'role' => $user->getRole()->getName()
+            'role' => $user->getRole()->getDescription()
         ]);
     }
 
@@ -81,7 +82,7 @@ class RegistrationController extends AbstractController
      * @IsGranted("IS_ANONYMOUS")
      * @Route("/complete/register/{UserType}", name="app_complete_register")
      */
-    public function completeRegister(Request $request, UserPasswordHasherInterface $userPasswordHasher): Response
+    public function completeRegister(Request $request, FormPasswordManager $passwordManager): Response
     {
         if ($request->query->has('pesel') && $request->query->has('code') && ($type = $request->get('UserType'))) {
             $pesel = $request->get('pesel');
@@ -94,15 +95,8 @@ class RegistrationController extends AbstractController
                 $form = $this->createForm(CompleteRegistrationFormType::class, $user, []);
                 $form->handleRequest($request);
 
-                if ($form->isSubmitted() && $form->isValid() && $this->passwordsAreIdentical($form)) {
-
-                    $user->setPassword(
-                        $userPasswordHasher->hashPassword(
-                            $user,
-                            $form->get('plainPassword')->getData()
-                        )
-                    );
-
+                if ($form->isSubmitted() && $form->isValid() && $passwordManager->passwordsAreIdentical($form)) {
+                    $user->setPassword($passwordManager->getHashedPassword($user, $form));
                     $user->setCode(null);
 
                     $this->em->persist($user);
@@ -124,15 +118,5 @@ class RegistrationController extends AbstractController
             $this->addFlash('error', "Niepoprawny adres: link zawiera brakujące paremetry.");
             return $this->redirectToRoute("app_home");
         }
-    }
-
-    private function passwordsAreIdentical($form)
-    {
-        if ($form->get('plainPassword')->getData() !== $form->get('passwordRepeat')->getData()) {
-            $form->get('passwordRepeat')->addError(new FormError('Hasła nie są takie same'));
-            return false;
-        }
-
-        return true;
     }
 }
