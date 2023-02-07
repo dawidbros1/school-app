@@ -45,12 +45,14 @@ class DashboardController extends AbstractController
    {
       $this->listAdmins()->listTeacher()->listStudent();
       $this->addAdmin()->addTeacher()->addStudent();
+      $this->listClasses()->addClass();
    }
 
    private function admin()
    {
       $this->listTeacher()->listStudent();
       $this->addTeacher()->addStudent();
+      $this->listClasses()->addClass();
    }
 
    private function teacher()
@@ -67,7 +69,7 @@ class DashboardController extends AbstractController
 
    private function create(array $data)
    {
-      $obj = new \stdClass();
+      $obj = new \stdClass(); 
       $obj->title = $data['title'];
       $obj->description = $data['description'];
       $obj->url = $this->urlGenerator->generate($data['route'], $data['params'] ?? []);
@@ -77,6 +79,7 @@ class DashboardController extends AbstractController
       return $this;
    }
 
+   # USERS
    private function listAdmins()
    {
       return $this->create([
@@ -136,6 +139,28 @@ class DashboardController extends AbstractController
          'description' => "Tutaj dodasz nowego ucznia",
          'route' => "app_register",
          'params' => ["UserType" => "student"],
+         'image' => "plus.png"
+      ]);
+   }
+
+   # CLASS
+
+   private function listClasses()
+   {
+      return $this->create([
+         'title' => "Lista klas",
+         'description' => "Tutaj wyświetlisz wszystkie klasy w szkole",
+         'route' => "app_class_list",
+         'image' => "class.png"
+      ]);
+   }
+
+   private function addClass()
+   {
+      return $this->create([
+         'title' => "Dodaj nową klasę",
+         'description' => "Tutaj dodasz nową klasę",
+         'route' => "app_class_create",
          'image' => "plus.png"
       ]);
    }
