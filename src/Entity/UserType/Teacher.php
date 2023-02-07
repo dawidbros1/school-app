@@ -3,6 +3,7 @@
 namespace App\Entity\UserType;
 
 use App\Entity\Role;
+use App\Entity\SchoolClass\SchoolClass;
 use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -18,6 +19,12 @@ use App\Interfaces\CustomUserInterface as UserInterface;
 class Teacher extends User implements UserInterface, PasswordAuthenticatedUserInterface
 {
    private static $role = null;
+
+   /**
+    * @ORM\OneToOne(targetEntity="App\Entity\SchoolClass\SchoolClass", mappedBy="teacher")
+    * @ORM\JoinColumn(nullable=true)
+    */
+   private $class;
 
    /**
     * @see UserInterface
@@ -36,5 +43,15 @@ class Teacher extends User implements UserInterface, PasswordAuthenticatedUserIn
       }
 
       return self::$role;
+   }
+
+   public function getClass(): ?SchoolClass
+   {
+      return $this->class;
+   }
+
+   public function setClass(?SchoolClass $class): void
+   {
+      $this->class = $class;
    }
 }
