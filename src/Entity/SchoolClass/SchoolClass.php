@@ -30,6 +30,11 @@ class SchoolClass
    private $teacher;
 
    /**
+    * @ORM\OneToMany(targetEntity="App\Entity\UserType\Student", mappedBy="class")
+    */
+   private $students;
+
+   /**
     * @ORM\ManyToOne(targetEntity="App\Entity\SchoolClass\SchoolClassStatus")
     * @ORM\JoinColumn(nullable=false)
     */
@@ -45,9 +50,11 @@ class SchoolClass
       return $this->name;
    }
 
-   public function setName(string $name): void
+   public function setName(string $name): self
    {
       $this->name = $name;
+
+      return $this;
    }
 
    public function getTeacher(): ?Teacher
@@ -58,6 +65,20 @@ class SchoolClass
    public function setTeacher(?Teacher $teacher)
    {
       $this->teacher = $teacher;
+
+      return $this;
+   }
+
+   public function getStudents(): array
+   {
+      return $this->students;
+   }
+
+   public function setStudents(array $students): self
+   {
+      $this->students = $students;
+
+      return $this;
    }
 
    public function getStatus(): SchoolClassStatus
@@ -65,8 +86,10 @@ class SchoolClass
       return $this->status;
    }
 
-   public function setStatus(SchoolClassStatus $status): void
+   public function setStatus(SchoolClassStatus $status): self
    {
       $this->status = $status;
+
+      return $this;
    }
 }
