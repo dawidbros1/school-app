@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	Lista administratorów
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/user/list.css') }}"/>
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset("js/userList.js") }}"></script>
+{% endblock %}
+
+{% block body %}
+	<div id="list">
+		<h1 class="fs-3 text-center">Administratorzy</h1>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nr.</th>
+					<th>Imię</th>
+					<th>Nazwisko</th>
+					<th>Adres email</th>
+					<th>PESEL</th>
+					<th>Status konta</th>
+					<th>AKTYWACJA</th>
+					<th>Edycja</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{% for user in users %}
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td>{{ user.firstName }}</td>
+						<td>{{ user.lastName }}</td>
+						<td>{{ user.email }}</td>
+						<td>{{ user.pesel }}</td>
+
+						<td>
+							{% if user.isActive %}
+								<span class='text-success'>Konto aktywne</span>
+							{% else %}
+								<span class='text-danger'>Konto nie aktywne</span>
+							{% endif %}
+						</td>
+
+						<td>
+							{% if user.isActive == false %}
+								<img class="copy-wrapper" src="{{ asset("images/copy.png") }}" data-link="{{ url('app_complete_register', { pesel: user.pesel, code: user.code, UserType: user.role.name }) }}">
+							{% endif %}
+						</td>
+
+						<td>
+							<a href="{{ path('app_user_edit', { id: user.id, UserType: user.role.name }) }}">
+								<img src="{{ asset("images/edit.png") }}">
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+{% endblock %}

@@ -26,14 +26,16 @@
 		</div>
 
 		<div class="w-100 mb-2">
+			<label class="fw-bold w-100">Email</label>
+			<input class="form-control" type="text" value="{{ user.email }}" disabled>
+		</div>
+
+		<div class="w-100 mb-2">
 			<label class="fw-bold w-100">Rola</label>
 			<input class="form-control" type="text" value="{{ user.role.description }}" disabled>
 		</div>
 
-		<div class="w-100 mb-2">
-			<label class="fw-bold w-100">Email</label>
-			<input class="form-control" type="text" value="{{ user.email }}" disabled>
-		</div>
+		{% block classes %}{% endblock %}
 
 		<div class="w-100 mb-2">
 			<label class="fw-bold w-100">{{ form_label(form.pesel) }}</label>
