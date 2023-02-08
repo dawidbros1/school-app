@@ -16,6 +16,8 @@ class SchoolClassFormType extends AbstractType
 {
    public function buildForm(FormBuilderInterface $builder, array $options): void
    {
+      $class = $options['data'];
+
       $builder
          ->add('name', TextType::class, [
             'label' => "Nazwa klasy",
@@ -33,10 +35,8 @@ class SchoolClassFormType extends AbstractType
                'class' => "form-control"
             ],
             'choice_label' => "name",
-            'query_builder' => function (TeacherRepository $teacherRepository) {
-               return $teacherRepository->createQueryBuilder('t')
-                  ->leftJoin('t.class', 'c')
-                  ->where('c.status IS NULL');
+            'query_builder' => function (TeacherRepository $teacherRepository) use ($class) {
+               return $teacherRepository->getPossibleSupervisingTeacher($class);
             },
          ])
          ->add('submit', SubmitType::class, [

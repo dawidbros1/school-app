@@ -42,6 +42,18 @@ class TeacherRepository extends ServiceEntityRepository implements PasswordUpgra
         }
     }
 
+    public function getPossibleSupervisingTeacher($class)
+    {
+        if ($class->getTeacher() == null) {
+            return $this->createQueryBuilder('t')
+                ->where("t.class IS NULL");
+        } else {
+            return $this->createQueryBuilder('t')
+                ->where("t.class IS NULL or t.class = :class")
+                ->setParameter("class", $class);
+        }
+    }
+
     /**
      * Used to upgrade (rehash) the Teacher's password automatically over time.
      */
