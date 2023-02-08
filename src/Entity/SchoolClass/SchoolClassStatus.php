@@ -10,8 +10,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class SchoolClassStatus
 {
-   const ACTIVE = "active";
-   const ARCHIVED = "archived";
+   const ACTIVE = 1;
+   const ARCHIVED = 2;
 
    /**
     * @ORM\Id

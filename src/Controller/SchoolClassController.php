@@ -35,7 +35,7 @@ class SchoolClassController extends AbstractController
 
       if ($form->isSubmitted() && $form->isValid()) {
          $repository = $this->em->getRepository(SchoolClassStatus::class);
-         $class->setStatus($repository->findOneBy(['name' => SchoolClassStatus::ACTIVE]));
+         $class->setStatus($repository->findOneBy(['id' => SchoolClassStatus::ACTIVE]));
 
          if (($teacher = $class->getTeacher()) != null) {
             $teacher->setClass($class);
