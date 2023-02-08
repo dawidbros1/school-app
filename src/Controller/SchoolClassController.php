@@ -55,6 +55,54 @@ class SchoolClassController extends AbstractController
    }
 
    /**
+    * @Route("/edit/{id}", name="app_class_edit")
+    */
+   public function edit(SchoolClass $class, Request $request)
+   {
+      $supervisingTeacher = $class->getTeacher(); // old
+
+      $form = $this->createForm(SchoolClassFormType::class, $class, []);
+      $form->handleRequest($request);
+
+      if ($form->isSubmitted() && $form->isValid()) {
+         $teacher = $class->getTeacher(); // new
+
+         if ($teacher != $supervisingTeacher) {
+            # NULL => NOT NULL         INIT SUPERVISING TEACHER
+            if ($supervisingTeacher == null && $teacher != null) {
+               $teacher->setClass($class);
+               $this->em->persist($teacher);
+            }
+            # NOT NULL => NOT NULL     SET NEW SUPERVISING TEACHER
+            else if ($supervisingTeacher != null && $teacher != null) {
+               $supervisingTeacher->setClass(null);
+               $this->em->persist($supervisingTeacher);
+
+               $teacher->setClass($class);
+               $this->em->persist($teacher);
+            }
+            # NOT NULL => NULL         REMOVE SUPERVISING TEACHER
+            else if ($supervisingTeacher != null && $teacher == null) {
+               $supervisingTeacher->setClass(null);
+               $this->em->persist($supervisingTeacher);
+            }
+
+            $class->setTeacher($teacher);
+            $this->em->persist($class);
+         }
+
+         $this->em->flush();
+
+         $this->addFlash('success', "Dane klasy zostały zaaktualizowane");
+         return $this->redirectToRoute('app_class_edit', ['id' => $class->getId()]);
+      }
+
+      return $this->render('schoolClass/edit.html.twig', [
+         'form' => $form->createView()
+      ]);
+   }
+
+   /**
     * @Route("/list", name="app_class_list")
     */
    public function list(): Response

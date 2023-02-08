@@ -16,7 +16,8 @@
 						<th>Nr</th>
 						<th>Nazwa klasy</th>
 						<th>Wychowawca klasy</th>
-					</tr>
+						<th>Opcje</th>
+					</tr>		
 				</thead>
 				<tbody>
 					{% for i, class in classes %}
@@ -24,6 +25,11 @@
 							<td>{{ i + 1 }}</td>
 							<td>{{ class.name }}</td>
 							<td>{{ class.teacher ? class.teacher.name : "Brak"}}</td>
+							<td>
+								<a href="{{path('app_class_edit', { id: class.id })}}">
+									edytuj
+								</a>
+							</td>
 						</tr>
 					{% endfor %}
 				</tbody>
