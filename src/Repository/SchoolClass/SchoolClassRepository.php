@@ -3,6 +3,8 @@
 namespace App\Repository\SchoolClass;
 
 use App\Entity\SchoolClass\SchoolClass;
+use App\Entity\SchoolClass\SchoolClassStatus;
+use App\Entity\UserType\Teacher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,5 +39,22 @@ class SchoolClassRepository extends ServiceEntityRepository
       if ($flush) {
          $this->getEntityManager()->flush();
       }
+   }
+
+   public function getActiveClasses()
+   {
+      return $this->createQueryBuilder('c')
+         ->where("c.status = :status_id")
+         ->setParameter("status_id", SchoolClassStatus::ACTIVE);
+   }
+
+   public function getActiveClasssesWithoutTutor(Teacher $teacher)
+   {
+      return $this->createQueryBuilder('c')
+         ->where("c.status = :status_id AND c.teacher IS NULL OR c.teacher = :teacher")
+         ->setParameters([
+            'status_id' => SchoolClassStatus::ACTIVE,
+            'teacher' => $teacher
+         ]);
    }
 }
