@@ -57,7 +57,7 @@ class DashboardController extends AbstractController
 
    private function teacher()
    {
-      //  Może wyświetlać własną klasę
+      $this->myClass();
    }
 
    private function student()
@@ -69,7 +69,7 @@ class DashboardController extends AbstractController
 
    private function create(array $data)
    {
-      $obj = new \stdClass(); 
+      $obj = new \stdClass();
       $obj->title = $data['title'];
       $obj->description = $data['description'];
       $obj->url = $this->urlGenerator->generate($data['route'], $data['params'] ?? []);
@@ -85,7 +85,7 @@ class DashboardController extends AbstractController
       return $this->create([
          'title' => "Administratorzy systemu",
          'description' => "Tutaj zobaczysz listę administratorow systemu",
-         'route' => "list_admin",
+         'route' => "app_list_admin",
          'image' => "admin.png"
       ]);
    }
@@ -95,7 +95,7 @@ class DashboardController extends AbstractController
       return $this->create([
          'title' => "Nauczyciele",
          'description' => "Tutaj zobaczysz listę zatrudnionych nauczycieli",
-         'route' => "list_teacher",
+         'route' => "app_list_teacher",
          'image' => "teacher.png"
       ]);
    }
@@ -105,7 +105,7 @@ class DashboardController extends AbstractController
       return $this->create([
          'title' => "Uczniowie",
          'description' => "Tutaj zobaczysz listę uczniów",
-         'route' => "list_student",
+         'route' => "app_list_student",
          'image' => "student.png"
       ]);
    }
@@ -162,6 +162,16 @@ class DashboardController extends AbstractController
          'description' => "Tutaj dodasz nową klasę",
          'route' => "app_class_create",
          'image' => "plus.png"
+      ]);
+   }
+
+   private function myClass()
+   {
+      return $this->create([
+         'title' => "Moja klasa",
+         'description' => "Tutaj zobaczysz swoją klasę",
+         'route' => "app_myclass_show",
+         'image' => "class.png"
       ]);
    }
 }
