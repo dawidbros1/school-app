@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\User;
 
 use App\Entity\UserType\Admin;
 use App\Entity\UserType\Student;
@@ -23,33 +23,33 @@ class UserListController extends AbstractController
 
    /**
     * @IsGranted("ROLE_OWNER")
-    * @Route("/admin", name="list_admin")
+    * @Route("/admin", name="app_list_admin")
     */
    public function admin()
    {
-      return $this->render('user/list.html.twig', [
+      return $this->render('user/list/admin.html.twig', [
          'users' => $this->em->getRepository(Admin::class)->findAll()
       ]);
    }
 
    /**
     * @IsGranted("ROLE_ADMIN")
-    * @Route("/teacher", name="list_teacher")
+    * @Route("/teacher", name="app_list_teacher")
     */
    public function teacher()
    {
-      return $this->render('user/list.html.twig', [
+      return $this->render('user/list/teacher.html.twig', [
          'users' => $this->em->getRepository(Teacher::class)->findAll()
       ]);
    }
 
    /**
     * @IsGranted("ROLE_ADMIN")
-    * @Route("/student", name="list_student")
+    * @Route("/student", name="app_list_student")
     */
    public function student()
    {
-      return $this->render('user/list.html.twig', [
+      return $this->render('user/list/student.html.twig', [
          'users' => $this->em->getRepository(Student::class)->findAll()
       ]);
    }
