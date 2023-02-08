@@ -37,11 +37,12 @@ class SchoolClassController extends AbstractController
          $repository = $this->em->getRepository(SchoolClassStatus::class);
          $class->setStatus($repository->findOneBy(['name' => SchoolClassStatus::ACTIVE]));
 
-         $teacher = $class->getTeacher();
-         $teacher->setClass($class);
+         if (($teacher = $class->getTeacher()) != null) {
+            $teacher->setClass($class);
+            $this->em->persist($teacher);
+         }
 
          $this->em->persist($class);
-         $this->em->persist($teacher);
          $this->em->flush();
 
          $this->addFlash('success', "Klasa została utworzona");
