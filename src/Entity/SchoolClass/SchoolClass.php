@@ -24,8 +24,8 @@ class SchoolClass
    private $name;
 
    /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\UserType\Teacher")
-    * @ORM\JoinColumn(nullable=true)
+    * @ORM\ManyToOne(targetEntity="App\Entity\UserType\Teacher", inversedBy="schoolClass")
+    * @ORM\JoinColumn(nullable=true, name="teacher_id", referencedColumnName="id")
     */
    private $teacher;
 
@@ -62,14 +62,21 @@ class SchoolClass
       return $this->teacher;
    }
 
-   public function setTeacher(?Teacher $teacher)
+   public function setTeacher(?Teacher $teacher): self
    {
       $this->teacher = $teacher;
 
       return $this;
    }
 
-   public function getStudents(): array
+   public function updateTeacherClass()
+   {
+      if ($this->teacher != null) {
+         $this->teacher->setClass($this);
+      }
+   }
+
+   public function getStudents()
    {
       return $this->students;
    }

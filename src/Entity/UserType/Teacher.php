@@ -22,8 +22,8 @@ class Teacher extends User implements UserInterface, PasswordAuthenticatedUserIn
    private static $role = null;
 
    /**
-    * @ORM\OneToOne(targetEntity="App\Entity\SchoolClass\SchoolClass", mappedBy="teacher")
-    * @ORM\JoinColumn(nullable=true)
+    * @ORM\OneToOne(targetEntity="App\Entity\SchoolClass\SchoolClass", mappedBy="teacher", inversedBy="teacher")
+    * @ORM\JoinColumn(nullable=true, name="class_id", referencedColumnName="id")
     */
    private $class;
 
@@ -51,8 +51,17 @@ class Teacher extends User implements UserInterface, PasswordAuthenticatedUserIn
       return $this->class;
    }
 
-   public function setClass(?SchoolClass $class): void
+   public function setClass(?SchoolClass $class = null): self
    {
       $this->class = $class;
+
+      return $this;
+   }
+
+   public function updateClassTeacher()
+   {
+      if ($this->class != null) {
+         $this->class->setTeacher($this);
+      }
    }
 }
