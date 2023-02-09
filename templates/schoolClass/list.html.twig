@@ -17,14 +17,14 @@
 						<th>Nazwa klasy</th>
 						<th>Wychowawca klasy</th>
 						<th>Opcje</th>
-					</tr>		
+					</tr>
 				</thead>
 				<tbody>
 					{% for i, class in classes %}
 						<tr>
 							<td>{{ i + 1 }}</td>
 							<td>{{ class.name }}</td>
-							<td>{{ class.teacher ? class.teacher.name : "Brak"}}</td>
+							<td>{{ class.teacher ? class.teacher.name : null}}</td>
 							<td>
 								<a href="{{path('app_class_edit', { id: class.id })}}">
 									edytuj

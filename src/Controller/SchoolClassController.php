@@ -94,7 +94,7 @@ class SchoolClassController extends AbstractController
          $this->em->flush();
 
          $this->addFlash('success', "Dane klasy zostały zaaktualizowane");
-         return $this->redirectToRoute('app_class_edit', ['id' => $class->getId()]);
+         return $this->redirectToRoute('app_class_list');
       }
 
       return $this->render('schoolClass/edit.html.twig', [
