@@ -111,4 +111,14 @@ class SchoolClassController extends AbstractController
          'classes' => $this->em->getRepository(SchoolClass::class)->findALl()
       ]);
    }
+
+   /**
+    * @Route("/show/{id}", name="app_class_show")
+    */
+   public function show(SchoolClass $class): Response
+   {
+      return $this->render('schoolClass/show.html.twig', [
+         'class' => $class
+      ]);
+   }
 }
