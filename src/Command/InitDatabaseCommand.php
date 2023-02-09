@@ -4,6 +4,7 @@ namespace App\Command;
 
 use App\DataFixtures\Factory\UserFactory;
 use App\Entity\SchoolClass\SchoolClassStatus;
+use App\Enum\UserRoles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,21 +31,21 @@ class InitDatabaseCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $this->initUsers();
+        $this->createOwner();
         $this->initSchoolClassStatuses();
 
         $io->success('OK');
         return Command::SUCCESS;
     }
 
-    private function initUsers()
+    private function createOwner()
     {
         $this->entityManager->createQuery('DELETE FROM App\Entity\UserType\Owner')->execute();
         $this->entityManager->getConnection()->exec("ALTER TABLE owner AUTO_INCREMENT = 1");
 
         $this->userFactory->create([
             'email' => "owner@wp.pl",
-            'roles' => 'owner',
+            'roles' => UserRoles::OWNER,
             'password' => "owner"
         ], true);
     }
