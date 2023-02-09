@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/user/list.css') }}"/>
+	<link rel="stylesheet" href="{{ asset('css/list/main.css') }}"/>
 {% endblock %}
 
 {% block javascripts %}
@@ -14,7 +14,7 @@
 
 {% block body %}
 	<div id="list">
-		<h1 class="fs-3 text-center">Nauczyciele</h1>
+		<h1 id="title">Lista nauczycieli</h1>
 
 		<table class="table table-striped">
 			<thead>
@@ -24,7 +24,7 @@
 					<th>Nazwisko</th>
 					<th>Adres email</th>
 					<th>PESEL</th>
-					<th>Wychowawca klasy</th>
+					<th>Klasa</th>
 					<th>Status konta</th>
 					<th>AKTYWACJA</th>
 					<th>Edycja</th>
