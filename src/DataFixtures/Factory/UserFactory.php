@@ -46,26 +46,19 @@ class UserFactory
          $user->setCode($this->codeGenerator->generate($user));
       }
 
-      $this->em->getRepository(get_class($user))->add($user, $flush);
-   }
-
-   private function getUser($userType)
-   {
-      switch ($userType) {
-         case 'owner':
-            return new Owner();
-         case 'admin':
-            return new Admin();
-         case 'teacher':
-            return new Teacher();
-         case 'student':
-            return new Student();
-      }
    }
 
    private function randUserType()
    {
-      return $this->userType[array_rand($this->userType)];
-   }
+      $max = 1000;
 
+      $number = rand(1, $max);
+
+      if ($number >= 1 && $number < ($max * 0.01)) {
+         return UserRoles::ADMIN;
+      } else if ($number >= ($max * 0.01) && $number < ($max * 0.03)) {
+         return UserRoles::TEACHER;
+      } else
+         return UserRoles::STUDENT;
+   }
 }
