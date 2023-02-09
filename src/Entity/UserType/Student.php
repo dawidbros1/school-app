@@ -19,13 +19,13 @@ use App\Interfaces\CustomUserInterface as UserInterface;
  */
 class Student extends User implements UserInterface, PasswordAuthenticatedUserInterface
 {
+   private static $role = null;
+
    /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\SchoolClass\SchoolClass")
-    * @ORM\JoinColumn(nullable=true)
+    * @ORM\ManyToOne(targetEntity="App\Entity\SchoolClass\SchoolClass", inversedBy="students")
+    * @ORM\JoinColumn(nullable=true, name="class_id", referencedColumnName="id", onDelete="SET NULL")
     */
    private $class;
-
-   private static $role = null;
 
    /**
     * @see UserInterface

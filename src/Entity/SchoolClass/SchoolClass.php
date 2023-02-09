@@ -25,12 +25,13 @@ class SchoolClass
 
    /**
     * @ORM\ManyToOne(targetEntity="App\Entity\UserType\Teacher", inversedBy="schoolClass")
-    * @ORM\JoinColumn(nullable=true, name="teacher_id", referencedColumnName="id")
+    * @ORM\JoinColumn(nullable=true, name="teacher_id", referencedColumnName="id", onDelete="SET NULL")
     */
    private $teacher;
 
    /**
     * @ORM\OneToMany(targetEntity="App\Entity\UserType\Student", mappedBy="class")
+    * @ORM\JoinColumn(onDelete="SET NULL")
     */
    private $students;
 
