@@ -7,7 +7,6 @@ use App\Entity\UserType\Teacher;
 use App\Repository\UserType\TeacherRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -38,12 +37,6 @@ class SchoolClassFormType extends AbstractType
             'query_builder' => function (TeacherRepository $teacherRepository) use ($class) {
                return $teacherRepository->getPossibleSupervisingTeacher($class);
             },
-         ])
-         ->add('submit', SubmitType::class, [
-            'label' => "Dodaj klasę",
-            'attr' => [
-               'class' => "btn btn-primary w-100 fw-bold",
-            ],
          ])
       ;
    }
