@@ -1,33 +1,42 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Tworzenie klasy
+	Lista klas
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/list/main.css') }}"/>
 {% endblock %}
 
 {% block body %}
-	<div class="mx-auto px-2">
-		<h1 class="fw-bold text-center fs-3 w-100">Lista klas</h1>
+	<div id="list">
+		<h1 id="title">LISTA KLAS W SZKOLE</h1>
 
 		{% if classes|length > 0 %}
-
 			<table class="table table-striped">
 				<thead>
 					<tr>
 						<th>Nr</th>
 						<th>Nazwa klasy</th>
 						<th>Wychowawca klasy</th>
-						<th>Opcje</th>
+						<th>Liczba uczniów</th>
+						<th>Edycja</th>
 					</tr>
 				</thead>
 				<tbody>
 					{% for i, class in classes %}
 						<tr>
 							<td>{{ i + 1 }}</td>
-							<td>{{ class.name }}</td>
+							<td class="fw-bold">
+								<a href="{{path('app_class_show', {id: class.id})}}">
+									{{ class.name }}
+								</a>
+							</td>
 							<td>{{ class.teacher ? class.teacher.name : null}}</td>
+							<td>{{ class.students ? class.students|length : null }}</td>
 							<td>
-								<a href="{{path('app_class_edit', { id: class.id })}}">
-									edytuj
+								<a class="me-3" href="{{ path('app_class_edit', { id: class.id }) }}">
+									<img src="{{ asset("images/edit.png") }}">
 								</a>
 							</td>
 						</tr>
@@ -37,6 +46,5 @@
 		{% else %}
 			Tu jeszcze nic nie ma
 		{% endif %}
-
 	</div>
 {% endblock %}
