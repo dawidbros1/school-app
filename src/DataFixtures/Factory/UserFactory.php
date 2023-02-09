@@ -2,38 +2,33 @@
 
 namespace App\DataFixtures\Factory;
 
-use App\Entity\UserType\Admin;
-use App\Entity\UserType\Owner;
-use App\Entity\UserType\Student;
-use App\Entity\UserType\Teacher;
+use App\Enum\UserRoles;
 use App\Service\EmailGenerator;
 use App\Service\UserCodeGenerator;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\UserManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserFactory
 {
-   private $em;
    private $faker;
    private $emailGenerator, $codeGenerator;
    private $userPasswordHasher;
+   private $userManager;
 
-   private $userType = ['admin', 'teacher', 'student'];
-
-   public function __construct(EntityManagerInterface $entityManager, EmailGenerator $emailGenerator, UserPasswordHasherInterface $userPasswordHasher, UserCodeGenerator $codeGenerator)
+   public function __construct(EmailGenerator $emailGenerator, UserPasswordHasherInterface $userPasswordHasher, UserCodeGenerator $codeGenerator, UserManager $userManager)
    {
-      $this->em = $entityManager;
       $this->faker = Factory::create();
       $this->userPasswordHasher = $userPasswordHasher;
 
       $this->emailGenerator = $emailGenerator;
       $this->codeGenerator = $codeGenerator;
+      $this->userManager = $userManager;
    }
 
    public function create(array $data = [], bool $flush = false)
    {
-      $user = $this->getUser($data['roles'] ?? $this->randUserType());
+      $user = $this->userManager->getEntity($data['roles'] ?? $this->randUserType());
       $user->setFirstName($data['firstName'] ?? $this->faker->firstName);
       $user->setLastName($data['lastName'] ?? $this->faker->lastName);
       $user->setPesel($data['pesel'] ?? $this->faker->unique()->numberBetween(10000000000, 99999999999));
@@ -46,6 +41,8 @@ class UserFactory
          $user->setCode($this->codeGenerator->generate($user));
       }
 
+      $repository = $this->userManager->getRepository($user->getRole()->getName());
+      $repository->add($user, $flush);
    }
 
    private function randUserType()
