@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\SchoolClass\SchoolClass;
 use App\Entity\SchoolClass\SchoolClassStatus;
 use App\Form\SchoolClassFormType;
+use App\Service\FormBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,20 +28,17 @@ class SchoolClassController extends AbstractController
    /**
     * @Route("/create", name="app_class_create")
     */
-   public function create(Request $request): Response
+   public function create(Request $request, FormBuilder $builder): Response
    {
       $class = new SchoolClass();
       $form = $this->createForm(SchoolClassFormType::class, $class, []);
+      $builder->addButton("Dodaj klasę")->build($form);
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
          $repository = $this->em->getRepository(SchoolClassStatus::class);
          $class->setStatus($repository->findOneBy(['id' => SchoolClassStatus::ACTIVE]));
-
-         if (($teacher = $class->getTeacher()) != null) {
-            $teacher->setClass($class);
-            $this->em->persist($teacher);
-         }
+         $class->updateTeacherClass();
 
          $this->em->persist($class);
          $this->em->flush();
@@ -57,40 +55,22 @@ class SchoolClassController extends AbstractController
    /**
     * @Route("/edit/{id}", name="app_class_edit")
     */
-   public function edit(SchoolClass $class, Request $request)
+   public function edit(SchoolClass $class, Request $request, FormBuilder $builder)
    {
-      $supervisingTeacher = $class->getTeacher(); // old
+      $supervisingTeacher = $class->getTeacher();
 
       $form = $this->createForm(SchoolClassFormType::class, $class, []);
+      $builder->addButton("Edytuj klasę")->build($form);
+
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
-         $teacher = $class->getTeacher(); // new
-
-         if ($teacher != $supervisingTeacher) {
-            # NULL => NOT NULL         INIT SUPERVISING TEACHER
-            if ($supervisingTeacher == null && $teacher != null) {
-               $teacher->setClass($class);
-               $this->em->persist($teacher);
-            }
-            # NOT NULL => NOT NULL     SET NEW SUPERVISING TEACHER
-            else if ($supervisingTeacher != null && $teacher != null) {
-               $supervisingTeacher->setClass(null);
-               $this->em->persist($supervisingTeacher);
-
-               $teacher->setClass($class);
-               $this->em->persist($teacher);
-            }
-            # NOT NULL => NULL         REMOVE SUPERVISING TEACHER
-            else if ($supervisingTeacher != null && $teacher == null) {
-               $supervisingTeacher->setClass(null);
-               $this->em->persist($supervisingTeacher);
-            }
-
-            $class->setTeacher($teacher);
-            $this->em->persist($class);
+         if ($class->getTeacher() != $supervisingTeacher) {
+            $supervisingTeacher != null ? $this->em->persist($supervisingTeacher->setClass(null)) : null;
+            $class->updateTeacherClass();
          }
 
+         $this->em->persist($class);
          $this->em->flush();
 
          $this->addFlash('success', "Dane klasy zostały zaaktualizowane");

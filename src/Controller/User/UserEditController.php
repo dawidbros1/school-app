@@ -49,24 +49,21 @@ class UserEditController extends AbstractController
       }
 
       $builder->addButton("Zaktualizuj dane")->build($form);
-
-      if ($userType == 'teacher') {
-         $oldClass = $user->getClass();
-      }
-
+      $oldClass = $userType == 'teacher' ? $user->getClass() : null;
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
          $user->setEmail($emailGenerator->generate($user));
 
-         if ($userType == "teacher") {
-            $this->editTeacher($user, $oldClass);
+         if ($userType == "teacher"  && $oldClass != $user->getClass()) {
+            $oldClass != null ? $this->em->persist($oldClass->setTeacher(null)) : null;
+            $user->updateClassTeacher();
          }
 
-         $repository->add($user, true);
+         $this->em->persist($user);
+         $this->em->flush();
 
          $this->addFlash('success', "Dane zostały zaktualizowane");
-
          return $this->redirectToRoute('app_list_' . $userType);
       }
 
@@ -74,33 +71,5 @@ class UserEditController extends AbstractController
          'form' => $form->createView(),
          'user' => $user,
       ]);
-   }
-
-   private function editTeacher($user, $class_old)
-   {
-      $class_new = $user->getClass();
-
-      if ($class_new != $class_old) {
-         # NULL => NOT NULL         SET CLASS
-         if ($class_old == null && $class_new != null) {
-            $class_new->setTeacher($user); // class_new: add teacher
-            $this->em->persist($class_new);
-         }
-         # NOT NULL => NOT NULL     CHANGE CLASS
-         else if ($class_old != null && $class_new != null) {
-            $class_old->setTeacher(null); // class_old: remove teacher
-            $this->em->persist($class_old);
-
-            $class_new->setTeacher($user); // class_new: add teacher
-            $this->em->persist($class_old);
-         }
-         // # NOT NULL => NULL     REMOVE CLASS
-         else if ($class_old != null && $class_new == null) {
-            $class_old->setTeacher(null); // class_old: remove teacher
-            $this->em->persist($class_old);
-         }
-
-         $this->em->flush();
-      }
    }
 }
