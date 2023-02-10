@@ -2,7 +2,7 @@
 
 namespace App\DataFixtures\Factory;
 
-use App\Enum\UserRoles;
+use App\Enum\UserType;
 use App\Service\EmailGenerator;
 use App\Service\UserCodeGenerator;
 use App\Service\UserManager;
@@ -52,10 +52,10 @@ class UserFactory
       $number = rand(1, $max);
 
       if ($number >= 1 && $number < ($max * 0.01)) {
-         return UserRoles::ADMIN;
+         return UserType::ADMIN;
       } else if ($number >= ($max * 0.01) && $number < ($max * 0.03)) {
-         return UserRoles::TEACHER;
+         return UserType::TEACHER;
       } else
-         return UserRoles::STUDENT;
+         return UserType::STUDENT;
    }
 }

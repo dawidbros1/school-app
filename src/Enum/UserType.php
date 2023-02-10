@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-class UserRoles
+class UserType
 {
    const OWNER = "owner";
    const ADMIN = "admin";

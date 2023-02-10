@@ -6,7 +6,7 @@ use App\Entity\UserType\Admin;
 use App\Entity\UserType\Owner;
 use App\Entity\UserType\Student;
 use App\Entity\UserType\Teacher;
-use App\Enum\UserRoles;
+use App\Enum\UserTYpe;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserManager
@@ -21,13 +21,13 @@ class UserManager
    public function getEntity(string $userType)
    {
       switch ($userType) {
-         case UserRoles::STUDENT:
+         case UserTYpe::STUDENT:
             return new Student();
-         case UserRoles::TEACHER:
+         case UserTYpe::TEACHER:
             return new Teacher();
-         case UserRoles::ADMIN:
+         case UserTYpe::ADMIN:
             return new Admin();
-         case UserRoles::OWNER:
+         case UserTYpe::OWNER:
             return new Owner();
       }
    }

@@ -4,7 +4,7 @@ namespace App\Command;
 
 use App\DataFixtures\Factory\UserFactory;
 use App\Entity\SchoolClass\SchoolClassStatus;
-use App\Enum\UserRoles;
+use App\Enum\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -45,7 +45,7 @@ class InitDatabaseCommand extends Command
 
         $this->userFactory->create([
             'email' => "owner@wp.pl",
-            'roles' => UserRoles::OWNER,
+            'roles' => UserType::OWNER,
             'password' => "owner"
         ], true);
     }
