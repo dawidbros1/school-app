@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Enum\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -116,7 +117,7 @@ class DashboardController extends AbstractController
          'title' => "Dodaj administratowa systemu",
          'description' => "Tutaj dodasz nowego admiinstratora systemu",
          'route' => "app_register",
-         'params' => ["UserType" => "admin"],
+         'params' => ["UserType" => UserType::ADMIN],
          'image' => "plus.png"
       ]);
    }
@@ -127,7 +128,7 @@ class DashboardController extends AbstractController
          'title' => "Dodaj nauczyciela",
          'description' => "Tutaj dodasz nowego nauczyciel",
          'route' => "app_register",
-         'params' => ["UserType" => "teacher"],
+         'params' => ["UserType" => UserType::TEACHER],
          'image' => "plus.png"
       ]);
    }
@@ -138,7 +139,7 @@ class DashboardController extends AbstractController
          'title' => "Dodaj ucznia",
          'description' => "Tutaj dodasz nowego ucznia",
          'route' => "app_register",
-         'params' => ["UserType" => "student"],
+         'params' => ["UserType" => UserType::STUDENT],
          'image' => "plus.png"
       ]);
    }

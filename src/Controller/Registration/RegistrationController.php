@@ -2,6 +2,7 @@
 
 namespace App\Controller\Registration;
 
+use App\Enum\UserType;
 use App\Form\RegistrationFormType;
 use App\Service\EmailGenerator;
 use App\Service\FormBuilder;
@@ -34,7 +35,7 @@ class RegistrationController extends AbstractController
     {
         $userType = $request->get('UserType');
 
-        if ($userType == "admin") {
+        if ($userType == UserType::ADMIN) {
             if (!$authorizationChecker->isGranted('ROLE_OWNER')) {
                 throw new AccessDeniedException('Nie masz uprawnień do tworzenia użytkownika typu "admin".');
             }
@@ -44,7 +45,7 @@ class RegistrationController extends AbstractController
         $form = $this->createForm(RegistrationFormType::class, $user, []);
         $template = "base";
 
-        if ($userType == "student") {
+        if ($userType == UserType::STUDENT) {
             $template = $userType;
             $builder->addClassList();
         }

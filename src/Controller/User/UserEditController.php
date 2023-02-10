@@ -2,6 +2,7 @@
 
 namespace App\Controller\User;
 
+use App\Enum\UserType;
 use App\Form\RegistrationFormType;
 use App\Service\EmailGenerator;
 use App\Service\FormBuilder;
@@ -32,7 +33,7 @@ class UserEditController extends AbstractController
    {
       $userType = $request->get('UserType');
 
-      if ($userType == "admin") {
+      if ($userType == UserType::ADMIN) {
          if (!$authorizationChecker->isGranted('ROLE_OWNER')) {
             throw new AccessDeniedException('Nie masz uprawnień do tworzenia użytkownika typu "admin".');
          }
@@ -42,20 +43,20 @@ class UserEditController extends AbstractController
       $user = $repository->findOneBy(['id' => $request->get('id')]);
       $form = $this->createForm(RegistrationFormType::class, $user, []);
 
-      if ($userType == "student") {
+      if ($userType == UserType::STUDENT) {
          $builder->addClassList();
-      } else if ($userType == "teacher") {
+      } else if ($userType == UserType::TEACHER) {
          $builder->addClassListWithoutTutor($user);
       }
 
       $builder->addButton("Zaktualizuj dane")->build($form);
-      $oldClass = $userType == 'teacher' ? $user->getClass() : null;
+      $oldClass = $userType == UserType::TEACHER ? $user->getClass() : null;
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
          $user->setEmail($emailGenerator->generate($user));
 
-         if ($userType == "teacher"  && $oldClass != $user->getClass()) {
+         if ($userType == UserType::TEACHER && $oldClass != $user->getClass()) {
             $oldClass != null ? $this->em->persist($oldClass->setTeacher(null)) : null;
             $user->updateClassTeacher();
          }

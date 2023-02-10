@@ -4,6 +4,7 @@ namespace App\Command\Clear;
 
 use App\Entity\SchoolClass\SchoolClass;
 use App\Entity\UserType\Teacher;
+use App\Enum\UserType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -30,8 +31,8 @@ class UserClearCommand extends Command
       $io = new SymfonyStyle($input, $output);
 
       $this->clearTeacherTable(); // [ class <--> teacher ]
-      $this->truncateUserTable('Admin', 'admin');
-      $this->truncateUserTable('Student', 'student');
+      $this->truncateUserTable(UserType::ADMIN, 'admin');
+      $this->truncateUserTable(UserType::STUDENT, 'student');
 
       $io->success('users cleared');
 
@@ -40,6 +41,8 @@ class UserClearCommand extends Command
 
    private function truncateUserTable(string $userType, string $table)
    {
+      $userType = ucfirst($userType);
+
       $this->em->createQuery("DELETE FROM App\Entity\UserType\\$userType")->execute();
       $this->em->getConnection()->exec("ALTER TABLE $table AUTO_INCREMENT = 1");
    }
