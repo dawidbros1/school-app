@@ -12,9 +12,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * @IsGranted("ROLE_ADMIN")
  * @Route("/class")
  */
 class SchoolClassController extends AbstractController
@@ -26,6 +26,7 @@ class SchoolClassController extends AbstractController
    }
 
    /**
+    * @IsGranted("ROLE_ADMIN")
     * @Route("/create", name="app_class_create")
     */
    public function create(Request $request, FormBuilder $builder): Response
@@ -47,12 +48,13 @@ class SchoolClassController extends AbstractController
          return $this->redirectToRoute('app_class_create');
       }
 
-      return $this->render('schoolClass/create.html.twig', [
+      return $this->render('schoolClass/admin/create.html.twig', [
          'form' => $form->createView()
       ]);
    }
 
    /**
+    * @IsGranted("ROLE_ADMIN")
     * @Route("/edit/{id}", name="app_class_edit")
     */
    public function edit(SchoolClass $class, Request $request, FormBuilder $builder)
@@ -77,28 +79,56 @@ class SchoolClassController extends AbstractController
          return $this->redirectToRoute('app_class_list');
       }
 
-      return $this->render('schoolClass/edit.html.twig', [
+      return $this->render('schoolClass/admin/edit.html.twig', [
          'form' => $form->createView()
       ]);
    }
 
    /**
+    * @IsGranted("ROLE_ADMIN")
     * @Route("/list", name="app_class_list")
     */
    public function list(): Response
    {
-      return $this->render('schoolClass/list.html.twig', [
+      return $this->render('schoolClass/admin/list.html.twig', [
          'classes' => $this->em->getRepository(SchoolClass::class)->findALl()
       ]);
    }
 
    /**
+    * @IsGranted("ROLE_ADMIN")
     * @Route("/show/{id}", name="app_class_show")
     */
    public function show(SchoolClass $class): Response
    {
-      return $this->render('schoolClass/show.html.twig', [
-         'class' => $class
+      return $this->render("schoolClass/admin/show.html.twig", [
+         'class' => $class,
+      ]);
+   }
+
+   /**
+    * @IsGranted("ROLE_USER")
+    * @Route("/show", name="app_my_class_show")
+    */
+   public function myClass()
+   {
+      if ($this->isGranted('ROLE_TEACHER')) {
+         $folder = "teacher";
+      } else if ($this->isGranted('ROLE_STUDENT')) {
+         $folder = "student";
+      } else {
+         throw new AccessDeniedException("Niewłaściwy typ użytkownika");
+      }
+
+      $user = $this->getUser();
+
+      if ($user->getClass() == null) {
+         $this->addFlash('error', "Nie posiadasz przypisanej klasy");
+         return $this->redirectToRoute('app_dashboard');
+      }
+
+      return $this->render("schoolClass/$folder/show.html.twig", [
+         'class' => $user->getClass()
       ]);
    }
 }
