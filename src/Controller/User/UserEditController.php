@@ -65,7 +65,12 @@ class UserEditController extends AbstractController
          $this->em->flush();
 
          $this->addFlash('success', "Dane zostały zaktualizowane");
-         return $this->redirectToRoute('app_list_' . $userType);
+
+         if ($to = $request->get("redirectTo", null)) {
+            return $this->redirect($to);
+         } else {
+            return $this->redirectToRoute('app_list_' . $userType);
+         }
       }
 
       return $this->render('user/edit/' . $userType . '.html.twig', [
