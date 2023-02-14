@@ -63,10 +63,10 @@ class DashboardController extends AbstractController
 
    private function student()
    {
-      //  Może wyświetlać własną klasę
+      $this->myClass();
    }
 
-   // LIST OF AVAIABLE BOXES
+   // LIST OF AVAIABLE BOXES //
 
    private function create(array $data)
    {
@@ -168,11 +168,16 @@ class DashboardController extends AbstractController
 
    private function myClass()
    {
-      return $this->create([
-         'title' => "Moja klasa",
-         'description' => "Tutaj zobaczysz swoją klasę",
-         'route' => "app_myclass_show",
-         'image' => "class.png"
-      ]);
+      $user = $this->getUser(); // Student or Teacher has method getClass()
+      if ($user->getClass() == null)
+         return $this;
+      else {
+         return $this->create([
+            'title' => "Moja klasa",
+            'description' => "Tutaj zobaczysz swoją klasę",
+            'route' => "app_my_class_show",
+            'image' => "class.png"
+         ]);
+      }
    }
 }
