@@ -5,7 +5,7 @@ namespace App\Entity\UserType;
 use App\Entity\Role;
 use App\Entity\SchoolClass\SchoolClass;
 use App\Entity\User;
-use App\Enum\UserRoles;
+use App\Enum\UserType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -40,7 +40,7 @@ class Student extends User implements UserInterface, PasswordAuthenticatedUserIn
    public static function getRole()
    {
       if (self::$role == null) {
-         self::$role = new Role(UserRoles::STUDENT, "Uczeń");
+         self::$role = new Role(UserType::STUDENT, "Uczeń");
       }
 
       return self::$role;

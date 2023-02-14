@@ -4,7 +4,7 @@ namespace App\Entity\UserType;
 
 use App\Entity\Role;
 use App\Entity\User;
-use App\Enum\UserRoles;
+use App\Enum\UserType;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -33,7 +33,7 @@ class Owner extends User implements UserInterface, PasswordAuthenticatedUserInte
    public static function getRole()
    {
       if (self::$role == null) {
-         self::$role = new Role(UserRoles::OWNER, "Właściciel");
+         self::$role = new Role(UserType::OWNER, "Właściciel");
       }
 
       return self::$role;
