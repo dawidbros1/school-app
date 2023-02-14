@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ class.name }}
+{% endblock %}
+
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('css/list/main.css') }}"/>
+{% endblock %}
+
+{% block body %}
+	<div id="list">
+		<h1 id="title">{{ class.name }}</h1>
+
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Nr.</th>
+					<th>Imię</th>
+					<th>Nazwisko</th>
+					<th>Adres email</th>
+				</tr>
+			</thead>
+
+			<tbody>
+				{% for student in class.students %}
+					<tr>
+						<td>{{ loop.index }}</td>
+						<td>{{ student.firstName }}</td>
+						<td>{{ student.lastName }}</td>
+						<td>{{ student.email }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+{% endblock %}
