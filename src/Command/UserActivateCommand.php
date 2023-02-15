@@ -42,9 +42,9 @@ class UserActivateCommand extends Command
       return Command::SUCCESS;
    }
 
-   private function activate(string $entity)
+   private function activate(string $namespace)
    {
-      $repository = $this->em->getRepository($entity);
+      $repository = $this->em->getRepository($namespace);
 
       $query = $repository->createQueryBuilder('u')
          ->update()
@@ -52,7 +52,7 @@ class UserActivateCommand extends Command
          ->set('u.password', ':password')
          ->where('u.code IS NOT NULL')
          ->setParameter('code', null)
-         ->setParameter('password', $this->userPasswordHasher->hashPassword(new $entity(), 'password'))
+         ->setParameter('password', $this->userPasswordHasher->hashPassword(new $namespace(), 'password'))
          ->getQuery();
       $query->execute();
    }
