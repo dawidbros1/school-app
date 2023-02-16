@@ -7,15 +7,19 @@ use App\Entity\UserType\Owner;
 use App\Entity\UserType\Student;
 use App\Entity\UserType\Teacher;
 use App\Enum\UserType;
+use App\Interfaces\CustomUserInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Security;
 
 class UserManager
 {
    private $em;
+   private $security;
 
-   public function __construct(EntityManagerInterface $entityManager)
+   public function __construct(EntityManagerInterface $entityManager, Security $security)
    {
       $this->em = $entityManager;
+      $this->security = $security;
    }
 
    public function getEntity(string $userType)
@@ -44,5 +48,10 @@ class UserManager
          case 'owner':
             return $this->em->getRepository(Owner::class);
       }
+   }
+
+   public function getUser(): ?CustomUserInterface
+   {
+      return $this->security->getUser();
    }
 }
