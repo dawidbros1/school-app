@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\SchoolClass\SchoolClass;
 use App\Interfaces\CustomUserInterface as UserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -180,6 +181,11 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function isActive()
     {
         return ($this->code == null);
+    }
+
+    public function getClass(): ?SchoolClass
+    {
+        return null;
     }
 
     public function name()
