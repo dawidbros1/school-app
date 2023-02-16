@@ -1,50 +1,52 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Lista klas
+   Lista klas
 {% endblock %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/list/main.css') }}"/>
+   <link rel="stylesheet" href="{{ asset('css/list/main.css') }}"/>
+
+   <style>
+      .button-edit {
+         background-color: lightgreen;
+         padding: 2px 10px;
+         border: 1px solid black;
+         border-radius: 3px;
+         color: black;
+      }
+   </style>
 {% endblock %}
 
 {% block body %}
-	<div id="list">
-		<h1 id="title">LISTA KLAS W SZKOLE</h1>
+   <div id="list">
+      <h1 id="title">LISTA KLAS W SZKOLE</h1>
 
-		{% if classes|length > 0 %}
-			<table class="table table-striped">
-				<thead>
-					<tr>
-						<th>Nr</th>
-						<th>Nazwa klasy</th>
-						<th>Wychowawca klasy</th>
-						<th>Liczba uczniów</th>
-						<th>Edycja</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for i, class in classes %}
-						<tr>
-							<td>{{ i + 1 }}</td>
-							<td class="fw-bold">
-								<a href="{{path('app_class_show', {id: class.id})}}">
-									{{ class.name }}
-								</a>
-							</td>
-							<td>{{ class.teacher ? class.teacher.name : null}}</td>
-							<td>{{ class.students ? class.students|length : null }}</td>
-							<td>
-								<a class="me-3" href="{{ path('app_class_edit', { id: class.id }) }}">
-									<img src="{{ asset("images/edit.png") }}">
-								</a>
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		{% else %}
-			Tu jeszcze nic nie ma
-		{% endif %}
-	</div>
+      {% if classes|length > 0 %}
+         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4">
+            {% for i, class in classes %}
+               <div class="col mb-4">
+                  <div class="card">
+                     <div class="card-body position-relative">
+                        <h5 class="card-title">
+                           <a href="{{ path('app_class_show', {id: class.id}) }}">
+                              {{ class.name }}
+                           </a>
+                        </h5>
+                        <div class="card-text">Wychowawca:
+                           {{ class.teacher ? class.teacher.name : null }}
+                        </div>
+                        <div class="card-text">Liczba uczniów:
+                           {{ class.students ? class.students|length : null }}
+                        </div>
+                        <a class="button-edit position-absolute end-0 bottom-0 me-2 mb-2" href="{{ path('app_class_edit', { id: class.id }) }}">EDYTUJ</a>
+                     </div>
+                  </div>
+               </div>
+            {% endfor %}
+         </div>
+      {% else %}
+         Tu jeszcze nic nie ma
+      {% endif %}
+   </div>
 {% endblock %}
