@@ -4,24 +4,24 @@
    Lista przedmiotów
 {% endblock %}
 
-{% block body %}
-   <div class="col-11 col-xl-6 mx-auto border p-4 mt-5 bg-light">
-      <div>
-         <h1 class="base-title">{{ form_label(form) }}</h1>
+{% block form %}
+   <div class="form">
+      <h1 class="base-title">{{ form_label(form) }}</h1>
 
-         {{ form_start(form) }}
-         <div class="w-100 mb-2">
-            <label class="fw-bold w-100">{{ form_label(form.name) }}</label>
-            {{ form_widget(form.name) }}
-            {{ form_errors(form.name) }}
-         </div>
-
-         <div class="w-100">{{ form_widget(form.submit) }}</div>
-
-         {{ form_end(form) }}
+      {{ form_start(form) }}
+      <div class="w-100 mb-2">
+         <label class="fw-bold w-100">{{ form_label(form.name) }}</label>
+         {{ form_widget(form.name) }}
+         {{ form_errors(form.name) }}
       </div>
-   </div>
 
+      <div class="w-100">{{ form_widget(form.submit) }}</div>
+
+      {{ form_end(form) }}
+   </div>
+{% endblock %}
+
+{% block body %}
    <div class="col-11 mx-auto border px-4 pb-4  mt-5 bg-light">
       <div class="position-relative">
          <h1 class="base-title my-3">Lista Przedmiotów</h1>
