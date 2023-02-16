@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Enum\UserType;
+use App\Interfaces\CustomUserInterface;
+use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -10,13 +12,15 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class DashboardController extends AbstractController
 {
-   private $boxes;
+   private $simpleBoxes = [];
+   private $complexBoxes = [];
    private $urlGenerator;
+   private $userManager;
 
-   public function __construct(UrlGeneratorInterface $urlGenerator)
+   public function __construct(UrlGeneratorInterface $urlGenerator, UserManager $userManager)
    {
-      $this->boxes = [];
       $this->urlGenerator = $urlGenerator;
+      $this->userManager = $userManager;
    }
 
    /**
@@ -37,24 +41,27 @@ class DashboardController extends AbstractController
          $this->student();
       }
 
+      // dump($this->complexBoxes);
+      // die();
+
       return $this->render('dashboard.html.twig', [
-         'boxes' => $this->boxes
+         'simpleBoxes' => $this->simpleBoxes,
+         'complexBoxes' => $this->complexBoxes
       ]);
    }
 
    private function owner()
    {
-      $this->listAdmins()->listTeacher()->listStudent();
-      $this->addAdmin()->addTeacher()->addStudent();
-      $this->listClasses()->addClass();
+      $this->admins()->teachers()->students();
+      $this->addClass()->listClasses();
+
+
       $this->listSubjects();
    }
 
    private function admin()
    {
-      $this->listTeacher()->listStudent();
-      $this->addTeacher()->addStudent();
-      $this->listClasses()->addClass();
+      $this->teachers()->students();
       $this->listSubjects();
    }
 
@@ -68,9 +75,7 @@ class DashboardController extends AbstractController
       $this->myClass();
    }
 
-   // LIST OF AVAIABLE BOXES //
-
-   private function create(array $data)
+   private function createSimpleBox(array $data)
    {
       $obj = new \stdClass();
       $obj->title = $data['title'];
@@ -78,71 +83,87 @@ class DashboardController extends AbstractController
       $obj->url = $this->urlGenerator->generate($data['route'], $data['params'] ?? []);
       $obj->image = $data['image'];
 
-      array_push($this->boxes, $obj);
+      array_push($this->simpleBoxes, $obj);
       return $this;
    }
 
-   # USERS
-   private function listAdmins()
+   private function createComplexBox(array $data)
    {
-      return $this->create([
+      $obj = new \stdClass();
+      $obj->title = $data['title'];
+      $obj->description = $data['description'];
+      $obj->links = [];
+
+      foreach ($data['links'] as $link) {
+         $temp = new \stdClass();
+         $temp->name = $link['name'];
+         $temp->url = $link['route'] = $this->urlGenerator->generate($link['route'], $link['params'] ?? []);
+         array_push($obj->links, $temp);
+      }
+
+      $obj->image = $data['image'];
+
+      array_push($this->complexBoxes, $obj);
+      return $this;
+   }
+
+   private function admins()
+   {
+      return $this->createComplexBox([
          'title' => "Administratorzy systemu",
          'description' => "Tutaj zobaczysz listę administratorow systemu",
-         'route' => "app_list_admin",
+         'links' => [
+            [
+               'name' => "Dodaj",
+               'route' => "app_register",
+               'params' => ["UserType" => UserType::ADMIN],
+            ],
+            [
+               'name' => "Lista",
+               'route' => "app_list_admin",
+            ]
+         ],
          'image' => "admin.png"
       ]);
    }
 
-   private function listTeacher()
+   private function teachers()
    {
-      return $this->create([
+      return $this->createComplexBox([
          'title' => "Nauczyciele",
          'description' => "Tutaj zobaczysz listę zatrudnionych nauczycieli",
-         'route' => "app_list_teacher",
+         'links' => [
+            [
+               'name' => "Dodaj",
+               'route' => "app_register",
+               'params' => ["UserType" => UserType::TEACHER],
+            ],
+            [
+               'name' => "Lista",
+               'route' => "app_list_teacher",
+            ]
+         ],
          'image' => "teacher.png"
       ]);
    }
 
-   private function listStudent()
+   private function students()
    {
-      return $this->create([
+      return $this->createComplexBox([
          'title' => "Uczniowie",
          'description' => "Tutaj zobaczysz listę uczniów",
-         'route' => "app_list_student",
+         'links' => [
+            [
+               'name' => "Dodaj",
+               'route' => "app_register",
+               'params' => ["UserType" => UserType::STUDENT],
+            ],
+            [
+               'name' => "Lista",
+               'route' => "app_list_student",
+            ]
+         ],
          'image' => "student.png"
-      ]);
-   }
-
-   private function addAdmin()
-   {
-      return $this->create([
-         'title' => "Dodaj administratowa systemu",
-         'description' => "Tutaj dodasz nowego admiinstratora systemu",
-         'route' => "app_register",
-         'params' => ["UserType" => UserType::ADMIN],
-         'image' => "plus.png"
-      ]);
-   }
-
-   private function addTeacher()
-   {
-      return $this->create([
-         'title' => "Dodaj nauczyciela",
-         'description' => "Tutaj dodasz nowego nauczyciel",
-         'route' => "app_register",
-         'params' => ["UserType" => UserType::TEACHER],
-         'image' => "plus.png"
-      ]);
-   }
-
-   private function addStudent()
-   {
-      return $this->create([
-         'title' => "Dodaj ucznia",
-         'description' => "Tutaj dodasz nowego ucznia",
-         'route' => "app_register",
-         'params' => ["UserType" => UserType::STUDENT],
-         'image' => "plus.png"
       ]);
    }
 
@@ -150,7 +171,7 @@ class DashboardController extends AbstractController
 
    private function listClasses()
    {
-      return $this->create([
+      return $this->createSimpleBox([
          'title' => "Lista klas",
          'description' => "Tutaj wyświetlisz wszystkie klasy w szkole",
          'route' => "app_class_list",
@@ -160,7 +181,7 @@ class DashboardController extends AbstractController
 
    private function addClass()
    {
-      return $this->create([
+      return $this->createSimpleBox([
          'title' => "Dodaj nową klasę",
          'description' => "Tutaj dodasz nową klasę",
          'route' => "app_class_create",
@@ -170,11 +191,12 @@ class DashboardController extends AbstractController
 
    private function myClass()
    {
-      $user = $this->getUser(); // Student or Teacher has method getClass()
+      $user = $this->userManager->getUser(); // Student or Teacher has method getClass()
+
       if ($user->getClass() == null)
          return $this;
       else {
-         return $this->create([
+         return $this->createSimpleBox([
             'title' => "Moja klasa",
             'description' => "Tutaj zobaczysz swoją klasę",
             'route' => "app_my_class_show",
@@ -185,11 +207,11 @@ class DashboardController extends AbstractController
 
    private function listSubjects()
    {
-      return $this->create([
+      return $this->createSimpleBox([
          'title' => "Lista przedmiotów",
          'description' => "Tutaj zobaczysz listę przedmiotów",
          'route' => "app_subject_list",
-         'image' => "plus.png"
+         'image' => "books.png"
       ]);
    }
 }

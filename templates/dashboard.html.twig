@@ -1,23 +1,43 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Dashboard
+   Dashboard
 {% endblock %}
 
 {% block body %}
-	<div id="dashboard" class="center">
-		{% for box in boxes %}
-			<div class="col-12 col-lg-6 col-xl-4">
-				<a href="{{ box.url }}">
-					<div class="item">
-						<div class="title">{{ box.title }}</div>
-						<div class="content">
-							<img src="{{ asset('images/dashboard/' ~ box.image ) }}">
-							<small class="description">{{ box.description }}</small>
-						</div>
-					</div>
-				</a>
-			</div>
-		{% endfor %}
-	</div>
+   <div id="dashboard" class="center">
+
+      {% for box in complexBoxes ?? [] %}
+         <div class="col-12 col-lg-6 col-xl-4">
+            <div class="item item-complex">
+               <div class="title">{{ box.title }}</div>
+               <div class="content position-relative">
+                  <img src="{{ asset('images/dashboard/' ~ box.image ) }}"/>
+                  <div class="d-flex flex-wrap">
+                     <small class="description">{{ box.description }}</small>
+                     <div class="buttons d-flex position-absolute end-0 bottom-0">
+                        {% for link in box.links ?? [] %}
+                           <a href="{{ link.url }}" class="ms-1">{{ link.name }}</a>
+                        {% endfor %}
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      {% endfor %}
+
+      {% for box in simpleBoxes ?? [] %}
+         <div class="col-12 col-lg-6 col-xl-4">
+            <div class="item item-simple">
+               <a href="{{ box.url }}">
+                  <div class="title">{{ box.title }}</div>
+                  <div class="content">
+                     <img src="{{ asset('images/dashboard/' ~ box.image ) }}"/>
+                     <small class="description">{{ box.description }}</small>
+                  </div>
+               </div>
+            </div>
+         </a>
+      {% endfor %}
+   </div>
 {% endblock %}
