@@ -1,0 +1,13 @@
+<div id="list">
+   {% for item in subjects %}
+      <div class="subject">
+         <div class="d-flex px-3 py-1">
+            <div class="col">{{ item.name }}</div>
+            <a href="{{ path('app_subject_edit', {id: item.id, flow}) }}" class="btn btn-primary me-2">Edytuj</a>
+            <form action="{{ path('app_subject_delete', {id: item.id, flow}) }}" method="POST">
+               <button class="btn btn-danger" type="submit">Usuń</button>
+            </form>
+         </div>
+      </div>
+   {% endfor %}
+</div>

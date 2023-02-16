@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Lista przedmiotów
+{% endblock %}
+
+{% block body %}
+   <div class="col-11 col-xl-6 mx-auto border p-4 mt-5 bg-light">
+      <div>
+         <h1 class="base-title">{{ form_label(form) }}</h1>
+
+         {{ form_start(form) }}
+         <div class="w-100 mb-2">
+            <label class="fw-bold w-100">{{ form_label(form.name) }}</label>
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+         </div>
+
+         <div class="w-100">{{ form_widget(form.submit) }}</div>
+
+         {{ form_end(form) }}
+      </div>
+   </div>
+
+   <div class="col-11 mx-auto border px-4 pb-4  mt-5 bg-light">
+      <div class="position-relative">
+         <h1 class="base-title my-3">Lista Przedmiotów</h1>
+         <div class="position-absolute end-0 top-0 d-flex">
+
+            <a href="{{ path('app_subject_list', {flow: 0}) }}" class="me-2">
+               <img class="icon-flow" src="{{ asset('images/list.png' ) }}"/>
+            </a>
+
+            <a href="{{ path('app_subject_list', {flow: 1}) }}">
+               <img class="icon-flow" src="{{ asset('images/grid.png' ) }}"/>
+            </a>
+         </div>
+      </div>
+
+      {% if flow == 0 %}
+         {% include 'schoolSubject/flow/list.html.twig' %}
+      {% else %}
+         {% include 'schoolSubject/flow/grid.html.twig' %}
+      {% endif %}
+   </div>
+{% endblock %}
+
+{% block stylesheets %}
+   <style>
+      .icon-flow {
+         width: 33.5px;
+         height: 33.5px;
+         padding: 2px;
+         border: 1px solid black;
+      }
+
+      #list .subject {
+         background-color: #F0F0F0;
+      }
+
+      #list .subject:nth-of-type(2n) {
+         background-color: white;
+      }
+   </style>
+{% endblock %}

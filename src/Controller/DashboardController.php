@@ -47,6 +47,7 @@ class DashboardController extends AbstractController
       $this->listAdmins()->listTeacher()->listStudent();
       $this->addAdmin()->addTeacher()->addStudent();
       $this->listClasses()->addClass();
+      $this->listSubjects();
    }
 
    private function admin()
@@ -54,6 +55,7 @@ class DashboardController extends AbstractController
       $this->listTeacher()->listStudent();
       $this->addTeacher()->addStudent();
       $this->listClasses()->addClass();
+      $this->listSubjects();
    }
 
    private function teacher()
@@ -179,5 +181,15 @@ class DashboardController extends AbstractController
             'image' => "class.png"
          ]);
       }
+   }
+
+   private function listSubjects()
+   {
+      return $this->create([
+         'title' => "Lista przedmiotów",
+         'description' => "Tutaj zobaczysz listę przedmiotów",
+         'route' => "app_subject_list",
+         'image' => "plus.png"
+      ]);
    }
 }
