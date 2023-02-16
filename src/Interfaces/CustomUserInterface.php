@@ -2,6 +2,7 @@
 
 namespace App\Interfaces;
 
+use App\Entity\SchoolClass\SchoolClass;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 interface CustomUserInterface extends UserInterface
@@ -21,4 +22,5 @@ interface CustomUserInterface extends UserInterface
    public function setPassword(?string $password);
 
    public static function getRole();
+   public function getClass(): ?SchoolClass;
 }
