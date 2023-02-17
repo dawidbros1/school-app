@@ -190,6 +190,11 @@ abstract class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function name()
     {
+        return $this->firstName . " " . $this->lastName;
+    }
+
+    public function rname()
+    {
         return $this->lastName . " " . $this->firstName;
     }
 
