@@ -2,11 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\SchoolClass\SchoolClass;
-use App\Entity\SchoolClass\SchoolClassStatus;
 use App\Entity\SchoolSubject;
 use App\Enum\SchoolSubjectStatus;
-use App\Form\SchoolClassFormType;
 use App\Form\SchoolSubjectFormType;
 use App\Service\FormBuilder;
 use App\Service\FormErrors;
@@ -47,8 +44,7 @@ class SchoolSubjectController extends AbstractController
 
       return $this->render('schoolSubject/list.html.twig', [
          'subjects' => $this->em->getRepository(SchoolSubject::class)->findAll(),
-         'form' => $form->createView(),
-         'flow' => $request->get('flow', 0) == 0 ? 0 : 1
+         'form' => $form->createView()
       ]);
    }
 
@@ -100,7 +96,6 @@ class SchoolSubjectController extends AbstractController
       return $this->render('schoolSubject/list.html.twig', [
          'subjects' => $this->em->getRepository(SchoolSubject::class)->findAll(),
          'form' => $form->createView(),
-         'flow' => $request->get('flow', 0) == 0 ? 0 : 1
       ]);
    }
 
@@ -108,11 +103,11 @@ class SchoolSubjectController extends AbstractController
     * @Route("/delete/{id}", name="app_subject_delete")
     * @Method("POST")
     */
-   public function delete(Request $request, SchoolSubject $subject)
+   public function delete(SchoolSubject $subject)
    {
       $this->em->remove($subject);
       $this->em->flush();
       $this->addFlash('success', "Przedmiot [ " . $subject->getName() . " ] zostały usunięty");
-      return $this->redirectToRoute('app_subject_list', ['flow' => $request->get('flow')]);
+      return $this->redirectToRoute('app_subject_list');
    }
 }
