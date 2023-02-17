@@ -1,0 +1,16 @@
+#left{
+   min-height: 400px;
+}
+
+#left img{
+   width: 100%;
+   height: 100%;
+
+   cursor: default !important;   
+}
+
+@media (min-width: 768px) { 
+   #right{
+      min-height: 80vh;
+   }
+ }

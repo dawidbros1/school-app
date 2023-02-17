@@ -7,39 +7,41 @@
 {% form_theme form _self %}
 
 {% block form %}
-   <h1 class="fw-bold text-center fs-3 w-100">Tworzenie konta</h1>
+   {% block form_content %}
+      <h1 id="form-title">Tworzenie konta</h1>
 
-   {{ form_start(form) }}
-   <div class="w-100 mb-2 d-flex">
-      <div class="w-50 me-2">
-         <label class="fw-bold w-100">{{ form_label(form.firstName) }}</label>
-         {{ form_widget(form.firstName) }}
-         {{ form_errors(form.firstName) }}
+      {{ form_start(form) }}
+      <div class="w-100 mb-2 d-flex">
+         <div class="w-50 me-2">
+            <label class="fw-bold w-100">{{ form_label(form.firstName) }}</label>
+            {{ form_widget(form.firstName) }}
+            {{ form_errors(form.firstName) }}
+         </div>
+
+         <div class="w-50 ms-2">
+            <label class="fw-bold w-100">{{ form_label(form.lastName) }}</label>
+            {{ form_widget(form.lastName) }}
+            {{ form_errors(form.lastName) }}
+         </div>
       </div>
 
-      <div class="w-50 ms-2">
-         <label class="fw-bold w-100">{{ form_label(form.lastName) }}</label>
-         {{ form_widget(form.lastName) }}
-         {{ form_errors(form.lastName) }}
+      <div class="w-100 mb-2">
+         <label class="fw-bold w-100">Rola</label>
+         <input class="form-control" type="text" value="{{ role }}" disabled/>
       </div>
-   </div>
 
-   <div class="w-100 mb-2">
-      <label class="fw-bold w-100">Rola</label>
-      <input class="form-control" type="text" value="{{ role }}" disabled/>
-   </div>
+      {% block classes %}{% endblock %}
 
-   {% block classes %}{% endblock %}
+      <div class="w-100 mb-2">
+         <label class="fw-bold w-100">{{ form_label(form.pesel) }}</label>
+         {{ form_widget(form.pesel) }}
+         {{ form_errors(form.pesel) }}
+      </div>
 
-   <div class="w-100 mb-2">
-      <label class="fw-bold w-100">{{ form_label(form.pesel) }}</label>
-      {{ form_widget(form.pesel) }}
-      {{ form_errors(form.pesel) }}
-   </div>
+      <div class="w-100">
+         {{ form_widget(form.submit) }}
+      </div>
 
-   <div class="w-100">
-      {{ form_widget(form.submit) }}
-   </div>
-
-   {{ form_end(form) }}
+      {{ form_end(form) }}
+   {% endblock %}
 {% endblock %}

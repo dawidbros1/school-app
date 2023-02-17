@@ -7,52 +7,54 @@
 {% form_theme form _self %}
 
 {% block form %}
-   <h1 class="fw-bold text-center fs-3 w-100">Rejestracja</h1>
+   {% block form_content %}
+      <h1 id="form-title">Rejestracja</h1>
 
-   {{ form_start(form) }}
-   <div class="w-100 mb-2 d-flex">
-      <div class="w-50 me-2">
-         <label class="fw-bold w-100">Imię</label>
-         <input class="form-control" type="text" disabled value="{{ user.firstName }}"/>
+      {{ form_start(form) }}
+      <div class="w-100 mb-2 d-flex">
+         <div class="w-50 me-2">
+            <label class="fw-bold w-100">Imię</label>
+            <input class="form-control" type="text" disabled value="{{ user.firstName }}"/>
+         </div>
+
+         <div class="w-50 ms-2">
+            <label class="fw-bold w-100">Nazwisko</label>
+            <input class="form-control" type="text" disabled value="{{ user.lastName }}"/>
+         </div>
       </div>
 
-      <div class="w-50 ms-2">
-         <label class="fw-bold w-100">Nazwisko</label>
-         <input class="form-control" type="text" disabled value="{{ user.lastName }}"/>
+      <div class="w-100 mb-2">
+         <label class="fw-bold w-100">Adres email</label>
+         <input class="form-control" type="text" disabled value="{{ user.email }}"/>
       </div>
-   </div>
 
-   <div class="w-100 mb-2">
-      <label class="fw-bold w-100">Adres email</label>
-      <input class="form-control" type="text" disabled value="{{ user.email }}"/>
-   </div>
+      <div class="w-100 mb-2">
+         <label class="fw-bold w-100">Rola</label>
+         <input class="form-control" type="text" disabled value="{{ user.role.description }}"/>
+      </div>
 
-   <div class="w-100 mb-2">
-      <label class="fw-bold w-100">Rola</label>
-      <input class="form-control" type="text" disabled value="{{ user.role.description }}"/>
-   </div>
+      <div class="w-100 mb-2">
+         <label class="fw-bold w-100">{{ form_label(form.plainPassword) }}</label>
+         {{ form_widget(form.plainPassword) }}
+         {{ form_errors(form.plainPassword) }}
+      </div>
 
-   <div class="w-100 mb-2">
-      <label class="fw-bold w-100">{{ form_label(form.plainPassword) }}</label>
-      {{ form_widget(form.plainPassword) }}
-      {{ form_errors(form.plainPassword) }}
-   </div>
+      <div class="w-100 mb-2">
+         <label class="fw-bold w-100">{{ form_label(form.passwordRepeat) }}</label>
+         {{ form_widget(form.passwordRepeat) }}
+         {{ form_errors(form.passwordRepeat) }}
+      </div>
 
-   <div class="w-100 mb-2">
-      <label class="fw-bold w-100">{{ form_label(form.passwordRepeat) }}</label>
-      {{ form_widget(form.passwordRepeat) }}
-      {{ form_errors(form.passwordRepeat) }}
-   </div>
+      <div class="w-100 mb-2">
+         {{ form_widget(form.agreeTerms) }}
+         <label class="fw-bold me-1">{{ form_label(form.agreeTerms) }}</label>
+         {{ form_errors(form.agreeTerms) }}
+      </div>
 
-   <div class="w-100 mb-2">
-      {{ form_widget(form.agreeTerms) }}
-      <label class="fw-bold me-1">{{ form_label(form.agreeTerms) }}</label>
-      {{ form_errors(form.agreeTerms) }}
-   </div>
+      <div class="w-100">
+         {{ form_widget(form.submit) }}
+      </div>
 
-   <div class="w-100">
-      {{ form_widget(form.submit) }}
-   </div>
-
-   {{ form_end(form) }}
+      {{ form_end(form) }}
+   {% endblock %}
 {% endblock %}

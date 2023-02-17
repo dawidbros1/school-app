@@ -4,9 +4,11 @@
    Lista przedmiotów
 {% endblock %}
 
+{% form_theme form _self %}
+
 {% block form %}
-   <div class="form">
-      <h1 class="base-title">{{ form_label(form) }}</h1>
+   {% block form_content %}
+      <h1 id="form-title">{{ form_label(form) }}</h1>
 
       {{ form_start(form) }}
       <div class="w-100 mb-2">
@@ -17,49 +19,32 @@
 
       <div class="w-100">{{ form_widget(form.submit) }}</div>
 
-      {{ form_end(form) }}
-   </div>
+   {% endblock %}
 {% endblock %}
 
 {% block body %}
-   <div class="col-11 mx-auto border px-4 pb-4  mt-5 bg-light">
-      <div class="position-relative">
-         <h1 class="base-title my-3">Lista Przedmiotów</h1>
-         <div class="position-absolute end-0 top-0 d-flex">
+   <div id="block" class="bg-light">
+      <h1 id="main-title" class="fs-5">Lista Przedmiotów</h1>
 
-            <a href="{{ path('app_subject_list', {flow: 0}) }}" class="me-2">
-               <img class="icon-flow" src="{{ asset('images/list.png' ) }}"/>
-            </a>
+      <div id="grid" class="row g-4">
+         {% for item in subjects %}
+            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+               <div class="card">
+                  <div class="card-body">
+                     <h5 class="card-title">{{ item.name }}</h5>
 
-            <a href="{{ path('app_subject_list', {flow: 1}) }}">
-               <img class="icon-flow" src="{{ asset('images/grid.png' ) }}"/>
-            </a>
-         </div>
+                     <div class="d-flex">
+                        <a href="{{ path('app_subject_edit', {id: item.id}) }}" class="btn btn-primary me-2">Edytuj</a>
+                        <form action="{{ path('app_subject_delete', {id: item.id}) }}" method="POST">
+                           <button class="btn btn-danger" type="submit">Usuń</button>
+                        </form>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         {% endfor %}
       </div>
-
-      {% if flow == 0 %}
-         {% include 'schoolSubject/flow/list.html.twig' %}
-      {% else %}
-         {% include 'schoolSubject/flow/grid.html.twig' %}
-      {% endif %}
    </div>
 {% endblock %}
 
-{% block stylesheets %}
-   <style>
-      .icon-flow {
-         width: 33.5px;
-         height: 33.5px;
-         padding: 2px;
-         border: 1px solid black;
-      }
-
-      #list .subject {
-         background-color: #F0F0F0;
-      }
-
-      #list .subject:nth-of-type(2n) {
-         background-color: white;
-      }
-   </style>
-{% endblock %}
+{% block stylesheets %}{% endblock %}

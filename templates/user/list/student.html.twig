@@ -1,68 +1,61 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	Lista uczniów
-{% endblock %}
-
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/list/main.css') }}"/>
+   Lista uczniów
 {% endblock %}
 
 {% block javascripts %}
-	<script src="{{ asset("js/userList.js") }}"></script>
+   <script src="{{ asset("js/userList.js") }}"></script>
 {% endblock %}
 
 {% block body %}
-	<div id="list">
-		<h1 id="title">Lista uczniów</h1>
+   <h1 id="main-title">Lista uczniów</h1>
 
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Nr.</th>
-					<th>Imię</th>
-					<th>Nazwisko</th>
-					<th>Adres email</th>
-					<th>PESEL</th>
-					<th>Klasa</th>
-					<th>Status konta</th>
-					<th>AKTYWACJA</th>
-					<th>EDYCJA</th>
-				</tr>
-			</thead>
+   <table class="table table-striped table-sm">
+      <thead>
+         <tr>
+            <th>Nr.</th>
+            <th>Imię</th>
+            <th>Nazwisko</th>
+            <th>Adres email</th>
+            <th>PESEL</th>
+            <th>Klasa</th>
+            <th class="text-center">Status konta</th>
+            <th class="text-center">Aktywacja</th>
+            <th class="text-center">Edycja</th>
+         </tr>
+      </thead>
 
-			<tbody>
-				{% for user in users %}
-					<tr>
-						<td>{{ loop.index }}</td>
-						<td>{{ user.firstName }}</td>
-						<td>{{ user.lastName }}</td>
-						<td>{{ user.email }}</td>
-						<td>{{ user.pesel }}</td>
-						<td>{{ user.class ? user.class.name : null }}</td>
-						<td>
-							{% if user.isActive %}
-								<span class='text-success'>Konto aktywne</span>
-							{% else %}
-								<span class='text-danger'>Konto nie aktywne</span>
-							{% endif %}
-						</td>
+      <tbody>
+         {% for user in users %}
+            <tr>
+               <td>{{ loop.index }}</td>
+               <td>{{ user.firstName }}</td>
+               <td>{{ user.lastName }}</td>
+               <td>{{ user.email }}</td>
+               <td>{{ user.pesel }}</td>
+               <td>{{ user.class ? user.class.name : null }}</td>
+               <td class="text-center">
+                  {% if user.isActive %}
+                     <span class='text-success'>Konto aktywne</span>
+                  {% else %}
+                     <span class='text-danger'>Konto nie aktywne</span>
+                  {% endif %}
+               </td>
 
-						<td>
-							{% if user.isActive == false %}
-								<img class="copy-wrapper" src="{{ asset("images/copy.png") }}" data-link="{{ url('app_complete_register', { pesel: user.pesel, code: user.code, UserType: user.role.name }) }}">
-							{% endif %}
-						</td>
+               <td class="text-center">
+                  {% if user.isActive == false %}
+                     <img class="copy-wrapper img-medium" src="{{ asset("images/copy.png") }}" data-link="{{ url('app_complete_register', { pesel: user.pesel, code: user.code, UserType: user.role.name }) }}"/>
+                  {% endif %}
+               </td>
 
-						<td>
-							<a href="{{ path('app_user_edit', { id: user.id, UserType: user.role.name }) }}">
-								<img src="{{ asset("images/edit.png") }}">
-							</a>
-						</td>
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
-
+               <td class="text-center">
+                  <a href="{{ path('app_user_edit', { id: user.id, UserType: user.role.name }) }}">
+                     <img class="img-medium" src="{{ asset("images/edit.png") }}"/>
+                  </a>
+               </td>
+            </tr>
+         {% endfor %}
+      </tbody>
+   </table>
 {% endblock %}

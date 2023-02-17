@@ -5,13 +5,61 @@
    transform: translate(-50%, -50%);
 }
 
-.base-title{
-   width: 100%;
-   
+#main-title{
    font-weight: bold;
    text-align: center;
- 
-   font-size: 1.75rem;
-
+   width: 100%;
    text-transform: uppercase;
+   font-size: 2rem;
+   padding-bottom: 10px;
+}
+
+#form-title {
+   width: 100%;
+   font-size: 1.5rem;
+
+   font-weight: bold;
+   text-align: center;
+   text-transform: uppercase;
+}
+
+a {
+   text-decoration: none
+}
+
+/* content */
+
+#block{
+   padding: 1rem;
+}
+
+/* Table */
+
+table thead th {
+   text-transform: uppercase
+}
+
+table tr td{
+   border-color: black;
+} 
+
+/* IMG */
+
+img {
+   cursor: pointer
+}
+
+.img-very-small {
+   width: 15px;
+   height: 15px;
+}
+
+.img-small {
+   width: 20px;
+   height: 20px;
+}
+
+.img-medium {
+   width: 25px;
+   height: 25px;
 }

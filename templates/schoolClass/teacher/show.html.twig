@@ -1,61 +1,40 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ class.name }}
-{% endblock %}
-
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('css/list/main.css') }}"/>
+   {{ class.name }}
 {% endblock %}
 
 {% block javascripts %}
-	<script src="{{ asset("js/userList.js") }}"></script>
+   <script src="{{ asset("js/userList.js") }}"></script>
 {% endblock %}
 
+{% block stylesheets %}
+   <link rel="stylesheet" href="{{ asset('css/class.css') }}"/>
+{% endblock %}
+
+
 {% block body %}
-	<div id="list">
-		<h1 id="title">{{ class.name }}</h1>
+   <div id="content">
+      <h1 id="main-title" class="w-100 fs-5">{{ class.name }}</h1>
 
-		<table class="table table-striped">
-			<thead>
-				<tr>
-					<th>Nr.</th>
-					<th>Imię</th>
-					<th>Nazwisko</th>
-					<th>Adres email</th>
-					<th>PESEL</th>
-					<th>Status konta</th>
-					<th>AKTYWACJA</th>
-				</tr>
-			</thead>
+      <div class="row w-100 mx-auto">
+         <div id="left" class="col-12 col-md-8 col-lg-9 col-xxl-10 position-relative">
+            <img class="center" src="{{ asset('images/background.jpg' ) }}"/>
+         </div>
 
-			<tbody>
-				{% for user in class.students %}
-					<tr>
-						<td>{{ loop.index }}</td>
-						<td>{{ user.firstName }}</td>
-						<td>{{ user.lastName }}</td>
-						<td>{{ user.email }}</td>
-						<td>{{ user.pesel }}</td>
-
-						<td>
-							{% if user.isActive %}
-								<span class='text-success'>Konto aktywne</span>
-							{% else %}
-								<span class='text-danger'>Konto nie aktywne</span>
-							{% endif %}
-						</td>
-
-						<td>
-							{% if user.isActive == false %}
-								<img class="copy-wrapper" src="{{ asset("images/copy.png") }}" data-link="{{ url('app_complete_register', { pesel: user.pesel, code: user.code, UserType: user.role.name }) }}">
-							{% endif %}
-						</td>
-
-					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	</div>
-
+         <div id="right" class="col-12 col-md-4 col-lg-3 col-xxl-2 border p-2 bg-light">
+            <div class="fw-bold fs-5 border-bottom border-1 border-dark">Lista uczniów</div>
+            {% for student in class.students %}
+               <div class="border-bottom d-flex">
+                  <div class="me-auto">{{ student.name }}</div>
+                  <div>
+                     {% if student.isActive == true %}
+                        <img title="Skopiuj link do aktywacji konta" class="copy-wrapper img-very-small" src="{{ asset("images/copy.png") }}" data-link="{{ url('app_complete_register', { pesel: student.pesel, code: student.code, UserType: student.role.name }) }}"/>
+                     {% endif %}
+                  </div>
+               </div>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
 {% endblock %}
