@@ -161,25 +161,13 @@ class DashboardController extends AbstractController
       ]);
    }
 
-   # CLASS
-
-   private function listClasses()
+   private function classes()
    {
       return $this->createSimpleBox([
          'title' => "Lista klas",
          'description' => "Tutaj wyświetlisz wszystkie klasy w szkole",
          'route' => "app_class_list",
          'image' => "class.png"
-      ]);
-   }
-
-   private function addClass()
-   {
-      return $this->createSimpleBox([
-         'title' => "Dodaj nową klasę",
-         'description' => "Tutaj dodasz nową klasę",
-         'route' => "app_class_create",
-         'image' => "plus.png"
       ]);
    }
 
