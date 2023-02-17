@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Enum\UserType;
-use App\Interfaces\CustomUserInterface;
 use App\Service\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,17 +31,15 @@ class DashboardController extends AbstractController
       // ONLY FOR LOGGED IN
 
       if ($this->isGranted('ROLE_OWNER')) {
-         $this->owner();
+         $this->ownerDashboard();
       } else if ($this->isGranted('ROLE_ADMIN')) {
-         $this->admin();
+         $this->adminDashboard();
       } else if ($this->isGranted('ROLE_TEACHER')) {
-         $this->teacher();
+         $this->teacherDashboard();
       } else if ($this->isGranted('ROLE_STUDENT')) {
-         $this->student();
+         $this->studentDashboard();
       }
 
-      // dump($this->complexBoxes);
-      // die();
 
       return $this->render('dashboard.html.twig', [
          'simpleBoxes' => $this->simpleBoxes,
@@ -50,27 +47,24 @@ class DashboardController extends AbstractController
       ]);
    }
 
-   private function owner()
+   private function ownerDashboard()
    {
-      $this->admins()->teachers()->students();
-      $this->addClass()->listClasses();
-
-
-      $this->listSubjects();
+      $this->admins();
+      $this->adminDashboard();
    }
 
-   private function admin()
+   private function adminDashboard()
    {
       $this->teachers()->students();
-      $this->listSubjects();
+      $this->classes()->listSubjects();
    }
 
-   private function teacher()
+   private function teacherDashboard()
    {
       $this->myClass();
    }
 
-   private function student()
+   private function studentDashboard()
    {
       $this->myClass();
    }
