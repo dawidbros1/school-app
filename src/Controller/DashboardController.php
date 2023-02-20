@@ -57,6 +57,7 @@ class DashboardController extends AbstractController
    {
       $this->teachers()->students();
       $this->classes()->listSubjects();
+      $this->listClassHours();
    }
 
    private function teacherDashboard()
@@ -194,6 +195,16 @@ class DashboardController extends AbstractController
          'description' => "Tutaj zobaczysz listę przedmiotów",
          'route' => "app_subject_list",
          'image' => "books.png"
+      ]);
+   }
+
+   private function listClassHours()
+   {
+      return $this->createSimpleBox([
+         'title' => "Rozkład zajęć",
+         'description' => "Tutaj ustalisz godziny zajęć",
+         'route' => "app_classTime_list",
+         'image' => "clock.png"
       ]);
    }
 }

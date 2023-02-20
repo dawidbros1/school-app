@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Rozkład zajęć szkolnych
+{% endblock %}
+
+{% form_theme form _self %}
+
+{% block form %}
+   {% block form_content %}
+      <h2 id="form-title">{{ form_label(form) }}</h2>
+
+      {{ form_start(form) }}
+
+      <div class="row mb-2">
+         <div class="col-6">
+            {{ form_widget(form.fromTime) }}
+            {{ form_errors(form.fromTime) }}
+         </div>
+
+         <div class="col-6">
+            {{ form_widget(form.toTime) }}
+            {{ form_errors(form.toTime) }}
+         </div>
+      </div>
+
+      <div class="col-12">
+         {{ form_widget(form.submit) }}
+      </div>
+      {{ form_end(form) }}
+   {% endblock %}
+{% endblock %}
+
+{% block body %}
+   <div id="block" class="bg-light col-12 col-lg-8 col-xxl-6 mx-auto">
+      <h1 id="main-title" class="fs-5">Rozkład zajęć</h1>
+
+      {% for classTime in classTimes %}
+         <div class="row mx-auto gx-2 mb-1">
+            <div class="text-center py-2 border col-1">{{ loop.index }}</div>
+            <div class="col-10 d-flex">
+               <input class="text-center p-2 col-5" type="text" value="{{ classTime.fromTime|date("g:i") }}" disabled/>
+               <div class="text-center col-2 p-2 d-none d-sm-block">- - -</div>
+               <input class="text-center p-2 col-5 offset-2 offset-sm-0" type="text" value="{{ classTime.toTime|date("g:i") }}" disabled/>
+            </div>
+            <div class="text-center border py-2 col-1 d-flex flex-wrap">
+               <div class="col-12 col-sm-6">
+                  <a href="{{ path('app_classTime_edit', {id: classTime.id}) }}">
+                     <img class="img-very-small" src="{{ asset('images/settings.png') }}"/>
+                  </a>
+               </div>
+               <div class="col-12 col-sm-6">
+                  <form action="{{ path('app_classTime_delete', {id: classTime.id}) }}" method="post">
+                     <button class="clear" type="submit"><img class="img-very-small" src="{{ asset('images/trash.png') }}"/></button>
+                  </form>
+               </div>
+            </div>
+         </div>
+      {% endfor %}
+   </div>
+{% endblock %}
+
+{% block stylesheets %}
+   <style>
+      select {
+         width: calc(50% - 2px);
+         padding: 4px;
+         height: 100%;
+      }
+   </style>
+{% endblock %}
