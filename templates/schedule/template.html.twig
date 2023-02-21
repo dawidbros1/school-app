@@ -4,9 +4,18 @@
    Szablon harmonogramu
 {% endblock %}
 
+{% block stylesheets %}
+   <style>
+      input[type="date"] {
+         padding: 5px 10px;
+         width: 100%;
+      }
+   </style>
+{% endblock %}
+
 {% block form %}
    {% block form_content %}
-      <h1 id="form-title">{{ form_label(form) }}</h1>
+      <h2 class="form-title">{{ form_label(form) }}</h2>
       {{ form_start(form) }}
 
       <div class="mb-2">
@@ -45,7 +54,7 @@
 
 {% block body %}
    <div id="block" class="bg-light">
-      <h1 id="main-title">Harmonogram zajęć</h1>
+      <h1 id="main-title">Harmonogram zajęć - szablon</h1>
 
       <div class="row text-center mt-3 mb-5">
          <a class="col-5 col-md-2 my-1 mx-auto btn {{ day == 'monday' ? " btn-success" : " btn-primary" }}" href="{{ path('app_scheduleTemplate_show', {day: "monday", class_id}) }}">Poniedziałek</a>
@@ -56,39 +65,65 @@
       </div>
 
       {% if schedule|length > 0 %}
-         <table id="schedule" class="table table-striped table-sm">
-            <thead>
-               <tr>
-                  <th>Nr.</th>
-                  <th>Godzina</th>
-                  <th>Przedmiot</th>
-                  <th>Nauczyciel</th>
-                  <th>Miejsce</th>
-                  <th></th>
-               </tr>
-            </thead>
-            <tbody>
-               {% for item in schedule %}
+         <div>
+            <table id="schedule" class="table table-striped table-sm">
+               <thead>
                   <tr>
-                     <td>{{ loop.index }}</td>
-                     <td>{{ item.classTime.time }}</td>
-                     <td>{{ item.subject.name }}</td>
-                     <td>{{ item.teacher.name }}</td>
-                     <td>{{ item.place }}</td>
-                     <td>
-                        <div class="d-flex">
-                           <a href="{{ path('app_scheduleTemplate_edit', {id: item.id}) }}" class="me-3">
-                              <img class="img-small" src="{{ asset('images/settings.png/') }}"/>
-                           </a>
-                           <form action="{{ path('app_scheduleTemplate_delete', {id: item.id}) }}" method="post">
-                              <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>
-                           </form>
-                        </div>
-                     </td>
+                     <th>Nr.</th>
+                     <th>Godzina</th>
+                     <th>Przedmiot</th>
+                     <th>Nauczyciel</th>
+                     <th>Miejsce</th>
+                     <th></th>
                   </tr>
-               {% endfor %}
-            </tbody>
-         </table>
+               </thead>
+               <tbody>
+                  {% for item in schedule %}
+                     <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.classTime.time }}</td>
+                        <td>{{ item.subject.name }}</td>
+                        <td>{{ item.teacher.name }}</td>
+                        <td>{{ item.place }}</td>
+                        <td>
+                           <div class="d-flex">
+                              <a href="{{ path('app_scheduleTemplate_edit', {id: item.id}) }}" class="me-3">
+                                 <img class="img-small" src="{{ asset('images/settings.png/') }}"/>
+                              </a>
+                              <form action="{{ path('app_scheduleTemplate_delete', {id: item.id}) }}" method="post">
+                                 <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>
+                              </form>
+                           </div>
+                        </td>
+                     </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+
+            <div class="border bg-light p-3 mx-auto col-12 col-md-9 col-lg-7 col-xxl-5">
+               <h2 class="form-title">Generowanie harmonogramu</h2>
+
+               {{ form_start(initializerForm) }}
+
+               <div class="row">
+                  <div class="col-6">
+                     {{ form_widget(initializerForm.from) }}
+                     {{ form_errors(initializerForm.from) }}
+                  </div>
+
+                  <div class="col-6">
+                     {{ form_widget(initializerForm.to) }}
+                     {{ form_errors(initializerForm.to) }}
+                  </div>
+
+                  <div class="col-12 mt-2">
+                     {{ form_widget(initializerForm.submit) }}
+                  </div>
+               </div>
+
+               {{ form_end(initializerForm) }}
+            </div>
+         </div>
       {% else %}
          <p class="fs-1 text-center mt-5 fw-bold">
             BRAK ZAJĘĆ

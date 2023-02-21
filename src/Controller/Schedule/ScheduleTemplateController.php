@@ -4,6 +4,7 @@ namespace App\Controller\Schedule;
 
 use App\Entity\Schedule\ScheduleTemplate;
 use App\Entity\SchoolClass\SchoolClass;
+use App\Form\Schedule\InitializerFormType;
 use App\Form\Schedule\ScheduleTemplateFormType;
 use App\Service\FormBuilder;
 use App\Service\FormErrors;
@@ -53,6 +54,7 @@ class ScheduleTemplateController extends AbstractController
 
       return $this->render('schedule/template.html.twig', [
          'form' => $form->createView(),
+         'initializerForm' => $this->getInitializerFormType($day, $class),
          'schedule' => $schedule,
          'day' => $day,
          'class_id' => $class->getId()
@@ -124,6 +126,7 @@ class ScheduleTemplateController extends AbstractController
 
       return $this->render('schedule/template.html.twig', [
          'form' => $form->createView(),
+         'initializerForm' => $this->getInitializerFormType($scheduleTemplate->getDay(), $scheduleTemplate->getClass()),
          'schedule' => $schedule,
          'day' => $scheduleTemplate->getDay(),
          'class_id' => $scheduleTemplate->getClass()->getId()
@@ -142,6 +145,7 @@ class ScheduleTemplateController extends AbstractController
       return $this->redirectToRoute('app_scheduleTemplate_show', ['day' => $scheduleTemplate->getDay(), 'class_id' => $scheduleTemplate->getClass()->getId()]);
    }
 
+
    private function getClass($id)
    {
       $class = $this->em->getRepository(SchoolClass::class)->findOneBy(['id' => $id]);
@@ -152,5 +156,14 @@ class ScheduleTemplateController extends AbstractController
       }
 
       return $class;
+   }
+
+   private function getInitializerFormType($day, $class)
+   {
+      $form = $this->createForm(InitializerFormType::class, null, [
+         'action' => $this->generateUrl("app_schedule_fill", ['day' => $day, 'class_id' => $class->getId()])
+      ]);
+
+      return $form->createView();
    }
 }
