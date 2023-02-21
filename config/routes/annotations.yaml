@@ -3,6 +3,7 @@ controllers:
     type: annotation
     requirements:
         UserType: 'student|teacher|admin|owner'
+        day: "monday|tuesday|wednesday|thursday|friday"
 
 kernel:
     resource: ../../src/Kernel.php
