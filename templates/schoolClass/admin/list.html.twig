@@ -52,9 +52,16 @@
                         <div class="card-text">Liczba uczniów:
                            {{ class.students ? class.students|length : null }}
                         </div>
-                        <a class="position-absolute end-0 bottom-0 me-2 mb-2" href="{{ path('app_class_edit', { id: class.id }) }}">
-                           <img class="img-small" src="{{ asset('images/settings.png') }}"/>
-                        </a>
+
+                        <div class="position-absolute end-0 bottom-0 me-2 mb-2">
+                           <a href="{{ path('app_scheduleTemplate_show', { class_id: class.id, day: "monday" }) }}">
+                              <img class="img-small" src="{{ asset('images/schedule.png') }}"/>
+                           </a>
+
+                           <a href="{{ path('app_class_edit', { id: class.id }) }}">
+                              <img class="img-small" src="{{ asset('images/settings.png') }}"/>
+                           </a>
+                        </div>
                      </div>
                   </div>
                </div>
