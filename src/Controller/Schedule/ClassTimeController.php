@@ -3,6 +3,7 @@
 namespace App\Controller\Schedule;
 
 use App\Entity\Schedule\ClassTime;
+use App\Entity\Schedule\ScheduleTemplate;
 use App\Form\Schedule\ClassTimeFormType;
 use App\Service\FormBuilder;
 use App\Service\FormErrors;
@@ -106,9 +107,16 @@ class ClassTimeController extends AbstractController
     */
    public function delete(ClassTime $classTime)
    {
-      $this->em->remove($classTime);
-      $this->em->flush();
-      $this->addFlash('success', "Termin został usunięty");
+      $scheduleTemplate = $this->em->getRepository(ScheduleTemplate::class)->findBy(['classTime' => $classTime]);
+
+      if (empty($scheduleTemplate)) {
+         $this->em->remove($classTime);
+         $this->em->flush();
+         $this->addFlash('success', "Termin został usunięty");
+      } else {
+         $this->addFlash('error', "Nie mozna usunąć tego terminu zajęć, ponieważ jest on używany w harmonogramie");
+      }
+
       return $this->redirectToRoute('app_classTime_list');
    }
 }
