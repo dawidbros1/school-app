@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Schedule\ScheduleTemplate;
 use App\Entity\SchoolSubject;
 use App\Enum\SchoolSubjectStatus;
 use App\Form\SchoolSubjectFormType;
@@ -105,9 +106,16 @@ class SchoolSubjectController extends AbstractController
     */
    public function delete(SchoolSubject $subject)
    {
-      $this->em->remove($subject);
-      $this->em->flush();
-      $this->addFlash('success', "Przedmiot [ " . $subject->getName() . " ] zostały usunięty");
+      $scheduleTemplate = $this->em->getRepository(ScheduleTemplate::class)->findBy(['subject' => $subject]);
+
+      if (empty($scheduleTemplate)) {
+         $this->em->remove($subject);
+         $this->em->flush();
+         $this->addFlash('success', "Przedmiot [ " . $subject->getName() . " ] zostały usunięty");
+      } else {
+         $this->addFlash('error', "Nie mozna usunąć tego przedmiotu, ponieważ jest on używany w harmonogramie");
+      }
+
       return $this->redirectToRoute('app_subject_list');
    }
 }
