@@ -7,7 +7,6 @@ use App\Entity\UserType\Teacher;
 use App\Repository\SchoolClass\SchoolClassRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class FormBuilder
 {
@@ -18,6 +17,8 @@ class FormBuilder
       foreach ($this->methods as $method) {
          $method($form);
       }
+
+      $this->methods = [];
    }
 
    public function addButton(string $label)
