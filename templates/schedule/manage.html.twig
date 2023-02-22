@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Szablon harmonogramu
+{% endblock %}
+
+{% block stylesheets %}
+   <style>
+      input[type="date"] {
+         padding: 5px 10px;
+         width: 100%;
+      }
+   </style>
+{% endblock %}
+
+{% block form %}
+   {% block form_content %}
+      <h2 class="form-title">{{ form_label(form) }}</h2>
+      {{ form_start(form) }}
+
+      <div class="mb-2">
+         <div class="mb-2 row">
+            <div class="col-6">
+               {{ form_widget(form.classTime) }}
+               {{ form_errors(form.classTime) }}
+            </div>
+
+            <div class="col-6">
+               {{ form_widget(form.subject) }}
+               {{ form_errors(form.subject) }}
+            </div>
+         </div>
+
+         <div class="row">
+            <div class="col-6">
+               {{ form_widget(form.teacher) }}
+               {{ form_errors(form.teacher) }}
+            </div>
+
+            <div class="col-6 ">
+               {{ form_widget(form.place) }}
+               {{ form_errors(form.place) }}
+            </div>
+         </div>
+      </div>
+
+      <div class="col-12">
+         {{ form_widget(form.submit) }}
+      </div>
+      {{ form_end(form) }}
+
+   {% endblock %}
+{% endblock %}
+
+{% block body %}
+   <div id="block" class="bg-light">
+      <h1 id="main-title">Harmonogram zajęć</h1>
+
+      {% if schedule|length > 0 %}
+         <div>
+            <table id="schedule" class="table table-striped table-sm">
+               <thead>
+                  <tr>
+                     <th>Nr.</th>
+                     <th>Godzina</th>
+                     <th>Przedmiot</th>
+                     <th>Nauczyciel</th>
+                     <th>Miejsce</th>
+                     <th></th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for item in schedule %}
+                     <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.classTime.time }}</td>
+                        <td>{{ item.subject.name }}</td>
+                        <td>{{ item.teacher.name }}</td>
+                        <td>{{ item.place }}</td>
+                        <td>
+                           <div class="d-flex">
+                              <a href="{{ path('app_schedule_edit', {id: item.id}) }}" class="me-3">
+                                 <img class="img-small" src="{{ asset('images/settings.png/') }}"/>
+                              </a>
+                              <form action="{{ path('app_schedule_delete', {id: item.id}) }}" method="post">
+                                 <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>
+                              </form>
+                           </div>
+                        </td>
+                     </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      {% else %}
+         <p class="fs-1 text-center mt-5 fw-bold">
+            BRAK ZAJĘĆ
+         </p>
+      {% endif %}
+   </div>
+{% endblock %}
