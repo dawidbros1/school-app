@@ -37,7 +37,7 @@ class ScheduleTemplateController extends AbstractController
       $class = $this->getClass($request->get('class_id'));
       $scheduleTemplate = new ScheduleTemplate();
 
-      $schedule = $this->em->getRepository(ScheduleTemplate::class)->findBy(['day' => $day]);
+      $schedule = $this->em->getRepository(ScheduleTemplate::class)->findBy(['day' => $day, 'class' => $class]);
 
       $form = $this->createForm(ScheduleTemplateFormType::class, $scheduleTemplate, [
          'label' => "Dodaj lekcje",
@@ -107,7 +107,7 @@ class ScheduleTemplateController extends AbstractController
     */
    public function edit(Request $request, ScheduleTemplate $scheduleTemplate, FormBuilder $builder)
    {
-      $schedule = $this->em->getRepository(ScheduleTemplate::class)->findBy(['day' => $scheduleTemplate->getDay()]);
+      $schedule = $this->em->getRepository(ScheduleTemplate::class)->findBy(['day' => $scheduleTemplate->getDay(), 'class' => $scheduleTemplate->getClass()]);
 
       $form = $this->createForm(ScheduleTemplateFormType::class, $scheduleTemplate, [
          'label' => "Edycja lekcji"
