@@ -37,6 +37,22 @@ class ScheduleRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    public function getIn($class, $dates)
+    {
+        $dates = array_map(function ($date) {
+            return $date->format("Y-m-d");
+        }, $dates);
+
+        return $this->createQueryBuilder('s')
+            ->select()
+            ->where("s.date IN(:dates)")
+            ->andWhere('s.class = :class')
+            ->setParameter('class', $class)
+            ->setParameter('dates', $dates)
+            ->getQuery()
+            ->getResult();
+    }
+
     public function add(Schedule $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
