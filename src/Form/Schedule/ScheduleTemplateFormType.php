@@ -29,7 +29,7 @@ class ScheduleTemplateFormType extends AbstractType
          ->add('subject', EntityType::class, [
             'class' => SchoolSubject::class,
             'placeholder' => "Wybierz przedmiot",
-            'required' => false,
+            'required' => true,
             'attr' => [
                'class' => "form-control"
             ],
@@ -38,7 +38,7 @@ class ScheduleTemplateFormType extends AbstractType
          ->add('teacher', EntityType::class, [
             'class' => Teacher::class,
             'placeholder' => "Wybierz nauczyciela",
-            'required' => false,
+            'required' => true,
             'attr' => [
                'class' => "form-control"
             ],
