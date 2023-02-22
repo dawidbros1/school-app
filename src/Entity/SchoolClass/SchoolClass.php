@@ -77,6 +77,13 @@ class SchoolClass
       }
    }
 
+   public function clearTeacherClass()
+   {
+      if ($this->teacher != null) {
+         $this->teacher->setClass(null);
+      }
+   }
+
    public function getStudents()
    {
       return $this->students;
