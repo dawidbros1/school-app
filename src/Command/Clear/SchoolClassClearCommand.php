@@ -28,12 +28,13 @@ class SchoolClassClearCommand extends Command
    {
       $io = new SymfonyStyle($input, $output);
 
-      if ($classes = $this->em->getRepository(SchoolClass::class)->findAll()) {
-         foreach ($classes as $class) {
-            $this->em->remove($class);
-         }
+      $repository = $this->em->getRepository(SchoolClass::class);
 
-         $this->em->flush();
+      if ($classes = $repository->findAll()) {
+         foreach ($classes as $index => $class) {
+            $class->clearTeacherClass();
+            $repository->remove($class, count($classes) == ($index + 1));
+         }
       }
 
       $this->em->getConnection()->exec("ALTER TABLE school_class AUTO_INCREMENT = 1");
