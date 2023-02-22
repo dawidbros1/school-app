@@ -60,6 +60,6 @@ class ClassTime
 
     public function time(): string
     {
-        return ($this->fromTime->format("g:i") . " - " . $this->toTime->format("g:i"));
+        return ($this->fromTime->format("H:i") . " - " . $this->toTime->format("H:i"));
     }
 }

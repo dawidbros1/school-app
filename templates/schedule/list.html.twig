@@ -39,9 +39,9 @@
          <div class="row mx-auto gx-2 mb-1">
             <div class="text-center py-2 border col-1">{{ loop.index }}</div>
             <div class="col-10 d-flex">
-               <input class="text-center p-2 col-5" type="text" value="{{ classTime.fromTime|date("g:i") }}" disabled/>
+               <input class="text-center p-2 col-5" type="text" value="{{ classTime.fromTime|date("H:i") }}" disabled/>
                <div class="text-center col-2 p-2 d-none d-sm-block">- - -</div>
-               <input class="text-center p-2 col-5 offset-2 offset-sm-0" type="text" value="{{ classTime.toTime|date("g:i") }}" disabled/>
+               <input class="text-center p-2 col-5 offset-2 offset-sm-0" type="text" value="{{ classTime.toTime|date("H:i") }}" disabled/>
             </div>
             <div class="text-center border py-2 col-1 d-flex flex-wrap">
                <div class="col-12 col-sm-6">
