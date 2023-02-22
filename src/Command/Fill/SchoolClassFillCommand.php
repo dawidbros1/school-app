@@ -13,7 +13,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 # php bin/console db:fill:class
 
-class ClassFillCommand extends Command
+class SchoolClassFillCommand extends Command
 {
    protected static $defaultName = 'db:fill:class';
    protected static $defaultDescription = 'The command assigning students to class and set class teacher.';
