@@ -64,4 +64,11 @@ class Teacher extends User implements UserInterface, PasswordAuthenticatedUserIn
          $this->class->setTeacher($this);
       }
    }
+
+   public function clearClassTeacher()
+   {
+      if ($this->class != null) {
+         $this->class->setTeacher(null);
+      }
+   }
 }
