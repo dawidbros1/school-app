@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Plan zajęć
+{% endblock %}
+
+
+{% block stylesheets %}
+   <link rel="stylesheet" href="{{ asset('css/schedule.css') }}"/>
+{% endblock %}
+
+{% block body %}
+   <div id="block">
+      <table class="table table-striped text-center">
+         <thead>
+            <tr>
+               <th>Data</th>
+               {% for classTime in classTimes %}
+                  <th>{{ classTime.time }}</th>
+               {% endfor %}
+               <td></td>
+            </tr>
+         </thead>
+
+         <tbody>
+            {% for date in dates %}
+               <tr>
+                  <td class="item">
+                     <div>{{ date|date("Y-m-d") }}</div>
+                  </td>
+                  {% for classTime in classTimes %}
+                     {% set empty = true %}
+                     {% for lesson in schedule %}
+                        {% set continue = true %}
+
+                        {% if lesson.classTime != classTime or lesson.date != date %}
+                           {% set continue = false %}
+                        {% endif %}
+
+                        {% if continue %}
+                           {% set empty = false %}
+                           <td class="item">
+                              <div class="lightgreen">
+                                 <div>
+                                    <span class="fw-bold">{{ lesson.subject.name }}</span>
+                                    ({{ lesson.place }})
+                                 </div>
+                                 <div>({{ lesson.teacher.name }})</div>
+                              </div>
+                           </td>
+                        {% endif %}
+                     {% endfor %}
+
+                     {% if empty %}
+                        <td class="item">
+                           <div>-</div>
+                        </td>
+                     {% endif %}
+                  {% endfor %}
+
+                  <td class="item">
+                     <div>
+                        <a href="{{ path('app_class_schedule_manage', {class_id, date: date|date("Y-m-d") }) }}">
+                           <img class="img-medium" src="{{ asset('images/settings.png') }}"/>
+                        </a>
+                     </div>
+                  </td>
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+
+      <div class="text-center row">
+         <a href="{{ path('app_class_schedule_show', {class_id, date: prevDate}) }}" class="col-6">
+            <button class="btn btn-primary w-50">Poprzednia strona</button>
+         </a>
+         <a href="{{ path('app_class_schedule_show', {class_id, date: nextDate}) }}" class="col-6">
+            <button class="btn btn-primary w-50">Następna strona</button>
+         </a>
+      </div>
+   </div>
+{% endblock %}
