@@ -123,6 +123,14 @@
 
                {{ form_end(initializerForm) }}
             </div>
+
+            <div class="col-12 mt-2">
+               <a class="text-white" href="{{ path('app_class_schedule_show', {class_id}) }}">
+                  <button class="btn btn-primary w-100 fw-bold" type="button">
+                     Zobacz harmonogram klasy
+                  </button>
+               </a>
+            </div>
          </div>
       {% else %}
          <p class="fs-1 text-center mt-5 fw-bold">

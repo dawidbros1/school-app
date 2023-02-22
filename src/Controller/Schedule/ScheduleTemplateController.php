@@ -52,7 +52,7 @@ class ScheduleTemplateController extends AbstractController
 
       $builder->addButton("DODAJ")->build($form);
 
-      return $this->render('schedule/template.html.twig', [
+      return $this->render('schedule/template/template.html.twig', [
          'form' => $form->createView(),
          'initializerForm' => $this->getInitializerFormType($day, $class),
          'schedule' => $schedule,
@@ -124,7 +124,7 @@ class ScheduleTemplateController extends AbstractController
          return $this->redirectToRoute('app_scheduleTemplate_show', ['day' => $scheduleTemplate->getDay(), 'class_id' => $scheduleTemplate->getClass()->getId()]);
       }
 
-      return $this->render('schedule/template.html.twig', [
+      return $this->render('schedule/template/template.html.twig', [
          'form' => $form->createView(),
          'initializerForm' => $this->getInitializerFormType($scheduleTemplate->getDay(), $scheduleTemplate->getClass()),
          'schedule' => $schedule,
