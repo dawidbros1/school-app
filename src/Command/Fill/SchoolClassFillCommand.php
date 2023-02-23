@@ -11,11 +11,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-# php bin/console db:fill:class
+# php bin/console db:fill:schoolClass
 
 class SchoolClassFillCommand extends Command
 {
-   protected static $defaultName = 'db:fill:class';
+   protected static $defaultName = 'db:fill:schoolClass';
    protected static $defaultDescription = 'The command assigning students to class and set class teacher.';
    private $em;
    private $classes;

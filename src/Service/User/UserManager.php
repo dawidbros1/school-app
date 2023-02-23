@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\User;
 
 use App\Entity\UserType\Admin;
 use App\Entity\UserType\Owner;

@@ -9,11 +9,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-# php bin/console db:clear:class
+# php bin/console db:clear:schoolClass
 
 class SchoolClassClearCommand extends Command
 {
-   protected static $defaultName = 'db:clear:class';
+   protected static $defaultName = 'db:clear:schoolClass';
    protected static $defaultDescription = 'The command remove school classes from database';
    private $em;
 

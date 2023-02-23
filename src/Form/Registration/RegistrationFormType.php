@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form;
+namespace App\Form\Registration;
 
 use App\Interfaces\CustomUserInterface as UserInterface;
 use Symfony\Component\Form\AbstractType;

@@ -3,11 +3,11 @@
 namespace App\Controller\Registration;
 
 use App\Enum\UserType;
-use App\Form\RegistrationFormType;
-use App\Service\EmailGenerator;
-use App\Service\FormBuilder;
-use App\Service\UserCodeGenerator;
-use App\Service\UserManager;
+use App\Form\Registration\RegistrationFormType;
+use App\Service\User\EmailGenerator;
+use App\Service\Form\FormBuilder;
+use App\Service\User\UserCodeGenerator;
+use App\Service\User\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

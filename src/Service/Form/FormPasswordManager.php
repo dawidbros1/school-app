@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Form;
 
 use App\Interfaces\CustomUserInterface as UserInterface;
 use Symfony\Component\Form\FormError;

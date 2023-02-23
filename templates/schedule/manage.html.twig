@@ -21,8 +21,8 @@
       <div class="mb-2">
          <div class="mb-2 row">
             <div class="col-6">
-               {{ form_widget(form.classTime) }}
-               {{ form_errors(form.classTime) }}
+               {{ form_widget(form.lessonTime) }}
+               {{ form_errors(form.lessonTime) }}
             </div>
 
             <div class="col-6">
@@ -73,7 +73,7 @@
                   {% for item in schedule %}
                      <tr>
                         <td>{{ loop.index }}</td>
-                        <td>{{ item.classTime.time }}</td>
+                        <td>{{ item.lessonTime.time }}</td>
                         <td>{{ item.subject.name }}</td>
                         <td>{{ item.teacher.name }}</td>
                         <td>{{ item.place }}</td>

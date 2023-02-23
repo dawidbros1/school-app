@@ -12,10 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-# php bin/console db:user:activate
+# php bin/console db:activate:user
 class UserActivateCommand extends Command
 {
-   protected static $defaultName = 'db:user:activate';
+   protected static $defaultName = 'db:activate:user';
    protected static $defaultDescription = 'The command adds basic data to database';
    private $em;
    private $userPasswordHasher;

@@ -10,11 +10,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-# php bin/console db:init:subject
+# php bin/console db:init:schoolSubject
 
 class SchoolSubjectInitCommand extends Command
 {
-   protected static $defaultName = 'db:init:subject';
+   protected static $defaultName = 'db:init:schoolSubject';
    protected static $defaultDescription = '[INIT] The command add default school subjects';
    private $em;
    private $factory;

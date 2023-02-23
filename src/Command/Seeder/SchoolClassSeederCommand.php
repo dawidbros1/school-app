@@ -9,12 +9,12 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Console\Input\InputOption;
 
-# php bin/console db:seed:class --limit 5
+# php bin/console db:seed:schoolClass --limit 5
 
 class SchoolClassSeederCommand extends Command
 {
-   protected static $defaultName = 'db:seed:class';
-   protected static $defaultDescription = 'The command remove school classes from database';
+   protected static $defaultName = 'db:seed:schoolClass';
+   protected static $defaultDescription = 'The command add classes to database';
    private $factory;
 
    public function __construct(SchoolClassFactory $factory)

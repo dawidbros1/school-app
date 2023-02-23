@@ -2,16 +2,15 @@
 
 namespace App\Controller;
 
-use App\Entity\Schedule\ScheduleTemplate;
+use App\Entity\Lesson\LessonTemplate;
 use App\Entity\SchoolSubject;
 use App\Enum\SchoolSubjectStatus;
 use App\Form\SchoolSubjectFormType;
-use App\Service\FormBuilder;
-use App\Service\FormErrors;
+use App\Service\Form\FormBuilder;
+use App\Service\Form\FormErrors;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -106,9 +105,9 @@ class SchoolSubjectController extends AbstractController
     */
    public function delete(SchoolSubject $subject)
    {
-      $scheduleTemplate = $this->em->getRepository(ScheduleTemplate::class)->findBy(['subject' => $subject]);
+      $lessons = $this->em->getRepository(LessonTemplate::class)->findBy(['subject' => $subject]);
 
-      if (empty($scheduleTemplate)) {
+      if (empty($lessons)) {
          $this->em->remove($subject);
          $this->em->flush();
          $this->addFlash('success', "Przedmiot [ " . $subject->getName() . " ] zostały usunięty");

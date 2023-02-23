@@ -9,11 +9,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-# php bin/console db:seed:users --limit 5
+# php bin/console db:seed:user --limit 5
 
 class UserSeederCommand extends Command
 {
-    protected static $defaultName = 'db:seed:users';
+    protected static $defaultName = 'db:seed:user';
     protected static $defaultDescription = 'The command adds users to database';
     private $factory;
 

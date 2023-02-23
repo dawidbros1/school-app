@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Form;
 
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;

@@ -2,9 +2,9 @@
 
 namespace App\Controller\Registration;
 
-use App\Form\CompleteRegistrationFormType;
-use App\Service\FormPasswordManager;
-use App\Service\UserManager;
+use App\Form\Registration\CompleteRegistrationFormType;
+use App\Service\Form\FormPasswordManager;
+use App\Service\User\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

@@ -3,9 +3,9 @@
 namespace App\DataFixtures\Factory;
 
 use App\Enum\UserType;
-use App\Service\EmailGenerator;
-use App\Service\UserCodeGenerator;
-use App\Service\UserManager;
+use App\Service\User\EmailGenerator;
+use App\Service\User\UserCodeGenerator;
+use App\Service\User\UserManager;
 use Faker\Factory;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Entity\Schedule;
+namespace App\Entity\Lesson;
 
-use App\Repository\Schedule\ClassTimeRepository;
+use App\Repository\Lesson\LessonTimeRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass=ClassTimeRepository::class)
- * @ORM\Table(name="class_times")
+ * @ORM\Entity(repositoryClass=LessonTimeRepository::class)
+ * @ORM\Table(name="lesson_time")
  */
-class ClassTime
+class LessonTime
 {
     /**
      * @ORM\Id

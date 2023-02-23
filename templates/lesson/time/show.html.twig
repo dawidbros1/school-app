@@ -35,22 +35,22 @@
    <div id="block" class="bg-light col-12 col-lg-8 col-xxl-6 mx-auto">
       <h1 id="main-title" class="fs-5">Rozkład zajęć</h1>
 
-      {% for classTime in classTimes %}
+      {% for lessonTime in lessonTimes %}
          <div class="row mx-auto gx-2 mb-1">
             <div class="text-center py-2 border col-1">{{ loop.index }}</div>
             <div class="col-10 d-flex">
-               <input class="text-center p-2 col-5" type="text" value="{{ classTime.fromTime|date("H:i") }}" disabled/>
+               <input class="text-center p-2 col-5" type="text" value="{{ lessonTime.fromTime|date("H:i") }}" disabled/>
                <div class="text-center col-2 p-2 d-none d-sm-block">- - -</div>
-               <input class="text-center p-2 col-5 offset-2 offset-sm-0" type="text" value="{{ classTime.toTime|date("H:i") }}" disabled/>
+               <input class="text-center p-2 col-5 offset-2 offset-sm-0" type="text" value="{{ lessonTime.toTime|date("H:i") }}" disabled/>
             </div>
             <div class="text-center border py-2 col-1 d-flex flex-wrap">
                <div class="col-12 col-sm-6">
-                  <a href="{{ path('app_classTime_edit', {id: classTime.id}) }}">
+                  <a href="{{ path('app_lessonTime_edit', {id: lessonTime.id}) }}">
                      <img class="img-very-small" src="{{ asset('images/settings.png') }}"/>
                   </a>
                </div>
                <div class="col-12 col-sm-6">
-                  <form action="{{ path('app_classTime_delete', {id: classTime.id}) }}" method="post">
+                  <form action="{{ path('app_lessonTime_delete', {id: lessonTime.id}) }}" method="post">
                      <button class="clear" type="submit"><img class="img-very-small" src="{{ asset('images/trash.png') }}"/></button>
                   </form>
                </div>

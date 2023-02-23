@@ -1,27 +1,28 @@
 <?php
 
-namespace App\Repository\Schedule;
+namespace App\Repository\Lesson;
 
-use App\Entity\Schedule\Schedule;
+use App\Entity\Lesson\Lesson;
+use App\Entity\SchoolClass\SchoolClass;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Schedule>
+ * @extends ServiceEntityRepository<Lesson>
  *
- * @method Schedule|null find($id, $lockMode = null, $lockVersion = null)
- * @method Schedule|null findOneBy(array $criteria, array $orderBy = null)
- * @method Schedule[]    findAll()
- * @method Schedule[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Lesson|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Lesson|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Lesson[]    findAll()
+ * @method Lesson[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ScheduleRepository extends ServiceEntityRepository
+class LessonRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Schedule::class);
+        parent::__construct($registry, Lesson::class);
     }
 
-    public function removeIn($class, $dates)
+    public function removeIn(SchoolClass $class, array $dates)
     {
         $dates = array_map(function ($date) {
             return $date->format("Y-m-d");
@@ -37,7 +38,7 @@ class ScheduleRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function getIn($class, $dates)
+    public function getIn(SchoolClass $class, array $dates)
     {
         $dates = array_map(function ($date) {
             return $date->format("Y-m-d");
@@ -53,7 +54,7 @@ class ScheduleRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function add(Schedule $entity, bool $flush = false): void
+    public function add(Lesson $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -62,7 +63,7 @@ class ScheduleRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Schedule $entity, bool $flush = false): void
+    public function remove(Lesson $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 

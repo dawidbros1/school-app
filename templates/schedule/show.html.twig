@@ -15,25 +15,25 @@
          <thead>
             <tr>
                <th>Data</th>
-               {% for classTime in classTimes %}
-                  <th>{{ classTime.time }}</th>
+               {% for lessonTime in lessonTimes %}
+                  <th>{{ lessonTime.time }}</th>
                {% endfor %}
                <td></td>
             </tr>
          </thead>
 
          <tbody>
-            {% for date in dates %}
+            {% for key, schedule in schedules %}
                <tr>
                   <td class="item">
-                     <div>{{ date|date("Y-m-d") }}</div>
+                     <div>{{ key }}</div>
                   </td>
-                  {% for classTime in classTimes %}
+                  {% for lessonTime in lessonTimes %}
                      {% set empty = true %}
-                     {% for lesson in schedule %}
+                     {% for lesson in schedule.lessons %}
                         {% set continue = true %}
 
-                        {% if lesson.classTime != classTime or lesson.date != date %}
+                        {% if lesson.lessonTime != lessonTime %}
                            {% set continue = false %}
                         {% endif %}
 
@@ -60,7 +60,7 @@
 
                   <td class="item">
                      <div>
-                        <a href="{{ path('app_class_schedule_manage', {class_id, date: date|date("Y-m-d") }) }}">
+                        <a href="{{ path('app_class_schedule_manage', {class_id, date: key }) }}">
                            <img class="img-medium" src="{{ asset('images/settings.png') }}"/>
                         </a>
                      </div>
@@ -71,11 +71,16 @@
       </table>
 
       <div class="text-center row">
-         <a href="{{ path('app_class_schedule_show', {class_id, date: prevDate}) }}" class="col-6">
-            <button class="btn btn-primary w-50">Poprzednia strona</button>
+         <a class="col-3 offset-1" href="{{ path('app_class_schedule_show', {class_id, date: prevDate}) }}">
+            <button class="btn btn-primary w-100">Poprzednia strona</button>
          </a>
-         <a href="{{ path('app_class_schedule_show', {class_id, date: nextDate}) }}" class="col-6">
-            <button class="btn btn-primary w-50">Następna strona</button>
+
+         <a class="col-4" href="{{ path('app_scheduleTemplate_show', {class_id, day: "monday"}) }}">
+            <button class="btn btn-primary w-100">Powrót do harmonogramu</button>
+         </a>
+
+         <a class="col-3" href="{{ path('app_class_schedule_show', {class_id, date: nextDate}) }}">
+            <button class="btn btn-primary w-100">Następna strona</button>
          </a>
       </div>
    </div>

@@ -3,9 +3,9 @@
 namespace App\Controller\User;
 
 use App\Form\ChangePasswordFormType;
-use App\Service\FormErrors;
-use App\Service\FormPasswordManager;
-use App\Service\UserManager;
+use App\Service\Form\FormErrors;
+use App\Service\Form\FormPasswordManager;
+use App\Service\User\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -39,7 +39,7 @@ class UserController extends AbstractController
     */
    public function updatePassword(Request $request, UserManager $userManager, FormPasswordManager $passwordManager, FormErrors $formErrors)
    {
-      $user = $this->getUser();
+      $user = $userManager->getUser();
       $form = $this->createForm(ChangePasswordFormType::class, $user, []);
       $form->handleRequest($request);
 

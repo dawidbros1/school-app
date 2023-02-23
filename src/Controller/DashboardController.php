@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Enum\UserType;
-use App\Service\UserManager;
+use App\Service\User\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -57,7 +57,7 @@ class DashboardController extends AbstractController
    {
       $this->teachers()->students();
       $this->classes()->listSubjects();
-      $this->listClassHours();
+      $this->listLessonTimes();
    }
 
    private function teacherDashboard()
@@ -198,12 +198,12 @@ class DashboardController extends AbstractController
       ]);
    }
 
-   private function listClassHours()
+   private function listLessonTimes()
    {
       return $this->createSimpleBox([
          'title' => "Rozkład zajęć",
          'description' => "Tutaj ustalisz godziny zajęć",
-         'route' => "app_classTime_list",
+         'route' => "app_lessonTime_list",
          'image' => "clock.png"
       ]);
    }

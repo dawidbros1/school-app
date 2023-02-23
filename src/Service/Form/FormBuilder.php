@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace App\Service\Form;
 
 use App\Entity\SchoolClass\SchoolClass;
 use App\Entity\UserType\Teacher;
