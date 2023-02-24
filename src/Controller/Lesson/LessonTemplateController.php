@@ -3,6 +3,7 @@
 namespace App\Controller\Lesson;
 
 use App\Entity\Lesson\LessonTemplate;
+use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\ScheduleTemplate;
 use App\Form\Lesson\LessonTemplateFormType;
 use App\Service\Entity\EntityProvider;
@@ -63,13 +64,11 @@ class LessonTemplateController extends AbstractController
     */
    public function edit(Request $request, LessonTemplate $lesson, FormBuilder $builder, FormProvider $formProvider)
    {
-      $schedule = new ScheduleTemplate($this->em->getRepository(LessonTemplate::class)->findBy(['day' => $lesson->getDay(), 'class' => $lesson->getClass()]));
-
       $form = $this->createForm(LessonTemplateFormType::class, $lesson, [
-         'label' => "Edycja lekcji"
+         'label' => $lesson->getSubject()->getName() . " ( " . $lesson->getLessonTime()->time() . " )"
       ]);
 
-      $builder->addButton("ZAPISZ")->build($form);
+      $builder->addButton("Zapisz zmiany")->build($form);
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
@@ -80,12 +79,17 @@ class LessonTemplateController extends AbstractController
          return $this->redirectToRoute('app_scheduleTemplate_show', ['day' => $lesson->getDay(), 'class_id' => $lesson->getClass()->getId()]);
       }
 
+      $schedule = new ScheduleTemplate($this->em->getRepository(LessonTemplate::class)->findBy(['day' => $lesson->getDay(), 'class' => $lesson->getClass()]));
+      $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
+      $schedule->sortBy($lessonTimes);
+
       return $this->render('schedule/template/show.html.twig', [
          'form' => $form->createView(),
          'initializerForm' => $formProvider->getInitializerFormType($lesson->getDay(), $lesson->getClass())->createView(),
          'schedule' => $schedule,
          'day' => $lesson->getDay(),
-         'class_id' => $lesson->getClass()->getId()
+         'class_id' => $lesson->getClass()->getId(),
+         'lessonTimes' => $lessonTimes
       ]);
    }
 

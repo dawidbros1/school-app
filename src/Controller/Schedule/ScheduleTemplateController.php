@@ -3,6 +3,7 @@
 namespace App\Controller\Schedule;
 
 use App\Entity\Lesson\LessonTemplate;
+use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\ScheduleTemplate;
 use App\Service\Entity\EntityProvider;
 use App\Service\Form\FormProvider;
@@ -34,8 +35,11 @@ class ScheduleTemplateController extends AbstractController
       $day = $request->get('day');
       $class = $entityProvider->getSchoolClass($request->get('class_id'));
       $lesson = new LessonTemplate();
+      $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
 
       $schedule = new ScheduleTemplate($this->em->getRepository(LessonTemplate::class)->findBy(['day' => $day, 'class' => $class]));
+      $schedule->sortBy($lessonTimes);
+
       $form = $formProvider->getLessonTemplateFormType($lesson, $class, $day, "Dodaj lekcje");
 
       return $this->render('schedule/template/show.html.twig', [
@@ -43,7 +47,8 @@ class ScheduleTemplateController extends AbstractController
          'initializerForm' => $formProvider->getInitializerFormType($day, $class)->createView(),
          'schedule' => $schedule,
          'day' => $day,
-         'class_id' => $class->getId()
+         'class_id' => $class->getId(),
+         'lessonTimes' => $lessonTimes
       ]);
    }
 }

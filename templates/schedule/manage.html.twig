@@ -48,15 +48,15 @@
          {{ form_widget(form.submit) }}
       </div>
       {{ form_end(form) }}
-
    {% endblock %}
 {% endblock %}
 
 {% block body %}
-   <div id="block" class="bg-light">
-      <h1 id="main-title">Harmonogram zajęć</h1>
+   <div id="sheduleManage">
+      <h1 id="main-title">Harmonogram zajęć -
+         {{ class.name }}</h1>
 
-      {% if schedule|length > 0 %}
+      {% if schedule.lessons|length > 0 %}
          <div>
             <table id="schedule" class="table table-striped table-sm">
                <thead>
@@ -70,23 +70,30 @@
                   </tr>
                </thead>
                <tbody>
-                  {% for item in schedule %}
+                  {% for lesson in schedule.lessons %}
                      <tr>
-                        <td>{{ loop.index }}</td>
-                        <td>{{ item.lessonTime.time }}</td>
-                        <td>{{ item.subject.name }}</td>
-                        <td>{{ item.teacher.name }}</td>
-                        <td>{{ item.place }}</td>
-                        <td>
-                           <div class="d-flex">
-                              <a href="{{ path('app_schedule_edit', {id: item.id}) }}" class="me-3">
-                                 <img class="img-small" src="{{ asset('images/settings.png/') }}"/>
-                              </a>
-                              <form action="{{ path('app_schedule_delete', {id: item.id}) }}" method="post">
-                                 <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>
-                              </form>
-                           </div>
-                        </td>
+                        {% if lesson != null %}
+                           <td>{{ loop.index }}</td>
+                           <td>{{ lesson.lessonTime.time }}</td>
+                           <td>{{ lesson.subject.name }}</td>
+                           <td>{{ lesson.teacher.name }}</td>
+                           <td>{{ lesson.place }}</td>
+                           <td>
+                              <div class="d-flex">
+                                 <a href="{{ path('app_schedule_edit', {id: lesson.id}) }}" class="me-3">
+                                    <img class="img-small" src="{{ asset('images/settings.png/') }}"/>
+                                 </a>
+                                 <form action="{{ path('app_schedule_delete', {id: lesson.id}) }}" method="post">
+                                    <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>
+                                 </form>
+                              </div>
+                           </td>
+
+                        {% else %}
+                           <td>{{ loop.index }}</td>
+                           <td>{{ lessonTimes[loop.index - 1].time }}</td>
+                           <td colspan="4"></td>
+                        {% endif %}
                      </tr>
                   {% endfor %}
                </tbody>
@@ -97,5 +104,9 @@
             BRAK ZAJĘĆ
          </p>
       {% endif %}
+
+      <a href="{{ path("app_class_schedule_show", {class_id: class.id, date }) }}">
+         <button type="button" class="btn btn-primary w-100 fw-bold">Powrót</button>
+      </a>
    </div>
 {% endblock %}

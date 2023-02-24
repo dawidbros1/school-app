@@ -34,29 +34,6 @@ class ScheduleController extends AbstractController
    }
 
    /**
-    * @Route("/manage/{class_id}/{date}", name="app_class_schedule_manage") 
-    */
-   public function manage(Request $request)
-   {
-      $date = new \DateTime($request->get('date'));
-      $today = new \DateTime('now');
-
-      if ($today->modify("-1 day") > $date) {
-         die("TODO: ScheduleController:manage");
-      }
-
-      $lesson = new Lesson();
-      $class = $this->entityProvider->getSchoolClass($request->get('class_id'));
-      $schedule = $this->em->getRepository(Lesson::class)->findBy(['class' => $class, 'date' => $date]);
-
-      return $this->render('schedule/manage.html.twig', [
-         'form' => $this->formProvider->getLessonFormType($lesson, $class, $date, "Dodaj lekcje")->createView(),
-         'schedule' => $schedule,
-         'class_id' => $class->getId()
-      ]);
-   }
-
-   /**
     * @Route("/show/{class_id}", name="app_class_schedule_show")
     */
    public function show(Request $request)
@@ -88,11 +65,45 @@ class ScheduleController extends AbstractController
       }
 
       return $this->render('schedule/show.html.twig', [
+         'class' => $class,
          'schedules' => $schedules,
          'lessonTimes' => $lessonTimes,
-         'class_id' => $class->getId(),
          'nextDate' => $nextDate->format("Y-m-d"),
          'prevDate' => $prevDate->format("Y-m-d")
+      ]);
+   }
+
+   /**
+    * @Route("/manage/{class_id}/{date}", name="app_class_schedule_manage") 
+    */
+   public function manage(Request $request)
+   {
+      $date = new \DateTime($request->get('date'));
+      $today = (new \DateTime('now'))->format("Y-m-d");
+
+      if ($date->format("Y-m-d") < $today) {
+         $this->addFlash("error", "Nie można zarządzać przeszłymi danymi");
+
+         if ($HTTP_REFERER = $request->server->get("HTTP_REFERER")) {
+            return $this->redirect($HTTP_REFERER);
+         } else {
+            return $this->redirectToRoute("app_class_schedule_show", ['class_id' => $request->get("class_id")]);
+         }
+      }
+
+      $lesson = new Lesson();
+      $class = $this->entityProvider->getSchoolClass($request->get('class_id'));
+      $schedule = new Schedule($this->em->getRepository(Lesson::class)->findBy(['class' => $class, 'date' => $date]));
+
+      $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
+      $schedule->sortBy($lessonTimes);
+
+      return $this->render('schedule/manage.html.twig', [
+         'form' => $this->formProvider->getLessonFormType($lesson, $class, $date, "Dodaj lekcje")->createView(),
+         'schedule' => $schedule,
+         'class' => $class,
+         'date' => $date->format("Y-m-d"),
+         'lessonTimes' => $lessonTimes
       ]);
    }
 
@@ -142,7 +153,7 @@ class ScheduleController extends AbstractController
          }
 
          $this->em->flush();
-         $this->addFlash('success', "Harmonogram został utworzony");
+         $this->addFlash('success', "Harmonogram został wygenerowany");
       } else {
          $formErrors->set($form);
       }

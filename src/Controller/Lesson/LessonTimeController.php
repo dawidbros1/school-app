@@ -34,11 +34,11 @@ class LessonTimeController extends AbstractController
       $lessonTime = new LessonTime();
 
       $form = $this->createForm(LessonTimeFormType::class, $lessonTime, [
-         'label' => "Dodaj termin zajęć",
+         'label' => "Tworzenie terminu zajęć",
          'action' => $this->generateUrl("app_lessonTime_create")
       ]);
 
-      $builder->addButton("DODAJ")->build($form);
+      $builder->addButton("Dodaj termin")->build($form);
       $formErrors->load($form);
 
       return $this->render('lesson/time/show.html.twig', [
@@ -81,10 +81,10 @@ class LessonTimeController extends AbstractController
    public function edit(Request $request, LessonTime $lessonTime, FormBuilder $builder)
    {
       $form = $this->createForm(LessonTimeFormType::class, $lessonTime, [
-         'label' => "Edycja terminu zajęć"
+         'label' => $lessonTime->time()
       ]);
 
-      $builder->addButton("ZAPISZ")->build($form);
+      $builder->addButton("Zapisz zmiany")->build($form);
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
