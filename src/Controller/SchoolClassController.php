@@ -88,10 +88,10 @@ class SchoolClassController extends AbstractController
       $supervisingTeacher = $class->getTeacher();
 
       $form = $this->createForm(SchoolClassFormType::class, $class, [
-         'label' => "Edycja klasy"
+         'label' => $class->getName()
       ]);
 
-      $builder->addButton("Edytuj klasę")->build($form);
+      $builder->addButton("Zapisz zmiany")->build($form);
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {

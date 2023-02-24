@@ -8,7 +8,7 @@
 
 {% block form %}
    {% block form_content %}
-      <h1 class="fw-bold text-center fs-3 w-100">Edycja danych użytkownika</h1>
+      <h1 class="form-title">{{ form_label(form) }}</h1>
 
       {{ form_start(form) }}
       <div class="w-100 mb-2 d-flex">
@@ -43,8 +43,17 @@
          {{ form_errors(form.pesel) }}
       </div>
 
-      <div class="w-100">
-         {{ form_widget(form.submit) }}
+      <div class="container-fluid p-0">
+         <div class="row">
+            <div class="col-6">
+               {{ form_widget(form.submit) }}
+            </div>
+            <div class="col-6">
+               <a href="{{ path('app_list_' ~ user.role.name ) }}">
+                  <button class="w-100 btn btn-primary fw-bold" type="button">Powrót</button>
+               </a>
+            </div>
+         </div>
       </div>
 
       {{ form_end(form) }}

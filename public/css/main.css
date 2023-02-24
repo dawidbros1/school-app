@@ -9,18 +9,24 @@
    font-weight: bold;
    text-align: center;
    width: 100%;
-   text-transform: uppercase;
-   font-size: 2rem;
-   padding-bottom: 10px;
+   font-size: 27px;
+   padding-bottom: 5px;
+}
+
+/* FORM */
+.form{
+   padding: 1rem 1.5rem 1rem 1.5rem;
+   margin: 0 auto 1rem;
+   border: 1px solid #dee2e6;
+   background-color: #f8f9fa;
 }
 
 .form-title {
    width: 100%;
-   font-size: 1.5rem;
+   font-size: 20px;
 
    font-weight: bold;
    text-align: center;
-   text-transform: uppercase;
 }
 
 a {
@@ -34,16 +40,10 @@ button.clear{
    padding: 0;
 }
 
-/* content */
-
-#block{
-   padding: 1rem;
-}
-
 /* Table */
 
 table thead th {
-   text-transform: uppercase
+   /* text-transform: uppercase */
 }
 
 table tr td{

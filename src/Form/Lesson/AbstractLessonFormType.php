@@ -46,7 +46,7 @@ abstract class AbstractLessonFormType extends AbstractType
             'label' => false,
             'attr' => [
                'class' => "form-control",
-               'placeholder' => "sala 303 / zdalnie",
+               'placeholder' => "303 / zdalnie",
             ],
          ])
       ;

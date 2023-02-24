@@ -79,10 +79,10 @@ class SchoolSubjectController extends AbstractController
    public function edit(Request $request, SchoolSubject $subject, FormBuilder $builder)
    {
       $form = $this->createForm(SchoolSubjectFormType::class, $subject, [
-         'label' => "Edycja przedmiotu"
+         'label' => $subject->getName()
       ]);
 
-      $builder->addButton("Edytuj przedmiot")->build($form);
+      $builder->addButton("Zapisz zmiany")->build($form);
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {

@@ -41,7 +41,9 @@ class UserEditController extends AbstractController
 
       $repository = $userManager->getRepository($userType);
       $user = $repository->findOneBy(['id' => $request->get('id')]);
-      $form = $this->createForm(RegistrationFormType::class, $user, []);
+      $form = $this->createForm(RegistrationFormType::class, $user, [
+         'label' => "Autualizacja danych - " . $user->name()
+      ]);
 
       if ($userType == UserType::STUDENT) {
          $builder->addClassList();
@@ -49,7 +51,7 @@ class UserEditController extends AbstractController
          $builder->addClassListWithoutTutor($user);
       }
 
-      $builder->addButton("Zaktualizuj dane")->build($form);
+      $builder->addButton("Zapisz zmiany")->build($form);
       $oldClass = $userType == UserType::TEACHER ? $user->getClass() : null;
       $form->handleRequest($request);
 

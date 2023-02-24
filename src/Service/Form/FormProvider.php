@@ -37,7 +37,7 @@ class FormProvider
    public function getLessonTemplateFormType(LessonTemplate &$lesson, SchoolClass $class, string $day, string $buttonText)
    {
       $form = $this->formFactory->create(LessonTemplateFormType::class, $lesson, [
-         'label' => "Dodaj lekcje",
+         'label' => "Dodaj lekcje (szablon)",
          'action' => $this->urlGenerator->generate(
             "app_scheduleTemplate_create",
             [

@@ -8,7 +8,7 @@
 
 {% block form %}
    {% block form_content %}
-      <h1 id="form-title">{{ form_label(form) }}</h1>
+      <h1 class="form-title">{{ form_label(form) }}</h1>
 
       {{ form_start(form) }}
       <div class="w-100 mb-2">
@@ -32,40 +32,43 @@
 {% endblock %}
 
 {% block body %}
-   <div id="block" class="bg-light">
-      <h1 id="main-title" class="fs-5">Lista klas</h1>
+   <div id="schoolClassList">
+      <h1 id="main-title">Lista klas</h1>
+
 
       {% if classes|length > 0 %}
-         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4">
-            {% for i, class in classes %}
-               <div class="col mb-4">
-                  <div class="card">
-                     <div class="card-body position-relative">
-                        <h5 class="card-title">
-                           <a href="{{ path('app_class_show', {id: class.id}) }}">
-                              {{ class.name }}
-                           </a>
-                        </h5>
-                        <div class="card-text">Wychowawca:
-                           {{ class.teacher ? class.teacher.name : null }}
-                        </div>
-                        <div class="card-text">Liczba uczniów:
-                           {{ class.students ? class.students|length : null }}
-                        </div>
+         <div class="container-fluid">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4">
+               {% for i, class in classes %}
+                  <div class="col mb-4">
+                     <div class="card">
+                        <div class="card-body position-relative">
+                           <h5 class="card-title">
+                              <a href="{{ path('app_class_show', {id: class.id}) }}">
+                                 {{ class.name }}
+                              </a>
+                           </h5>
+                           <div class="card-text">Wychowawca:
+                              {{ class.teacher ? class.teacher.name : null }}
+                           </div>
+                           <div class="card-text">Liczba uczniów:
+                              {{ class.students ? class.students|length : null }}
+                           </div>
 
-                        <div class="position-absolute end-0 bottom-0 me-2 mb-2">
-                           <a href="{{ path('app_scheduleTemplate_show', { class_id: class.id, day: "monday" }) }}">
-                              <img class="img-small" src="{{ asset('images/schedule.png') }}"/>
-                           </a>
+                           <div class="position-absolute end-0 bottom-0 me-2 mb-2">
+                              <a href="{{ path('app_scheduleTemplate_show', { class_id: class.id, day: "monday" }) }}">
+                                 <img class="img-small" src="{{ asset('images/schedule.png') }}"/>
+                              </a>
 
-                           <a href="{{ path('app_class_edit', { id: class.id }) }}">
-                              <img class="img-small" src="{{ asset('images/settings.png') }}"/>
-                           </a>
+                              <a href="{{ path('app_class_edit', { id: class.id }) }}">
+                                 <img class="img-small" src="{{ asset('images/settings.png') }}"/>
+                              </a>
+                           </div>
                         </div>
                      </div>
                   </div>
-               </div>
-            {% endfor %}
+               {% endfor %}
+            </div>
          </div>
       {% else %}
          Tu jeszcze nic nie ma

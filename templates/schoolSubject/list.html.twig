@@ -8,7 +8,7 @@
 
 {% block form %}
    {% block form_content %}
-      <h1 id="form-title">{{ form_label(form) }}</h1>
+      <h2 class="form-title">{{ form_label(form) }}</h2>
 
       {{ form_start(form) }}
       <div class="w-100 mb-2">
@@ -24,26 +24,28 @@
 {% endblock %}
 
 {% block body %}
-   <div id="block" class="bg-light">
-      <h1 id="main-title" class="fs-5">Lista Przedmiotów</h1>
+   <div id="schoolSubjectList">
+      <h1 id="main-title">Lista Przedmiotów</h1>
 
-      <div id="grid" class="row g-4">
-         {% for item in subjects %}
-            <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
-               <div class="card">
-                  <div class="card-body">
-                     <h5 class="card-title">{{ item.name }}</h5>
+      <div class="container-fluid">
+         <div id="grid" class="row g-4">
+            {% for item in subjects %}
+               <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
+                  <div class="card">
+                     <div class="card-body">
+                        <h5 class="card-title">{{ item.name }}</h5>
 
-                     <div class="d-flex">
-                        <a href="{{ path('app_subject_edit', {id: item.id}) }}" class="btn btn-primary me-2">Edytuj</a>
-                        <form action="{{ path('app_subject_delete', {id: item.id}) }}" method="POST">
-                           <button class="btn btn-danger" type="submit">Usuń</button>
-                        </form>
+                        <div class="d-flex">
+                           <a href="{{ path('app_subject_edit', {id: item.id}) }}" class="btn btn-primary me-2">Edytuj</a>
+                           <form action="{{ path('app_subject_delete', {id: item.id}) }}" method="POST">
+                              <button class="btn btn-danger" type="submit">Usuń</button>
+                           </form>
+                        </div>
                      </div>
                   </div>
                </div>
-            </div>
-         {% endfor %}
+            {% endfor %}
+         </div>
       </div>
    </div>
 {% endblock %}
