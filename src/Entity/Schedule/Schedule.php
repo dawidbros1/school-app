@@ -4,20 +4,8 @@ namespace App\Entity\Schedule;
 
 use App\Entity\Lesson\Lesson;
 
-class Schedule
+class Schedule extends AbstractSchedule
 {
-   private $lessons = [];
-
-   public function __construct(array $lessons = [])
-   {
-      $this->lessons = $lessons;
-   }
-
-   public function getLessons(): array
-   {
-      return $this->lessons;
-   }
-
    public function addLesson(Lesson $lesson)
    {
       $this->lessons[] = $lesson;
