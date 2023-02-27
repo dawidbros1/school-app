@@ -35,6 +35,20 @@ class FormBuilder
       return $this;
    }
 
+   public function addSaveButton()
+   {
+      $this->methods[] = function (&$form) {
+         $form->add('submit', SubmitType::class, [
+            'label' => "Zapisz zmiany",
+            'attr' => [
+               'class' => "btn btn-primary w-100 fw-bold",
+            ],
+         ]);
+      };
+
+      return $this;
+   }
+
    public function addClassList()
    {
       $this->methods[] = function (&$form) {
