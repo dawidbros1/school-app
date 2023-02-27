@@ -15,19 +15,10 @@ abstract class AbstractLessonFormType extends AbstractType
    public function buildForm(FormBuilderInterface $builder, array $options): void
    {
       $builder
-         ->add('lessonTime', EntityType::class, [
-            'class' => LessonTime::class,
-            'placeholder' => "Wybierz godziny",
-            'required' => true,
-            'attr' => [
-               'class' => "form-control"
-            ],
-            'choice_label' => "time",
-         ])
          ->add('subject', EntityType::class, [
             'class' => SchoolSubject::class,
             'placeholder' => "Wybierz przedmiot",
-            'required' => false,
+            'required' => true,
             'attr' => [
                'class' => "form-control"
             ],
@@ -36,19 +27,29 @@ abstract class AbstractLessonFormType extends AbstractType
          ->add('teacher', EntityType::class, [
             'class' => Teacher::class,
             'placeholder' => "Wybierz nauczyciela",
-            'required' => false,
+            'required' => true,
             'attr' => [
                'class' => "form-control"
             ],
             'choice_label' => "name",
          ])
          ->add('place', TypeTextType::class, [
-            'label' => false,
+            'label' => true,
             'attr' => [
                'class' => "form-control",
                'placeholder' => "303 / zdalnie",
             ],
          ])
+         ->add('lessonTime', EntityType::class, [
+            'class' => LessonTime::class,
+            'placeholder' => "Wybierz godziny",
+            'required' => true,
+            'attr' => [
+               'class' => "form-control"
+            ],
+            'choice_label' => "time",
+            'choices' => $options['lessonTimes']
+         ]);
       ;
    }
 }

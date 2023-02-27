@@ -5,11 +5,10 @@ namespace App\Controller\Lesson;
 use App\Entity\Lesson\LessonTemplate;
 use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\ScheduleTemplate;
-use App\Form\Lesson\LessonTemplateFormType;
 use App\Service\Entity\EntityProvider;
-use App\Service\Form\FormProvider;
 use App\Service\Form\FormBuilder;
 use App\Service\Form\FormErrors;
+use App\Service\Form\Provider\LessonTemplateFormProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,15 +33,13 @@ class LessonTemplateController extends AbstractController
     * @Route("/create/{day}/{class_id}", name="app_scheduleTemplate_create")
     * @Method("POST")
     */
-   public function create(Request $request, FormProvider $formProvider, FormErrors $formErrors, EntityProvider $entityProvider): Response
+   public function create(Request $request, LessonTemplateFormProvider $formProvider, FormErrors $formErrors, EntityProvider $entityProvider): Response
    {
       $day = $request->get('day');
       $class = $entityProvider->getSchoolClass($request->get('class_id'));
       $lesson = new LessonTemplate();
 
-      $form = $formProvider->getLessonTemplateFormType($lesson, $class, $day, "Dodaj klasę");
-
-      $formErrors->load($form);
+      $form = $formProvider->getCreateFormType($lesson, $class, $day);
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
@@ -62,10 +59,12 @@ class LessonTemplateController extends AbstractController
    /**
     * @Route("/edit/{id}", name="app_scheduleTemplate_edit")
     */
-   public function edit(Request $request, LessonTemplate $lesson, FormBuilder $builder, FormProvider $formProvider)
+   public function edit(Request $request, LessonTemplate $lesson, FormBuilder $builder, LessonTemplateFormProvider $formProvider)
    {
-      $form = $this->createForm(LessonTemplateFormType::class, $lesson, [
-         'label' => $lesson->getSubject()->getName() . " ( " . $lesson->getLessonTime()->time() . " )"
+      $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
+
+      $form = $formProvider->getEditFormType($lesson, $lesson->getClass(), $lesson->getDay(), [
+         'lessonTimes' => $lessonTimes
       ]);
 
       $builder->addButton("Zapisz zmiany")->build($form);
@@ -80,7 +79,6 @@ class LessonTemplateController extends AbstractController
       }
 
       $schedule = new ScheduleTemplate($this->em->getRepository(LessonTemplate::class)->findBy(['day' => $lesson->getDay(), 'class' => $lesson->getClass()]));
-      $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
       $schedule->sortBy($lessonTimes);
 
       return $this->render('schedule/template/show.html.twig', [

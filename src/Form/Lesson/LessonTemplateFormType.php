@@ -11,6 +11,7 @@ class LessonTemplateFormType extends AbstractLessonFormType
    {
       $resolver->setDefaults([
          'data_class' => LessonTemplate::class,
+         'lessonTimes' => null
       ]);
    }
 }

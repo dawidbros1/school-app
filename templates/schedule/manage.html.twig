@@ -54,7 +54,9 @@
 {% block body %}
    <div id="sheduleManage">
       <h1 id="main-title">Harmonogram zajęć -
-         {{ class.name }}</h1>
+         {{ class.name }}
+         ({{ date }})
+      </h1>
 
       {% if schedule.lessons|length > 0 %}
          <div>

@@ -5,11 +5,9 @@ namespace App\Controller\Lesson;
 use App\Entity\Lesson\Lesson;
 use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\Schedule;
-use App\Form\Lesson\LessonFormType;
 use App\Service\Entity\EntityProvider;
-use App\Service\Form\FormProvider;
-use App\Service\Form\FormBuilder;
 use App\Service\Form\FormErrors;
+use App\Service\Form\Provider\LessonFormProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -34,13 +32,13 @@ class LessonController extends AbstractController
     * @Route("/create/{class_id}/{date}", name="app_schedule_create")
     * @Method("POST")
     */
-   public function create(Request $request, FormProvider $formProvider, FormErrors $formErrors, EntityProvider $entityProvider): Response
+   public function create(Request $request, LessonFormProvider $formProvider, FormErrors $formErrors, EntityProvider $entityProvider): Response
    {
+      $lesson = new Lesson();
       $date = new \DateTime($request->get('date'));
       $class = $entityProvider->getSchoolClass($request->get('class_id'));
-      $lesson = new Lesson();
 
-      $form = $formProvider->getLessonFormType($lesson, $class, $date, "Dodaj zajęcie");
+      $form = $formProvider->getCreateFormType($lesson, $class, $date, []);
       $formErrors->load($form);
       $form->handleRequest($request);
 
@@ -62,13 +60,9 @@ class LessonController extends AbstractController
    /**
     * @Route("/edit/{id}", name="app_schedule_edit")
     */
-   public function edit(Request $request, Lesson $lesson, FormBuilder $builder)
+   public function edit(Request $request, Lesson $lesson, LessonFormProvider $formProvider)
    {
-      $form = $this->createForm(LessonFormType::class, $lesson, [
-         'label' => $lesson->getSubject()->getName() . " ( " . $lesson->getLessonTime()->time() . " )"
-      ]);
-
-      $builder->addButton("Zapisz zmiany")->build($form);
+      $form = $formProvider->getEditFormType($lesson);
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {

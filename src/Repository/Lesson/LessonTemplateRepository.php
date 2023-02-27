@@ -3,6 +3,7 @@
 namespace App\Repository\Lesson;
 
 use App\Entity\Lesson\LessonTemplate;
+use App\Entity\SchoolClass\SchoolClass;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -37,5 +38,16 @@ class LessonTemplateRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function get(SchoolClass $class, $day)
+    {
+        return $this->createQueryBuilder('s')
+            ->where("s.day = :day")
+            ->andWhere('s.class = :class')
+            ->setParameter('class', $class)
+            ->setParameter('day', $day)
+            ->getQuery()
+            ->execute();
     }
 }
