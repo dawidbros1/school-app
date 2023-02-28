@@ -2,6 +2,14 @@
      padding: 20px 0px !important;
 }  
 
-.lightgreen{
+.cancelled{
+   background-color: rgb(249, 66, 66);
+}
+
+.modificated{
+   background-color: yellow;
+}
+
+.accordingi-to-plan {
    background-color: lightgreen !important;
 }

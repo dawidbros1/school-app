@@ -13,9 +13,27 @@ use Doctrine\ORM\Mapping as ORM;
 class Lesson extends AbstractLesson
 {
    /**
+    * @ORM\ManyToOne(targetEntity=LessonStatus::class)
+    * @ORM\JoinColumn(nullable=false, options={"default": 1})
+    */
+   private $lessonStatus;
+
+   /**
     * @ORM\Column(type="date")
     */
    private $date;
+
+   public function getLessonStatus(): ?LessonStatus
+   {
+      return $this->lessonStatus;
+   }
+
+   public function setLessonStatus(?LessonStatus $lessonStatus): self
+   {
+      $this->lessonStatus = $lessonStatus;
+
+      return $this;
+   }
 
    public function getDate(): ?DateTime
    {

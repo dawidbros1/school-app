@@ -42,6 +42,13 @@
                {{ form_errors(form.place) }}
             </div>
          </div>
+
+         {% if form.lessonStatus is defined %}
+            <div class="col-12 mt-2">
+               {{ form_widget(form.lessonStatus) }}
+               {{ form_errors(form.lessonStatus) }}
+            </div>
+         {% endif %}
       </div>
 
       <div class="col-12">
@@ -68,6 +75,7 @@
                      <th>Przedmiot</th>
                      <th>Nauczyciel</th>
                      <th>Miejsce</th>
+                     <th>Status</th>
                      <th></th>
                   </tr>
                </thead>
@@ -80,6 +88,7 @@
                            <td>{{ lesson.subject.name }}</td>
                            <td>{{ lesson.teacher.name }}</td>
                            <td>{{ lesson.place }}</td>
+                           <td>{{ lesson.lessonStatus.description }}</td>
                            <td>
                               <div class="d-flex">
                                  <a href="{{ path('app_lesson_edit', {id: lesson.id}) }}" class="me-3">
@@ -94,7 +103,7 @@
                         {% else %}
                            <td>{{ loop.index }}</td>
                            <td>{{ lessonTimes[loop.index - 1].time }}</td>
-                           <td colspan="4"></td>
+                           <td colspan="5"></td>
                         {% endif %}
                      </tr>
                   {% endfor %}

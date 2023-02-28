@@ -3,6 +3,7 @@
 namespace App\Controller\Lesson;
 
 use App\Entity\Lesson\Lesson;
+use App\Entity\Lesson\LessonStatus;
 use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\Schedule;
 use App\Service\Entity\EntityProvider;
@@ -43,8 +44,11 @@ class LessonController extends AbstractController
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
+         $status = $this->em->getRepository(LessonStatus::class)->findOneBy(['id' => 1]);
+
          $lesson->setDate($date);
          $lesson->setClass($class);
+         $lesson->setLessonStatus($status);
 
          $repository = $this->em->getRepository(Lesson::class);
          $repository->add($lesson, true);

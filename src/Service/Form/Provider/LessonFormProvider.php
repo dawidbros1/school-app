@@ -3,12 +3,13 @@
 namespace App\Service\Form\Provider;
 
 use App\Entity\Lesson\Lesson;
+use App\Entity\Lesson\LessonStatus;
 use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\Schedule;
 use App\Entity\SchoolClass\SchoolClass;
 use App\Form\Lesson\LessonFormType;
 use App\Service\Form\Provider\AbstractFormProvider;
-
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class LessonFormProvider extends AbstractFormProvider
 {
@@ -40,6 +41,15 @@ class LessonFormProvider extends AbstractFormProvider
       $form = $this->formFactory->create(LessonFormType::class, $lesson, [
          'label' => $lesson->getSubject()->getName() . " ( " . $lesson->getLessonTime()->time() . " )",
          'lessonTimes' => $lessonTimes
+      ]);
+
+      $form->add('lessonStatus', EntityType::class, [
+         'class' => LessonStatus::class,
+         'placeholder' => "Wybierz godziny",
+         'attr' => [
+            'class' => "form-control"
+         ],
+         'choice_label' => "description",
       ]);
 
       $this->builder->addSaveButton()->build($form);

@@ -43,7 +43,7 @@
                         {% if continue %}
                            {% set empty = false %}
                            <td class="item">
-                              <div class="lightgreen">
+                              <div class="{{ lesson.lessonStatus.name }}">
                                  <div>
                                     <span class="fw-bold">{{ lesson.subject.name }}</span>
                                     ({{ lesson.place }})
