@@ -64,7 +64,7 @@
                   <td class="item">
                      <div>
                         {% if schedule.canManage == true %}
-                           <a href="{{ path('app_class_schedule_manage', {class_id: class.id, date: key }) }}">
+                           <a href="{{ path('app_schedule_manage', {class_id: class.id, date: key }) }}">
                               <img class="img-medium" src="{{ asset('images/settings.png') }}"/>
                            </a>
                         </div>
@@ -78,7 +78,7 @@
 
    <div id="buttons" class="container-fluid">
       <div class="text-center row">
-         <a class="col-3 offset-1" href="{{ path('app_class_schedule_show', {class_id: class.id, date: prevDate}) }}">
+         <a class="col-3 offset-1" href="{{ path('app_schedule_show', {class_id: class.id, date: prevDate}) }}">
             <button class="btn btn-primary w-100">Poprzednia strona</button>
          </a>
 
@@ -86,7 +86,7 @@
             <button class="btn btn-primary w-100">Powrót do harmonogramu</button>
          </a>
 
-         <a class="col-3" href="{{ path('app_class_schedule_show', {class_id: class.id, date: nextDate}) }}">
+         <a class="col-3" href="{{ path('app_schedule_show', {class_id: class.id, date: nextDate}) }}">
             <button class="btn btn-primary w-100">Następna strona</button>
          </a>
       </div>

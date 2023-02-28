@@ -29,7 +29,7 @@ class LessonController extends AbstractController
    }
 
    /**
-    * @Route("/create/{class_id}/{date}", name="app_schedule_create")
+    * @Route("/create/{class_id}/{date}", name="app_lesson_create")
     * @Method("POST")
     */
    public function create(Request $request, LessonFormProvider $formProvider, FormErrors $formErrors, EntityProvider $entityProvider): Response
@@ -54,11 +54,11 @@ class LessonController extends AbstractController
          $formErrors->set($form);
       }
 
-      return $this->redirectToRoute('app_class_schedule_manage', ['class_id' => $class->getId(), 'date' => $date->format("Y-m-d")]);
+      return $this->redirectToRoute('app_schedule_manage', ['class_id' => $class->getId(), 'date' => $date->format("Y-m-d")]);
    }
 
    /**
-    * @Route("/edit/{id}", name="app_schedule_edit")
+    * @Route("/edit/{id}", name="app_lesson_edit")
     */
    public function edit(Request $request, Lesson $lesson, LessonFormProvider $formProvider)
    {
@@ -70,7 +70,7 @@ class LessonController extends AbstractController
          $repository->add($lesson, true);
 
          $this->addFlash('success', "Dane zostały zaktualizowane");
-         return $this->redirectToRoute('app_class_schedule_manage', ['date' => $lesson->getDate()->format("Y-m-d"), 'class_id' => $lesson->getClass()->getId()]);
+         return $this->redirectToRoute('app_schedule_manage', ['date' => $lesson->getDate()->format("Y-m-d"), 'class_id' => $lesson->getClass()->getId()]);
       }
 
       $schedule = new Schedule($this->em->getRepository(Lesson::class)->findBy(['date' => $lesson->getDate(), 'class' => $lesson->getClass()]));
@@ -83,12 +83,11 @@ class LessonController extends AbstractController
          'class' => $lesson->getClass(),
          'date' => $lesson->getDate()->format("Y-m-d"),
          'lessonTimes' => $lessonTimes
-
       ]);
    }
 
    /**
-    * @Route("/delete/{id}", name="app_schedule_delete")
+    * @Route("/delete/{id}", name="app_lesson_delete")
     * @Method("POST")
     */
    public function delete(Lesson $lesson)
@@ -96,6 +95,6 @@ class LessonController extends AbstractController
       $this->em->remove($lesson);
       $this->em->flush();
       $this->addFlash('success', "Zajęcie zostało usunięte");
-      return $this->redirectToRoute('app_class_schedule_manage', ['class_id' => $lesson->getClass()->getId(), 'date' => $lesson->getDate()->format("Y-m-d")]);
+      return $this->redirectToRoute('app_schedule_manage', ['class_id' => $lesson->getClass()->getId(), 'date' => $lesson->getDate()->format("Y-m-d")]);
    }
 }

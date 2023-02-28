@@ -82,10 +82,10 @@
                            <td>{{ lesson.place }}</td>
                            <td>
                               <div class="d-flex">
-                                 <a href="{{ path('app_schedule_edit', {id: lesson.id}) }}" class="me-3">
+                                 <a href="{{ path('app_lesson_edit', {id: lesson.id}) }}" class="me-3">
                                     <img class="img-small" src="{{ asset('images/settings.png/') }}"/>
                                  </a>
-                                 <form action="{{ path('app_schedule_delete', {id: lesson.id}) }}" method="post">
+                                 <form action="{{ path('app_lesson_delete', {id: lesson.id}) }}" method="post">
                                     <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>
                                  </form>
                               </div>
@@ -107,7 +107,7 @@
          </p>
       {% endif %}
 
-      <a href="{{ path("app_class_schedule_show", {class_id: class.id, date }) }}">
+      <a href="{{ path("app_schedule_show", {class_id: class.id, date }) }}">
          <button type="button" class="btn btn-primary w-100 fw-bold">Powrót</button>
       </a>
    </div>

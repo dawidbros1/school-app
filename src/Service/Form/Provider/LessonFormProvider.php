@@ -19,7 +19,7 @@ class LessonFormProvider extends AbstractFormProvider
       $form = $this->formFactory->create(LessonFormType::class, $lesson, [
          'label' => "Dodaj lekcje",
          'action' => $this->urlGenerator->generate(
-            "app_schedule_create",
+            "app_lesson_create",
             [
                'class_id' => $class->getId(),
                'date' => $date->format("Y-m-d")

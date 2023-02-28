@@ -89,10 +89,10 @@
                      <td>{{ lesson.place }}</td>
                      <td>
                         <div class="d-flex">
-                           <a href="{{ path('app_scheduleTemplate_edit', {id: lesson.id}) }}" class="me-3">
+                           <a href="{{ path('app_lessonTemplate_edit', {id: lesson.id}) }}" class="me-3">
                               <img class="img-small" src="{{ asset('images/settings.png/') }}"/>
                            </a>
-                           <form action="{{ path('app_scheduleTemplate_delete', {id: lesson.id}) }}" method="post">
+                           <form action="{{ path('app_lessonTemplate_delete', {id: lesson.id}) }}" method="post">
                               <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>
                            </form>
                         </div>
@@ -135,7 +135,7 @@
 
    <div id="buttons" class="container-fluid col-12 col-lg-8 col-xxl-6 bg-light px-4 py-2">
       <div class="row mt-2">
-         <a class="col-sm-6 col text-white mb-2" href="{{ path('app_class_schedule_show', {class_id}) }}">
+         <a class="col-sm-6 col text-white mb-2" href="{{ path('app_schedule_show', {class_id}) }}">
             <button class="btn btn-primary w-100 fw-bold" type="button">
                Zobacz harmonogram klasy
             </button>

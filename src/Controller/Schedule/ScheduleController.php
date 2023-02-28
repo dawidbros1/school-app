@@ -33,7 +33,7 @@ class ScheduleController extends AbstractController
    }
 
    /**
-    * @Route("/show/{class_id}", name="app_class_schedule_show")
+    * @Route("/show/{class_id}", name="app_schedule_show")
     */
    public function show(Request $request)
    {
@@ -73,7 +73,7 @@ class ScheduleController extends AbstractController
    }
 
    /**
-    * @Route("/manage/{class_id}/{date}", name="app_class_schedule_manage") 
+    * @Route("/manage/{class_id}/{date}", name="app_schedule_manage") 
     */
    public function manage(Request $request, LessonFormProvider $formProvider)
    {

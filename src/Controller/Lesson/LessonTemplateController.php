@@ -30,7 +30,7 @@ class LessonTemplateController extends AbstractController
    }
 
    /**
-    * @Route("/create/{day}/{class_id}", name="app_scheduleTemplate_create")
+    * @Route("/create/{day}/{class_id}", name="app_lessonTemplate_create")
     * @Method("POST")
     */
    public function create(Request $request, LessonTemplateFormProvider $formProvider, FormErrors $formErrors, EntityProvider $entityProvider): Response
@@ -57,7 +57,7 @@ class LessonTemplateController extends AbstractController
    }
 
    /**
-    * @Route("/edit/{id}", name="app_scheduleTemplate_edit")
+    * @Route("/edit/{id}", name="app_lessonTemplate_edit")
     */
    public function edit(Request $request, LessonTemplate $lesson, FormBuilder $builder, LessonTemplateFormProvider $formProvider)
    {
@@ -92,7 +92,7 @@ class LessonTemplateController extends AbstractController
    }
 
    /**
-    * @Route("/delete/{id}", name="app_scheduleTemplate_delete")
+    * @Route("/delete/{id}", name="app_lessonTemplate_delete")
     * @Method("POST")
     */
    public function delete(LessonTemplate $lesson)
