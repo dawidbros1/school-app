@@ -21,18 +21,18 @@ class LessonStatus
    /**
     * @ORM\Column(type="string", length=64)
     */
-   private $description;
+   private $name;
 
    /**
     * @ORM\Column(type="string", length=64)
     */
-   private $backgorund;
+   private $description;
 
-   public function __construct(int $id, string $description, string $backgorund)
+   public function __construct(int $id, string $name, string $description)
    {
       $this->id = $id;
+      $this->name = $name;
       $this->description = $description;
-      $this->backgorund = $backgorund;
    }
 
    public function getId(): int
@@ -45,8 +45,8 @@ class LessonStatus
       return $this->description;
    }
 
-   public function getBackgorund(): string
+   public function getName(): string
    {
-      return $this->backgorund;
+      return $this->name;
    }
 }

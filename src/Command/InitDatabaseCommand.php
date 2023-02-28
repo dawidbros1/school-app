@@ -78,18 +78,18 @@ class InitDatabaseCommand extends Command
             $data = [
                 [
                     "id" => 1,
-                    "description" => "zgodnie z planem",
-                    "background" => "bg-success"
+                    "name" => "accordingi-to-plan",
+                    "description" => "zgodnie z planem"
                 ],
                 [
                     "id" => 2,
-                    "description" => "odwołane",
-                    "background" => "bg-danger"
+                    "name" => "cancelled",
+                    "description" => "odwołane"
                 ],
                 [
                     "id" => 3,
+                    "name" => "modificated",
                     "description" => "zmodyfikowane",
-                    "background" => "bg-info"
                 ]
             ];
 
