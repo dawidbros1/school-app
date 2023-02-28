@@ -3,6 +3,7 @@
 namespace App\Controller\Schedule;
 
 use App\Entity\Lesson\Lesson;
+use App\Entity\Lesson\LessonStatus;
 use App\Entity\Lesson\LessonTemplate;
 use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\Schedule;
@@ -144,6 +145,8 @@ class ScheduleController extends AbstractController
             $this->em->getRepository(Lesson::class)->removeIn($class, $dates);
          }
 
+         $status = $this->em->getRepository(LessonStatus::class)->findOneBy(['id' => 1]);
+
          foreach ($dates as $date) {
             foreach ($template as $item) {
                $lesson = new Lesson();
@@ -153,6 +156,7 @@ class ScheduleController extends AbstractController
                $lesson->setSubject($item->getSubject());
                $lesson->setPlace($item->getPlace());
                $lesson->setDate($date);
+               $lesson->setLessonStatus($status);
 
                $this->em->persist($lesson);
             }
