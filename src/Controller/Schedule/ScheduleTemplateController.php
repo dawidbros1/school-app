@@ -8,6 +8,7 @@ use App\Entity\Schedule\ScheduleTemplate;
 use App\Service\Entity\EntityProvider;
 use App\Service\Form\FormErrors;
 use App\Service\Form\Provider\LessonTemplateFormProvider;
+use App\Service\Form\Provider\ScheduleDateRangeFormProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,7 +31,7 @@ class ScheduleTemplateController extends AbstractController
    /**
     * @Route("/show/{day}/{class_id}", name="app_scheduleTemplate_show")
     */
-   public function show(Request $request, FormErrors $formErrors, LessonTemplateFormProvider $formProvider, EntityProvider $entityProvider): Response
+   public function show(Request $request, FormErrors $formErrors, LessonTemplateFormProvider $lessonTemplateFormProvider, ScheduleDateRangeFormProvider $scheduleDateRangeFormProvider, EntityProvider $entityProvider): Response
    {
       $day = $request->get('day');
       $class = $entityProvider->getSchoolClass($request->get('class_id'));
@@ -40,7 +41,7 @@ class ScheduleTemplateController extends AbstractController
       $schedule = new ScheduleTemplate($this->em->getRepository(LessonTemplate::class)->findBy(['day' => $day, 'class' => $class]));
       $schedule->sortBy($lessonTimes);
 
-      $form = $formProvider->getCreateFormType($lesson, $class, $day, [
+      $form = $lessonTemplateFormProvider->getCreateFormType($lesson, $class, $day, [
          'lessonTimes' => $lessonTimes
       ]);
 
@@ -48,7 +49,7 @@ class ScheduleTemplateController extends AbstractController
 
       return $this->render('schedule/template/show.html.twig', [
          'form' => $form->createView(),
-         'initializerForm' => $formProvider->getInitializerFormType($day, $class)->createView(),
+         'scheduleDataRangeForm' => $scheduleDateRangeFormProvider->getFormType($day, $class)->createView(),
          'schedule' => $schedule,
          'day' => $day,
          'class_id' => $class->getId(),

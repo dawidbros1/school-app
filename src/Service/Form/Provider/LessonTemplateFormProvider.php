@@ -13,16 +13,6 @@ use App\Service\Form\Provider\AbstractFormProvider;
 
 class LessonTemplateFormProvider extends AbstractFormProvider
 {
-   // EXPORT
-   public function getInitializerFormType($day, SchoolClass $class)
-   {
-      $form = $this->formFactory->create(InitializerFormType::class, null, [
-         'action' => $this->urlGenerator->generate("app_schedule_fill", ['day' => $day, 'class_id' => $class->getId()])
-      ]);
-
-      return $form;
-   }
-
    public function getCreateFormType(LessonTemplate &$lesson, SchoolClass $class, string $day, array $data = [])
    {
       $lessonTimes = $this->getAvailableLessonTimes($class, $day, $data, $lesson);

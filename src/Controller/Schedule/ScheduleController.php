@@ -10,6 +10,7 @@ use App\Service\Entity\EntityProvider;
 use App\Service\Form\FormErrors;
 use App\Service\Form\Provider\LessonFormProvider;
 use App\Service\Form\Provider\LessonTemplateFormProvider;
+use App\Service\Form\Provider\ScheduleDateRangeFormProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -116,12 +117,12 @@ class ScheduleController extends AbstractController
     * @Route("/fill/{class_id}/{day}", name="app_schedule_fill")
     * @Method("POST")
     */
-   public function fill(Request $request, FormErrors $formErrors, LessonTemplateFormProvider $lessonTemplateFormProvider): Response
+   public function fill(Request $request, FormErrors $formErrors, ScheduleDateRangeFormProvider $formProvider): Response
    {
       $day = $request->get('day');
       $class = $this->entityProvider->getSchoolClass($request->get('class_id'));
 
-      $form = $lessonTemplateFormProvider->getInitializerFormType($day, $class);
+      $form = $formProvider->getFormType($day, $class);
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {

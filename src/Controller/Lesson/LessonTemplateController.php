@@ -9,6 +9,7 @@ use App\Service\Entity\EntityProvider;
 use App\Service\Form\FormBuilder;
 use App\Service\Form\FormErrors;
 use App\Service\Form\Provider\LessonTemplateFormProvider;
+use App\Service\Form\Provider\ScheduleDateRangeFormProvider;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -59,11 +60,11 @@ class LessonTemplateController extends AbstractController
    /**
     * @Route("/edit/{id}", name="app_lessonTemplate_edit")
     */
-   public function edit(Request $request, LessonTemplate $lesson, FormBuilder $builder, LessonTemplateFormProvider $formProvider)
+   public function edit(Request $request, LessonTemplate $lesson, FormBuilder $builder, LessonTemplateFormProvider $lessonTemplateFormProvider, ScheduleDateRangeFormProvider $scheduleDateRangeFormProvider)
    {
       $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
 
-      $form = $formProvider->getEditFormType($lesson, $lesson->getClass(), $lesson->getDay(), [
+      $form = $lessonTemplateFormProvider->getEditFormType($lesson, $lesson->getClass(), $lesson->getDay(), [
          'lessonTimes' => $lessonTimes
       ]);
 
@@ -83,7 +84,7 @@ class LessonTemplateController extends AbstractController
 
       return $this->render('schedule/template/show.html.twig', [
          'form' => $form->createView(),
-         'initializerForm' => $formProvider->getInitializerFormType($lesson->getDay(), $lesson->getClass())->createView(),
+         'scheduleDataRangeForm' => $scheduleDateRangeFormProvider->getFormType($lesson->getDay(), $lesson->getClass())->createView(),
          'schedule' => $schedule,
          'day' => $lesson->getDay(),
          'class_id' => $lesson->getClass()->getId(),
