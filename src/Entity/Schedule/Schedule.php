@@ -6,6 +6,14 @@ use App\Entity\Lesson\Lesson;
 
 class Schedule extends AbstractSchedule
 {
+   private $date;
+
+   public function __construct(array $lessons = [], ?\DateTime $date = null)
+   {
+      $this->date = $date;
+      parent::__construct($lessons);
+   }
+
    public function addLesson(Lesson $lesson)
    {
       $this->lessons[] = $lesson;
@@ -13,13 +21,20 @@ class Schedule extends AbstractSchedule
 
    public function canManage()
    {
-      // assumption: all lessons has this same date
-      if (!empty($this->lessons)) {
+      if ($this->date != null) {
+         $date = $this->date->format("Y-m-d");
+      } else if (!empty($this->lessons)) {
          $date = $this->lessons[0]->getDate()->format("Y-m-d");
-         $today = (new \DateTime('now'))->format("Y-m-d");
-         return (bool) ($date >= $today);
+      } else {
+         return false;
       }
 
-      return false;
+      $today = (new \DateTime('now'))->format("Y-m-d");
+      return (bool) ($date >= $today);
+   }
+
+   public function getDate()
+   {
+      return $this->date;
    }
 }
