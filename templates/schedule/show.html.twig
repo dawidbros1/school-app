@@ -10,7 +10,7 @@
 
 {% block body %}
    <div id="schedule">
-      <h1 id="main-title">Harmonogram klasy [
+      <h1 id="main-title">Plan zajęć [
          {{ class.name }}
          ]
       </h1>
@@ -21,7 +21,10 @@
                {% for lessonTime in lessonTimes %}
                   <th>{{ lessonTime.time }}</th>
                {% endfor %}
-               <td></td>
+
+               {% if is_granted('ROLE_ADMIN') %}
+                  <td></td>
+               {% endif %}
             </tr>
          </thead>
 
@@ -61,15 +64,17 @@
                      {% endif %}
                   {% endfor %}
 
-                  <td class="item position-relative icon-column">
-                     <div class="center">
-                        {% if schedule.canManage == true %}
-                           <a href="{{ path('app_schedule_manage', {class_id: class.id, date: schedule.date|date("Y-m-d") }) }}">
-                              <img class="img-medium" src="{{ asset('images/settings.png') }}"/>
-                           </a>
-                        </div>
-                     {% endif %}
-                  </td>
+                  {% if is_granted('ROLE_ADMIN') %}
+                     <td class="item position-relative icon-column">
+                        <div class="center">
+                           {% if schedule.canManage == true %}
+                              <a href="{{ path('app_schedule_manage', {class_id: class.id, date: schedule.date|date("Y-m-d") }) }}">
+                                 <img class="img-medium" src="{{ asset('images/settings.png') }}"/>
+                              </a>
+                           </div>
+                        {% endif %}
+                     </td>
+                  {% endif %}
                </tr>
             {% endfor %}
          </tbody>
@@ -78,15 +83,15 @@
 
    <div id="buttons" class="container-fluid">
       <div class="text-center row">
-         <a class="col-3 offset-1" href="{{ path('app_schedule_show', {class_id: class.id, date: prevDate}) }}">
+         <a class="col-3 offset-1" href="{{ prevPage }}">
             <button class="btn btn-primary w-100">Poprzednia strona</button>
          </a>
 
-         <a class="col-4" href="{{ path('app_scheduleTemplate_show', {class_id: class.id, day: "monday"}) }}">
-            <button class="btn btn-primary w-100">Powrót do harmonogramu</button>
+         <a class="col-4" href="{{ back }}">
+            <button class="btn btn-primary w-100">{{ backButtonText }}</button>
          </a>
 
-         <a class="col-3" href="{{ path('app_schedule_show', {class_id: class.id, date: nextDate}) }}">
+         <a class="col-3" href="{{ nextPage }}">
             <button class="btn btn-primary w-100">Następna strona</button>
          </a>
       </div>
