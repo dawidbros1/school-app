@@ -52,17 +52,12 @@ class ScheduleController extends AbstractController
       $schedules = [];
 
       foreach ($dates as $date) {
-         $schedules[$date->format("Y-m-d")] = new Schedule();
+         $schedules[] = new Schedule([], $date);
       }
 
       foreach ($lessons as $lesson) {
-         foreach ($dates as $date) {
-            switch ($lesson->getDate()->format('Y-m-d')) {
-               case $date->format("Y-m-d"):
-                  $schedules[$date->format("Y-m-d")]->addLesson($lesson);
-                  break;
-            }
-         }
+         $N = $lesson->getDate()->format('N') - 1;
+         $schedules[$N]->addLesson($lesson);
       }
 
       return $this->render('schedule/show.html.twig', [
