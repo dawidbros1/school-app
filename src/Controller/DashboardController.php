@@ -68,6 +68,7 @@ class DashboardController extends AbstractController
    private function studentDashboard()
    {
       $this->myClass();
+      $this->studentSchedule();
    }
 
    private function createSimpleBox(array $data)
@@ -186,6 +187,16 @@ class DashboardController extends AbstractController
             'image' => "class.png"
          ]);
       }
+   }
+
+   private function studentSchedule()
+   {
+      return $this->createSimpleBox([
+         'title' => "Plan lekcji",
+         'description' => "Tutaj wyświetlisz plan lekcji swojej klasy",
+         'route' => "app_student_schedule",
+         'image' => "class.png"
+      ]);
    }
 
    private function listSubjects()
