@@ -15,5 +15,29 @@
 }
 
 .new {
-   background-color: greenyellow;
+   background-color: orange   ;
+}
+
+.square{
+   width: 20px;
+   height: 20px;
+   border: 1px solid black;
+}
+
+#legend{
+   width: 450px;
+   background-color: lightblue;
+   border: 1px solid black;
+}
+
+#schedule table{
+   min-height: 560px;
+}
+
+.icon-column{
+   width: 50px;
+}
+
+.empty-column{
+   width: 25px;
 }

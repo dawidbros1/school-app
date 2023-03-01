@@ -64,6 +64,7 @@ class ScheduleController extends AbstractController
          'class' => $class,
          'schedules' => $schedules,
          'lessonTimes' => $lessonTimes,
+         'lessonStatuses' => $this->em->getRepository(LessonStatus::class)->findAll(),
          'nextDate' => $nextDate->format("Y-m-d"),
          'prevDate' => $prevDate->format("Y-m-d")
       ]);

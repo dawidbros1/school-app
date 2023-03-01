@@ -26,10 +26,10 @@
          </thead>
 
          <tbody>
-            {% for key, schedule in schedules %}
+            {% for schedule in schedules %}
                <tr>
                   <td class="item">
-                     <div>{{ key }}</div>
+                     <div>{{ schedule.date|date("Y-m-d") }}</div>
                   </td>
                   {% for lessonTime in lessonTimes %}
                      {% set empty = true %}
@@ -55,16 +55,16 @@
                      {% endfor %}
 
                      {% if empty %}
-                        <td class="item">
-                           <div>-</div>
+                        <td class="item position-relative">
+                           <div class="center empty-column">-</div>
                         </td>
                      {% endif %}
-                  {% endfor %}
+                  {% endfor %}   
 
-                  <td class="item">
-                     <div>
+                  <td class="item position-relative icon-column">
+                     <div class="center">
                         {% if schedule.canManage == true %}
-                           <a href="{{ path('app_schedule_manage', {class_id: class.id, date: key }) }}">
+                           <a href="{{ path('app_schedule_manage', {class_id: class.id, date: schedule.date|date("Y-m-d") }) }}">
                               <img class="img-medium" src="{{ asset('images/settings.png') }}"/>
                            </a>
                         </div>
@@ -89,6 +89,19 @@
          <a class="col-3" href="{{ path('app_schedule_show', {class_id: class.id, date: nextDate}) }}">
             <button class="btn btn-primary w-100">Następna strona</button>
          </a>
+      </div>
+   </div>
+
+   <div id="legend" class="mt-2 p-2">
+      <h3 class="fs-6 text-center">LEGENDA</h3>
+
+      <div class="container-fluid row">
+         {% for status in lessonStatuses %}
+            <div class="col-6 d-flex">
+               <div class="square mt-1 {{ status.name }}"></div>
+               <div class="ps-2">{{ status.description }}</div>
+            </div>
+         {% endfor %}
       </div>
    </div>
 {% endblock %}
