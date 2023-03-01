@@ -83,16 +83,16 @@
 
    <div id="buttons" class="container-fluid">
       <div class="text-center row">
-         <a class="col-3 offset-1" href="{{ prevPage }}">
-            <button class="btn btn-primary w-100">Poprzednia strona</button>
+         <a class="col-3" href="{{ prevPage }}">
+            <button class="btn btn-primary w-100">{{ '<--' }}</button>
          </a>
 
-         <a class="col-4" href="{{ back }}">
+         <a class="col-6" href="{{ back }}">
             <button class="btn btn-primary w-100">{{ backButtonText }}</button>
          </a>
 
          <a class="col-3" href="{{ nextPage }}">
-            <button class="btn btn-primary w-100">Następna strona</button>
+            <button class="btn btn-primary w-100">{{ '-->' }}</button>
          </a>
       </div>
    </div>
@@ -100,7 +100,7 @@
    <div id="legend" class="mt-2 p-2">
       <h3 class="fs-6 text-center">LEGENDA</h3>
 
-      <div class="container-fluid row">
+      <div class="d-flex flex-wrap">
          {% for status in lessonStatuses %}
             <div class="col-6 d-flex">
                <div class="square mt-1 {{ status.name }}"></div>
