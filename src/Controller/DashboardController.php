@@ -28,8 +28,6 @@ class DashboardController extends AbstractController
     */
    public function index()
    {
-      // ONLY FOR LOGGED IN
-
       if ($this->isGranted('ROLE_OWNER')) {
          $this->ownerDashboard();
       } else if ($this->isGranted('ROLE_ADMIN')) {
@@ -39,7 +37,6 @@ class DashboardController extends AbstractController
       } else if ($this->isGranted('ROLE_STUDENT')) {
          $this->studentDashboard();
       }
-
 
       return $this->render('dashboard.html.twig', [
          'simpleBoxes' => $this->simpleBoxes,
@@ -68,7 +65,7 @@ class DashboardController extends AbstractController
    private function studentDashboard()
    {
       $this->myClass();
-      $this->studentSchedule();
+      $this->studentSchedule()->studentMobileSchedule();
    }
 
    private function createSimpleBox(array $data)
@@ -195,6 +192,16 @@ class DashboardController extends AbstractController
          'title' => "Plan lekcji",
          'description' => "Tutaj wyświetlisz plan lekcji swojej klasy",
          'route' => "app_student_schedule",
+         'image' => "class.png"
+      ]);
+   }
+
+   private function studentMobileSchedule()
+   {
+      return $this->createSimpleBox([
+         'title' => "Plan lekcji (mobilny)",
+         'description' => "Tutaj wyświetlisz plan lekcji swojej klasy",
+         'route' => "app_student_schedule_mobile",
          'image' => "class.png"
       ]);
    }

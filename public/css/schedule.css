@@ -2,6 +2,8 @@
      padding: 20px 0px !important;
 }  
 
+/* BGC FOR LESSONS */
+
 .cancelled{
    background-color: rgb(249, 66, 66);
 }
@@ -15,7 +17,11 @@
 }
 
 .new {
-   background-color: orange   ;
+   background-color: orange;
+}
+
+.empty {
+   background-color: rgb(241, 241, 241);
 }
 
 .square{
@@ -25,7 +31,7 @@
 }
 
 #legend{
-   width: 450px;
+   width: 400px;
    background-color: lightblue;
    border: 1px solid black;
 }

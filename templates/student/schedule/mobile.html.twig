@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Plan zajęć
+{% endblock %}
+
+{% block stylesheets %}
+   <link rel="stylesheet" href="{{ asset('css/schedule.css') }}"/>
+
+   <link rel="stylesheet" href="{{ asset('css/schedule/mobile.css') }}"/>
+
+   <style></style>
+
+{% endblock %}
+
+{% block javascripts %}
+   <script src="{{ asset("js/schedule/main.js") }}"></script>
+{% endblock %}
+
+{% block body %}
+   <div id="schedule-mobile" class="mx-auto">
+      <h1 id="main-title">Plan zajęć [
+         {{ class.name }}
+         ]
+      </h1>
+
+      <div class="border">
+         <div id="dates" class="d-flex flex-wrap">
+            <div role="button" class="col-6 handle border-end border-bottom">Poniedziałek</div>
+            <div role="button" class="col-6 handle border-bottom">Wtorek</div>
+            <div role="button" class="col-4 handle border-bottom border-end">Środa</div>
+            <div role="button" class="col-4 handle border-bottom border-end">Czwartek</div>
+            <div role="button" class="col-4 handle border-bottom">Piątek</div>
+         </div>
+
+         <div class="day">
+            {% for schedule in schedules %}
+               <div class="schedule-wrapper d-none">
+                  {% for index, lessonTime in lessonTimes %}
+                     {% set lesson = schedule.lessons[index] %}
+
+                     <div class="d-flex p-1 my-1 lesson {{ lesson != null ? lesson.lessonStatus.name : " empty" }}">
+                        <div class="me-2">{{ lessonTime.time }}</div>
+                        <div>
+                           {% if lesson != null %}
+                              {{ lesson.subject.name }}
+                              ({{ lesson.place }}) -
+                              {{ lesson.teacher.name }}
+                           {% else %}
+                              -
+                           {% endif %}
+                        </div>
+                     </div>
+                  {% endfor %}
+               </div>
+            {% endfor %}
+         </div>
+      </div>
+
+      <div id="buttons" class="container-fluid mt-2">
+         <div class="text-center row">
+            <a class="col-3" href="{{ prevPage }}">
+               <button class="btn btn-primary w-100">{{ '<--' }}</button>
+            </a>
+
+            <a class="col-6" href="{{ back }}">
+               <button class="btn btn-primary w-100">{{ backButtonText }}</button>
+            </a>
+
+            <a class="col-3" href="{{ nextPage }}">
+               <button class="btn btn-primary w-100">{{'-->'}}</button>
+            </a>
+         </div>
+      </div>
+
+      <div id="legend" class="mt-2 p-2 w-100">
+         <h3 class="fs-6">LEGENDA</h3>
+
+         <div class="d-flex flex-wrap">
+            {% for status in lessonStatuses %}
+               <div class="col-6 d-flex">
+                  <div class="square mt-1 {{ status.name }}"></div>
+                  <div class="ps-2">{{ status.description }}</div>
+               </div>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+{% endblock %}
