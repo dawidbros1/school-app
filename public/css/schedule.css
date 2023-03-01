@@ -31,7 +31,7 @@
 }
 
 #schedule table{
-   min-height: 560px;
+   min-height: 540px;
 }
 
 .icon-column{
@@ -40,4 +40,8 @@
 
 .empty-column{
    width: 25px;
+}
+
+table *{
+   font-size: 14px;
 }

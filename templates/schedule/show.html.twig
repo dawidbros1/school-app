@@ -28,7 +28,7 @@
          <tbody>
             {% for schedule in schedules %}
                <tr>
-                  <td class="item">
+                  <td class="item align-middle">
                      <div>{{ schedule.date|date("Y-m-d") }}</div>
                   </td>
                   {% for lessonTime in lessonTimes %}
@@ -59,7 +59,7 @@
                            <div class="center empty-column">-</div>
                         </td>
                      {% endif %}
-                  {% endfor %}   
+                  {% endfor %}
 
                   <td class="item position-relative icon-column">
                      <div class="center">
