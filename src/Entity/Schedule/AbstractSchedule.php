@@ -28,14 +28,15 @@ abstract class AbstractSchedule
       $output = [];
 
       foreach ($lessonTimes as $lessonTime) {
+         $selectedLesson = null;
+
          foreach ($lessons as $lesson) {
             if ($lessonTime == $lesson->getLessonTime()) {
                $selectedLesson = $lesson;
             }
-
          }
+         
          $output[] = $selectedLesson;
-         $selectedLesson = null;
       }
 
       $this->lessons = $output;
