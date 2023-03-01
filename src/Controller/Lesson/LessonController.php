@@ -44,7 +44,7 @@ class LessonController extends AbstractController
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
-         $status = $this->em->getRepository(LessonStatus::class)->findOneBy(['id' => 1]);
+         $status = $this->em->getRepository(LessonStatus::class)->findOneBy(['id' => 4]); // 4 => new
 
          $lesson->setDate($date);
          $lesson->setClass($class);

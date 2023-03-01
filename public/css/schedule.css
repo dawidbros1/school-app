@@ -11,5 +11,9 @@
 }
 
 .accordingi-to-plan {
-   background-color: lightgreen !important;
+   background-color: lightgreen;
+}
+
+.new {
+   background-color: greenyellow;
 }
