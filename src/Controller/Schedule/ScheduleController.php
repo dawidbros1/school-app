@@ -42,7 +42,7 @@ class ScheduleController extends AbstractController
       $class = $this->entityProvider->getSchoolClass($request->get('class_id'));
       $date = new \DateTime($request->get('date', 'now'));
 
-      [$schedules, $prevDate, $nextDate] = $code->getData($class, $date);
+      [$schedules, $prevDate, $nextDate] = $code->getData("class", $class, $date);
 
       return $this->render('schedule/show.html.twig', [
          'title' => "Plan zajęć [ " . $class->getName() . " ]",
@@ -78,7 +78,6 @@ class ScheduleController extends AbstractController
       $lesson = new Lesson();
       $class = $this->entityProvider->getSchoolClass($request->get('class_id'));
       $schedule = new Schedule($this->em->getRepository(Lesson::class)->findBy(['class' => $class, 'date' => $date]));
-
       $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
 
       $form = $formProvider->getCreateFormType($lesson, $class, $date, [
