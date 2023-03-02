@@ -86,7 +86,8 @@ class LessonController extends AbstractController
          'schedule' => $schedule,
          'class' => $lesson->getClass(),
          'date' => $lesson->getDate()->format("Y-m-d"),
-         'lessonTimes' => $lessonTimes
+         'lessonTimes' => $lessonTimes,
+         'type' => "edit"
       ]);
    }
 

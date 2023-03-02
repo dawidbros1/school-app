@@ -92,7 +92,8 @@ class ScheduleController extends AbstractController
          'schedule' => $schedule,
          'class' => $class,
          'date' => $date->format("Y-m-d"),
-         'lessonTimes' => $lessonTimes
+         'lessonTimes' => $lessonTimes,
+         'type' => "create"
       ]);
    }
 

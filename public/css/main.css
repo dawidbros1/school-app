@@ -70,3 +70,11 @@ img {
    width: 25px;
    height: 25px;
 }
+
+.blur {
+   filter: blur(10px);
+}
+
+.form{
+   z-index: 10;
+}

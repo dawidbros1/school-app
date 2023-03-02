@@ -88,7 +88,8 @@ class LessonTemplateController extends AbstractController
          'schedule' => $schedule,
          'day' => $lesson->getDay(),
          'class_id' => $lesson->getClass()->getId(),
-         'lessonTimes' => $lessonTimes
+         'lessonTimes' => $lessonTimes,
+         'type' => "edit"
       ]);
    }
 

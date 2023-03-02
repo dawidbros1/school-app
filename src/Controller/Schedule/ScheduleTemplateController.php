@@ -53,7 +53,8 @@ class ScheduleTemplateController extends AbstractController
          'schedule' => $schedule,
          'day' => $day,
          'class_id' => $class->getId(),
-         'lessonTimes' => $lessonTimes
+         'lessonTimes' => $lessonTimes,
+         'type' => "create"
       ]);
    }
 }
