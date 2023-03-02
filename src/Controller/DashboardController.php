@@ -66,7 +66,7 @@ class DashboardController extends AbstractController
    private function studentDashboard()
    {
       $this->myClass();
-      $this->studentSchedule()->studentMobileSchedule();
+      $this->studentSchedule();
    }
 
    // ===== //
@@ -214,17 +214,14 @@ class DashboardController extends AbstractController
    // SCHEDULE //
    private function studentSchedule()
    {
-      return $this->createSimpleBox([
+      $this->createSimpleBox([
          'title' => "Plan lekcji",
          'description' => "Tutaj wyświetlisz plan lekcji w wersji na duże ekrany",
          'route' => "app_student_schedule",
          'params' => ["device" => "desktop"],
          'image' => "desktop.png"
       ]);
-   }
 
-   private function studentMobileSchedule()
-   {
       return $this->createSimpleBox([
          'title' => "Plan lekcji (mobilny)",
          'description' => "Tutaj wyświetlisz plan lekcji dostosowany do urządzenia mobilnego",
@@ -236,11 +233,20 @@ class DashboardController extends AbstractController
 
    private function teacherSchedule()
    {
+      $this->createSimpleBox([
+         'title' => "Plan lekcji",
+         'description' => "Tutaj wyświetlisz plan lekcji w wersji na duże ekrany",
+         'route' => "app_teacher_schedule",
+         'params' => ["device" => "desktop"],
+         'image' => "desktop.png"
+      ]);
+
       return $this->createSimpleBox([
          'title' => "Plan lekcji",
-         'description' => "Tutaj wyświetlisz swój plan lekcji",
+         'description' => "Tutaj wyświetlisz plan lekcji dostosowany do urządzenia mobilnego",
          'route' => "app_teacher_schedule",
-         'image' => "desktop.png"
+         'params' => ["device" => "mobile"],
+         'image' => "mobile.png"
       ]);
    }
 }
