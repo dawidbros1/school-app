@@ -39,7 +39,7 @@ class ScheduleTemplateController extends AbstractController
       $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
 
       $schedule = new ScheduleTemplate($this->em->getRepository(LessonTemplate::class)->findBy(['day' => $day, 'class' => $class]));
-      $schedule->sortBy($lessonTimes);
+      $schedule->include($lessonTimes);
 
       $form = $lessonTemplateFormProvider->getCreateFormType($lesson, $class, $day, [
          'lessonTimes' => $lessonTimes

@@ -85,7 +85,7 @@ class ScheduleController extends AbstractController
       ]);
 
 
-      $schedule->sortBy($lessonTimes);
+      $schedule->include($lessonTimes);
 
       return $this->render('schedule/manage.html.twig', [
          'form' => $form->createView(),

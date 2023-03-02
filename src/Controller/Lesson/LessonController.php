@@ -79,7 +79,7 @@ class LessonController extends AbstractController
 
       $schedule = new Schedule($this->em->getRepository(Lesson::class)->findBy(['date' => $lesson->getDate(), 'class' => $lesson->getClass()]));
       $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
-      $schedule->sortBy($lessonTimes);
+      $schedule->include($lessonTimes);
 
       return $this->render('schedule/manage.html.twig', [
          'form' => $form->createView(),

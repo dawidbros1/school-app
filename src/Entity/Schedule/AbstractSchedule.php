@@ -21,7 +21,7 @@ abstract class AbstractSchedule
       return (bool) (count($this->lessons) == 0);
    }
 
-   public function sortBy(array $lessonTimes = [])
+   public function include(array $lessonTimes = [])
    {
       $lessons = $this->lessons;
       $selectedLesson = null;
@@ -35,7 +35,7 @@ abstract class AbstractSchedule
                $selectedLesson = $lesson;
             }
          }
-         
+
          $output[] = $selectedLesson;
       }
 
