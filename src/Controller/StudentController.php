@@ -31,18 +31,15 @@ class StudentController extends AbstractController
    {
       $class = $userManager->getUser()->getClass();
       $date = new \DateTime($request->get('date', 'now'));
-      [$schedules, $prevDate, $nextDate, $lessonTimes] = $code->getData($class, $date);
+      [$schedules, $prevDate, $nextDate, $lessonTimes] = $code->getData("class", $class, $date);
 
-      $template = "schedule/show.html.twig";
+      $device = $request->get("device");
 
-      if (($device = $request->get("device")) == "mobile") {
-         $template = "student/schedule/mobile.html.twig";
-      }
-
-      return $this->render($template, [
+      return $this->render("schedule/user/" . $device . ".html.twig", [
          'title' => "Plan zajęć",
          'class' => $class,
          'schedules' => $schedules,
+         'display' => "teacher",
          'lessonTimes' => $lessonTimes,
          'lessonStatuses' => $this->em->getRepository(LessonStatus::class)->findAll(),
          'nextPage' => $this->generateUrl("app_student_schedule", ['date' => $nextDate->format("Y-m-d"), 'device' => $device]),
