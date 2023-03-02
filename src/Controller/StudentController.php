@@ -34,12 +34,13 @@ class StudentController extends AbstractController
       [$schedules, $prevDate, $nextDate, $lessonTimes] = $code->getData($class, $date);
 
       $template = "schedule/show.html.twig";
-      
+
       if (($device = $request->get("device")) == "mobile") {
          $template = "student/schedule/mobile.html.twig";
       }
 
       return $this->render($template, [
+         'title' => "Plan zajęć",
          'class' => $class,
          'schedules' => $schedules,
          'lessonTimes' => $lessonTimes,

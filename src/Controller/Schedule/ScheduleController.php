@@ -45,6 +45,7 @@ class ScheduleController extends AbstractController
       [$schedules, $prevDate, $nextDate] = $code->getData($class, $date);
 
       return $this->render('schedule/show.html.twig', [
+         'title' => "Plan zajęć [ " . $class->getName() . " ]",
          'class' => $class,
          'schedules' => $schedules,
          'lessonTimes' => $this->em->getRepository(LessonTime::class)->findAll(),

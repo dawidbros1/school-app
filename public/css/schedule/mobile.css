@@ -11,3 +11,7 @@
 .active{
    background-color: lightblue;
 }
+
+#dates div{
+   user-select: none;
+}

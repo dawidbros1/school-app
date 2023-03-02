@@ -18,46 +18,47 @@
 {% endblock %}
 
 {% block body %}
-   <div id="schedule-mobile" class="mx-auto">
-      <h1 id="main-title">Plan zajęć [
-         {{ class.name }}
-         ]
-      </h1>
+   <div id="schedule-mobile" class="mx-auto bg-light p-2 border border-dark border-2">
+      <h1 id="main-title">{{ title }}</h1>
 
-      <div class="border">
-         <div id="dates" class="d-flex flex-wrap">
-            <div role="button" class="col-6 handle border-end border-bottom">Poniedziałek</div>
-            <div role="button" class="col-6 handle border-bottom">Wtorek</div>
-            <div role="button" class="col-4 handle border-bottom border-end">Środa</div>
-            <div role="button" class="col-4 handle border-bottom border-end">Czwartek</div>
-            <div role="button" class="col-4 handle border-bottom">Piątek</div>
-         </div>
-
-         <div class="day">
-            {% for schedule in schedules %}
-               <div class="schedule-wrapper d-none">
-                  {% for index, lessonTime in lessonTimes %}
-                     {% set lesson = schedule.lessons[index] %}
-
-                     <div class="d-flex p-1 my-1 lesson {{ lesson != null ? lesson.lessonStatus.name : " empty" }}">
-                        <div class="me-2">{{ lessonTime.time }}</div>
-                        <div>
-                           {% if lesson != null %}
-                              {{ lesson.subject.name }}
-                              ({{ lesson.place }}) -
-                              {{ lesson.teacher.name }}
-                           {% else %}
-                              -
-                           {% endif %}
-                        </div>
-                     </div>
-                  {% endfor %}
-               </div>
-            {% endfor %}
-         </div>
+      <div class="text-center border-bottom border-dark border-2 mb-2 fs-6">
+         {{ schedules[0].date|date("Y-m-d") }}
+         -
+         {{ schedules[4].date|date("Y-m-d") }}
       </div>
 
-      <div id="buttons" class="container-fluid mt-2">
+      <div id="dates" class="d-flex flex-wrap border-bottom border-dark border-2 pb-2 mb-2">
+         <div role="button" class="col-6 handle border border-dark">Poniedziałek</div>
+         <div role="button" class="col-6 handle border border-start-0 border-dark">Wtorek</div>
+         <div role="button" class="col-4 handle border border-top-0 border-dark">Środa</div>
+         <div role="button" class="col-4 handle border-bottom border-end border-dark">Czwartek</div>
+         <div role="button" class="col-4 handle border-bottom border-end border-dark">Piątek</div>
+      </div>
+
+      <div class="day border-dark border-2 border-bottom pb-2 mb-2">
+         {% for schedule in schedules %}
+            <div class="schedule-wrapper d-none">
+               {% for index, lessonTime in lessonTimes %}
+                  {% set lesson = schedule.lessons[index] %}
+
+                  <div class="d-flex p-1 lesson {{ lesson != null ? lesson.lessonStatus.name : " empty" }}">
+                     <div class="me-2">{{ lessonTime.time }}</div>
+                     <div>
+                        {% if lesson != null %}
+                           {{ lesson.subject.name }}
+                           ({{ lesson.place }}) -
+                           {{ lesson.teacher.name }}
+                        {% else %}
+                           -
+                        {% endif %}
+                     </div>
+                  </div>
+               {% endfor %}
+            </div>
+         {% endfor %}
+      </div>
+
+      <div id="buttons" class="container-fluid border-dark border-2 border-bottom pb-2 mb-2">
          <div class="text-center row">
             <a class="col-3" href="{{ prevPage }}">
                <button class="btn btn-primary w-100">{{ '<--' }}</button>
@@ -68,12 +69,12 @@
             </a>
 
             <a class="col-3" href="{{ nextPage }}">
-               <button class="btn btn-primary w-100">{{'-->'}}</button>
+               <button class="btn btn-primary w-100">{{ '-->' }}</button>
             </a>
          </div>
       </div>
 
-      <div id="legend" class="mt-2 p-2 w-100">
+      <div id="legend" class="p-2 w-100 border-0">
          <h3 class="fs-6">LEGENDA</h3>
 
          <div class="d-flex flex-wrap">
