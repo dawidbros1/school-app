@@ -3,6 +3,7 @@
 namespace App\Service\Shared;
 
 use App\Entity\Lesson\Lesson;
+use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\Schedule;
 use App\Entity\SchoolClass\SchoolClass;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +20,7 @@ class ScheduleSharedCode
    {
       $dates = $this->getWeek($date->format("Y-m-d"));
       $lessons = $this->em->getRepository(Lesson::class)->getIn($class, $dates);
+      $lessonTimes = $this->em->getRepository(LessonTime ::class)->findAll();
 
       $nextDate = clone $date->modify("+7 days");
       $prevDate = clone $date->modify("-14 days");
@@ -34,7 +36,11 @@ class ScheduleSharedCode
          $schedules[$N]->addLesson($lesson);
       }
 
-      return [$schedules, $prevDate, $nextDate];
+      foreach ($schedules as $schedule) {
+         $schedule->include($lessonTimes);
+      }
+
+      return [$schedules, $prevDate, $nextDate, $lessonTimes];
    }
 
    private function getWeek($date)
