@@ -4,6 +4,7 @@ namespace App\Repository\Lesson;
 
 use App\Entity\Lesson\Lesson;
 use App\Entity\SchoolClass\SchoolClass;
+use App\Entity\UserType\Teacher;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -49,6 +50,22 @@ class LessonRepository extends ServiceEntityRepository
             ->where("s.date IN(:dates)")
             ->andWhere('s.class = :class')
             ->setParameter('class', $class)
+            ->setParameter('dates', $dates)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function teacher(Teacher $teacher, array $dates)
+    {
+        $dates = array_map(function ($date) {
+            return $date->format("Y-m-d");
+        }, $dates);
+
+        return $this->createQueryBuilder('s')
+            ->select()
+            ->where("s.date IN(:dates)")
+            ->andWhere('s.teacher = :teacher')
+            ->setParameter('teacher', $teacher)
             ->setParameter('dates', $dates)
             ->getQuery()
             ->getResult();

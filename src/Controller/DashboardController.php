@@ -60,6 +60,7 @@ class DashboardController extends AbstractController
    private function teacherDashboard()
    {
       $this->myClass();
+      $this->teacherSchedule();
    }
 
    private function studentDashboard()
@@ -67,6 +68,8 @@ class DashboardController extends AbstractController
       $this->myClass();
       $this->studentSchedule()->studentMobileSchedule();
    }
+
+   // ===== //
 
    private function createSimpleBox(array $data)
    {
@@ -99,6 +102,8 @@ class DashboardController extends AbstractController
       array_push($this->complexBoxes, $obj);
       return $this;
    }
+
+   // ===== //
 
    private function admins()
    {
@@ -186,6 +191,27 @@ class DashboardController extends AbstractController
       }
    }
 
+   private function listSubjects()
+   {
+      return $this->createSimpleBox([
+         'title' => "Lista przedmiotów",
+         'description' => "Tutaj zobaczysz listę przedmiotów",
+         'route' => "app_subject_list",
+         'image' => "books.png"
+      ]);
+   }
+
+   private function listLessonTimes()
+   {
+      return $this->createSimpleBox([
+         'title' => "Rozkład zajęć",
+         'description' => "Tutaj ustalisz godziny zajęć",
+         'route' => "app_lessonTime_list",
+         'image' => "clock.png"
+      ]);
+   }
+
+   // SCHEDULE //
    private function studentSchedule()
    {
       return $this->createSimpleBox([
@@ -208,23 +234,13 @@ class DashboardController extends AbstractController
       ]);
    }
 
-   private function listSubjects()
+   private function teacherSchedule()
    {
       return $this->createSimpleBox([
-         'title' => "Lista przedmiotów",
-         'description' => "Tutaj zobaczysz listę przedmiotów",
-         'route' => "app_subject_list",
-         'image' => "books.png"
-      ]);
-   }
-
-   private function listLessonTimes()
-   {
-      return $this->createSimpleBox([
-         'title' => "Rozkład zajęć",
-         'description' => "Tutaj ustalisz godziny zajęć",
-         'route' => "app_lessonTime_list",
-         'image' => "clock.png"
+         'title' => "Plan lekcji",
+         'description' => "Tutaj wyświetlisz swój plan lekcji",
+         'route' => "app_teacher_schedule",
+         'image' => "desktop.png"
       ]);
    }
 }

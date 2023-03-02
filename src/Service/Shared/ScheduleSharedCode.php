@@ -43,7 +43,7 @@ class ScheduleSharedCode
       return [$schedules, $prevDate, $nextDate, $lessonTimes];
    }
 
-   private function getWeek($date)
+   public function getWeek($date)
    {
       $date = new \DateTime($date);
       $dates = [];

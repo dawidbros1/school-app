@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+   Plan zajęć
+{% endblock %}
+
+{% block stylesheets %}
+   <link rel="stylesheet" href="{{ asset('css/schedule.css') }}"/>
+{% endblock %}
+
+{% block body %}
+   <div id="schedule">
+      <h1 id="main-title">{{ title }}</h1>
+      <table class="table table-striped text-center">
+         <thead>
+            <tr>
+               <th>Data</th>
+               {% for lessonTime in lessonTimes %}
+                  <th>{{ lessonTime.time }}</th>
+               {% endfor %}
+            </tr>
+         </thead>
+
+         <tbody>
+            {% for schedule in schedules %}
+               <tr>
+                  <td class="item align-middle">
+                     <div>{{ schedule.date|date("Y-m-d") }}</div>
+                  </td>
+                  {% for index, lessonTime in lessonTimes %}
+                     {% set lesson = schedule.lessons[index] %}
+
+                     {% if lesson == null %}
+                        <td class="item position-relative">
+                           <div class="center empty-column">-</div>
+                        </td>
+                     {% else %}
+                        <td class="item">
+                           <div class="{{ lesson.lessonStatus.name }}">
+                              <div>
+                                 <span class="fw-bold">{{ lesson.subject.name }}</span>
+                                 ({{ lesson.place }})
+                              </div>
+                              <div>({{ lesson.class.name }})</div>
+                           </div>
+                        </td>
+                     {% endif %}
+                  {% endfor %}
+               </tr>
+            {% endfor %}
+         </tbody>
+      </table>
+   </div>
+
+   <div id="buttons" class="container-fluid">
+      <div class="text-center row">
+         <a class="col-3" href="{{ prevPage }}">
+            <button class="btn btn-primary w-100">{{ '<--' }}</button>
+         </a>
+
+         <a class="col-6" href="{{ back }}">
+            <button class="btn btn-primary w-100">{{ backButtonText }}</button>
+         </a>
+
+         <a class="col-3" href="{{ nextPage }}">
+            <button class="btn btn-primary w-100">{{ '-->' }}</button>
+         </a>
+      </div>
+   </div>
+
+   <div id="legend" class="mt-2 p-2">
+      <h3 class="fs-6 text-center">LEGENDA</h3>
+
+      <div class="d-flex flex-wrap">
+         {% for status in lessonStatuses %}
+            <div class="col-6 d-flex">
+               <div class="square mt-1 {{ status.name }}"></div>
+               <div class="ps-2">{{ status.description }}</div>
+            </div>
+         {% endfor %}
+      </div>
+   </div>
+{% endblock %}
