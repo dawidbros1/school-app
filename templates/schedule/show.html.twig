@@ -34,32 +34,22 @@
                   <td class="item align-middle">
                      <div>{{ schedule.date|date("Y-m-d") }}</div>
                   </td>
-                  {% for lessonTime in lessonTimes %}
-                     {% set empty = true %}
-                     {% for lesson in schedule.lessons %}
-                        {% set continue = true %}
+                  {% for index, lessonTime in lessonTimes %}
+                     {% set lesson = schedule.lessons[index] %}
 
-                        {% if lesson.lessonTime != lessonTime %}
-                           {% set continue = false %}
-                        {% endif %}
-
-                        {% if continue %}
-                           {% set empty = false %}
-                           <td class="item">
-                              <div class="{{ lesson.lessonStatus.name }}">
-                                 <div>
-                                    <span class="fw-bold">{{ lesson.subject.name }}</span>
-                                    ({{ lesson.place }})
-                                 </div>
-                                 <div>({{ lesson.teacher.name }})</div>
-                              </div>
-                           </td>
-                        {% endif %}
-                     {% endfor %}
-
-                     {% if empty %}
+                     {% if lesson == null %}
                         <td class="item position-relative">
                            <div class="center empty-column">-</div>
+                        </td>
+                     {% else %}
+                        <td class="item">
+                           <div class="{{ lesson.lessonStatus.name }}">
+                              <div>
+                                 <span class="fw-bold">{{ lesson.subject.name }}</span>
+                                 ({{ lesson.place }})
+                              </div>
+                              <div>({{ lesson.teacher.name }})</div>
+                           </div>
                         </td>
                      {% endif %}
                   {% endfor %}
