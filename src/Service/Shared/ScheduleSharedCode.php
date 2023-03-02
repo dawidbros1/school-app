@@ -6,6 +6,7 @@ use App\Entity\Lesson\Lesson;
 use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\Schedule;
 use App\Entity\SchoolClass\SchoolClass;
+use App\Entity\UserType\Teacher;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ScheduleSharedCode
@@ -16,11 +17,20 @@ class ScheduleSharedCode
       $this->em = $em;
    }
 
-   public function getData(SchoolClass $class, \DateTime $date)
+   public function getData(string $type, object $object, \DateTime $date)
    {
       $dates = $this->getWeek($date->format("Y-m-d"));
-      $lessons = $this->em->getRepository(Lesson::class)->getIn($class, $dates);
-      $lessonTimes = $this->em->getRepository(LessonTime ::class)->findAll();
+
+      if ($type == "teacher") {
+         $lessons = $this->em->getRepository(Lesson::class)->teacher($object, $dates);
+      } else if ($type == "class") {
+         $lessons = $this->em->getRepository(Lesson::class)->class($object, $dates);
+      } else {
+         dump("Invalid type");
+         die();
+      }
+
+      $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
 
       $nextDate = clone $date->modify("+7 days");
       $prevDate = clone $date->modify("-14 days");
@@ -43,7 +53,7 @@ class ScheduleSharedCode
       return [$schedules, $prevDate, $nextDate, $lessonTimes];
    }
 
-   public function getWeek($date)
+   private function getWeek($date)
    {
       $date = new \DateTime($date);
       $dates = [];
