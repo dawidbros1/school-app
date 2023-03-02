@@ -27,42 +27,24 @@ class TeacherController extends AbstractController
    }
 
    /**
-    * @Route("/schedule", name = "app_teacher_schedule")
+    * @Route("/schedule/{device}", name = "app_teacher_schedule")
     */
    public function schedule(Request $request, UserManager $userManager, ScheduleSharedCode $code)
    {
       $user = $userManager->getUser();
       $date = new \DateTime($request->get('date', 'now'));
-      $dates = $code->getWeek($date->format("Y-m-d"));
+      [$schedules, $prevDate, $nextDate, $lessonTimes] = $code->getData("teacher", $user, $date);
 
-      $lessons = $this->em->getRepository(Lesson::class)->teacher($user, $dates);
-      $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
+      $device = $request->get("device");
 
-      $nextDate = clone $date->modify("+7 days");
-      $prevDate = clone $date->modify("-14 days");
-
-      $schedules = [];
-
-      foreach ($dates as $date) {
-         $schedules[] = new Schedule([], $date);
-      }
-
-      foreach ($lessons as $lesson) {
-         $N = $lesson->getDate()->format('N') - 1;
-         $schedules[$N]->addLesson($lesson);
-      }
-
-      foreach ($schedules as $schedule) {
-         $schedule->include($lessonTimes);
-      }
-
-      return $this->render("teacher/schedule.html.twig", [
+      return $this->render("schedule/user/" . $device . ".html.twig", [
          'title' => "Plan zajęć",
          'schedules' => $schedules,
+         'display' => "class",
          'lessonTimes' => $lessonTimes,
          'lessonStatuses' => $this->em->getRepository(LessonStatus::class)->findAll(),
-         'nextPage' => $this->generateUrl("app_teacher_schedule", ['date' => $nextDate->format("Y-m-d")]),
-         'prevPage' => $this->generateUrl("app_teacher_schedule", ['date' => $prevDate->format("Y-m-d")]),
+         'nextPage' => $this->generateUrl("app_teacher_schedule", ['date' => $nextDate->format("Y-m-d"), 'device' => $device]),
+         'prevPage' => $this->generateUrl("app_teacher_schedule", ['date' => $prevDate->format("Y-m-d"), 'device' => $device]),
          'back' => $this->generateUrl("app_dashboard"),
          'backButtonText' => "Powrót do Dashboard"
       ]);
