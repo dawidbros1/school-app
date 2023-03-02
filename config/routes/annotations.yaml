@@ -4,6 +4,7 @@ controllers:
     requirements:
         UserType: 'student|teacher|admin|owner'
         day: "monday|tuesday|wednesday|thursday|friday"
+        devide: "desktop|mobile"
 
 kernel:
     resource: ../../src/Kernel.php
