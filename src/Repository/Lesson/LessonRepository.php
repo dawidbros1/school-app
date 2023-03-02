@@ -39,7 +39,7 @@ class LessonRepository extends ServiceEntityRepository
             ->execute();
     }
 
-    public function getIn(SchoolClass $class, array $dates)
+    public function class(SchoolClass $class, array $dates)
     {
         $dates = array_map(function ($date) {
             return $date->format("Y-m-d");
