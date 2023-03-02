@@ -41,7 +41,12 @@
                                  <span class="fw-bold">{{ lesson.subject.name }}</span>
                                  ({{ lesson.place }})
                               </div>
-                              <div>({{ lesson.class.name }})</div>
+
+                              {% if display == "class" %}
+                                 {{ lesson.class.name }}
+                              {% elseif (display == "teacher") %}
+                                 {{ lesson.teacher.name }}
+                              {% endif %}
                            </div>
                         </td>
                      {% endif %}

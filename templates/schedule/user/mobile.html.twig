@@ -6,11 +6,7 @@
 
 {% block stylesheets %}
    <link rel="stylesheet" href="{{ asset('css/schedule.css') }}"/>
-
    <link rel="stylesheet" href="{{ asset('css/schedule/mobile.css') }}"/>
-
-   <style></style>
-
 {% endblock %}
 
 {% block javascripts %}
@@ -47,7 +43,12 @@
                         {% if lesson != null %}
                            {{ lesson.subject.name }}
                            ({{ lesson.place }}) -
-                           {{ lesson.teacher.name }}
+
+                           {% if display == "class" %}
+                              {{ lesson.class.name }}
+                           {% elseif (display == "teacher") %}
+                              {{ lesson.teacher.name }}
+                           {% endif %}
                         {% else %}
                            -
                         {% endif %}
