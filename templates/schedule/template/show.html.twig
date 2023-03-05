@@ -19,45 +19,46 @@
 
 {% block form %}
    {% block form_content %}
-      <h2 class="form-title">{{ form_label(form) }}</h2>
+      <div class="form d-none">
+         <h2 class="form-title">{{ form_label(form) }}</h2>
+         {{ form_start(form) }}
 
-      {{ form_start(form) }}
+         <div class="mb-2">
+            <div class="mb-2 row">
+               <div class="col-6">
+                  {{ form_widget(form.lessonTime) }}
+                  {{ form_errors(form.lessonTime) }}
+               </div>
 
-      <div class="mb-2">
-         <div class="mb-2 row">
-            <div class="col-6">
-               {{ form_widget(form.lessonTime) }}
-               {{ form_errors(form.lessonTime) }}
+               <div class="col-6">
+                  {{ form_widget(form.subject) }}
+                  {{ form_errors(form.subject) }}
+               </div>
             </div>
 
-            <div class="col-6">
-               {{ form_widget(form.subject) }}
-               {{ form_errors(form.subject) }}
+            <div class="row mb-2">
+               <div class="col-6">
+                  {{ form_widget(form.teacher) }}
+                  {{ form_errors(form.teacher) }}
+               </div>
+
+               <div class="col-6 ">
+                  {{ form_widget(form.place) }}
+                  {{ form_errors(form.place) }}
+               </div>
+            </div>
+
+            <div class="d-flex">
+               <div class="col-8">
+                  {{ form_widget(form.submit) }}
+               </div>
+               <div class="col-3 offset-1">
+                  <button id="cancel-handle" type="button" class="btn btn-danger w-100">ANULUJ</button>
+               </div>
             </div>
          </div>
-
-         <div class="row mb-2">
-            <div class="col-6">
-               {{ form_widget(form.teacher) }}
-               {{ form_errors(form.teacher) }}
-            </div>
-
-            <div class="col-6 ">
-               {{ form_widget(form.place) }}
-               {{ form_errors(form.place) }}
-            </div>
-         </div>
-
-         <div class="d-flex">
-            <div class="col-8">
-               {{ form_widget(form.submit) }}
-            </div>
-            <div class="col-3 offset-1">
-               <button type="button" class="btn btn-danger w-100 handle">ANULUJ</button>
-            </div>
-         </div>
+         {{ form_end(form) }}
       </div>
-      {{ form_end(form) }}
    {% endblock %}
 {% endblock %}
 
@@ -66,9 +67,9 @@
       <div class="position-relative">
          <h1 id="main-title">Harmonogram zajęć (szablon)</h1>
 
-         {% if type ?? null == "create" %}
-            <img class="position-absolute top-0 end-0 img-medium handle" src="{{ asset('images/dashboard/plus.png/') }}"/>
-         {% endif %}
+         <a href="{{ path('app_scheduleTemplate_show', {day, class_id}) }}#">
+            <img id="create-handle" class="position-absolute top-0 end-0 img-medium" src="{{ asset('images/dashboard/plus.png/') }}"/>
+         </a>
       </div>
 
       <div class="container-fluid">
@@ -108,7 +109,7 @@
                      <td>
                         <div class="d-flex">
                            <a href="{{ path('app_lessonTemplate_edit', {id: lesson.id}) }}#" class="me-3">
-                              <img class="img-small{{ lesson.id == cid ? " handle" : null }}" src="{{ asset('images/settings.png/') }}"/>
+                              <img id="{{ lesson.id == cid ? "edit-handle" : null }}" class="img-small" src="{{ asset('images/settings.png/') }}"/>
                            </a>
                            <form action="{{ path('app_lessonTemplate_delete', {id: lesson.id}) }}" method="post">
                               <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>

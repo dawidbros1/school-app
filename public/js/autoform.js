@@ -1,18 +1,23 @@
 window.onload = () => {
-   var form = document.getElementsByClassName('form')[0];
-   var handle = document.getElementsByClassName("handle");
-   var content = document.getElementById('content');
-
-   for (let i = 0; i < handle.length; i++) {
-      handle[i].addEventListener('click', () => {
-         form.classList.toggle("d-none");
-         content.classList.toggle("blur");
-      })
-   }
-
    const type = document.getElementById('type').innerHTML;
+   const form = document.getElementsByClassName('form')[0];
+   const content = document.getElementById('content');
 
-   if (type == "edit") {
-      handle[0].click();
-   }
+   const create = document.getElementById('create-handle');
+   const edit = document.getElementById('edit-handle');
+   const cancel = document.getElementById('cancel-handle');
+
+   const selectedHandle = type == "create" ? create : edit;
+
+   selectedHandle.addEventListener('click', () => {
+      form.classList.toggle("d-none");
+      content.classList.toggle("blur");
+   })
+
+   cancel.addEventListener('click', () => {
+      form.classList.toggle("d-none");
+      content.classList.toggle("blur");
+   })
+
+   type == "edit" ? edit.click() : null;
 }

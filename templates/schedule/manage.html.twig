@@ -19,51 +19,53 @@
 
 {% block form %}
    {% block form_content %}
-      <h2 class="form-title">{{ form_label(form) }}</h2>
-      {{ form_start(form) }}
+      <div class="form d-none">
+         <h2 class="form-title">{{ form_label(form) }}</h2>
+         {{ form_start(form) }}
 
-      <div class="mb-2">
-         <div class="mb-2 row">
-            <div class="col-6">
-               {{ form_widget(form.lessonTime) }}
-               {{ form_errors(form.lessonTime) }}
+         <div class="mb-2">
+            <div class="mb-2 row">
+               <div class="col-6">
+                  {{ form_widget(form.lessonTime) }}
+                  {{ form_errors(form.lessonTime) }}
+               </div>
+
+               <div class="col-6">
+                  {{ form_widget(form.subject) }}
+                  {{ form_errors(form.subject) }}
+               </div>
             </div>
 
-            <div class="col-6">
-               {{ form_widget(form.subject) }}
-               {{ form_errors(form.subject) }}
+            <div class="row">
+               <div class="col-6">
+                  {{ form_widget(form.teacher) }}
+                  {{ form_errors(form.teacher) }}
+               </div>
+
+               <div class="col-6 ">
+                  {{ form_widget(form.place) }}
+                  {{ form_errors(form.place) }}
+               </div>
             </div>
+
+            {% if form.lessonStatus is defined %}
+               <div class="col-12 mt-2">
+                  {{ form_widget(form.lessonStatus) }}
+                  {{ form_errors(form.lessonStatus) }}
+               </div>
+            {% endif %}
          </div>
 
-         <div class="row">
-            <div class="col-6">
-               {{ form_widget(form.teacher) }}
-               {{ form_errors(form.teacher) }}
+         <div class="d-flex">
+            <div class="col-8">
+               {{ form_widget(form.submit) }}
             </div>
-
-            <div class="col-6 ">
-               {{ form_widget(form.place) }}
-               {{ form_errors(form.place) }}
+            <div class="col-3 offset-1">
+               <button id="cancel-handle" type="button" class="btn btn-danger w-100">ANULUJ</button>
             </div>
          </div>
-
-         {% if form.lessonStatus is defined %}
-            <div class="col-12 mt-2">
-               {{ form_widget(form.lessonStatus) }}
-               {{ form_errors(form.lessonStatus) }}
-            </div>
-         {% endif %}
+         {{ form_end(form) }}
       </div>
-
-      <div class="d-flex">
-         <div class="col-8">
-            {{ form_widget(form.submit) }}
-         </div>
-         <div class="col-3 offset-1">
-            <button type="button" class="btn btn-danger w-100 handle">ANULUJ</button>
-         </div>
-      </div>
-      {{ form_end(form) }}
    {% endblock %}
 {% endblock %}
 
@@ -75,9 +77,9 @@
             ({{ date }})
          </h1>
 
-         {% if type ?? null == "create" %}
-            <img class="position-absolute top-0 end-0 img-medium handle" src="{{ asset('images/dashboard/plus.png/') }}"/>
-         {% endif %}
+         <a href="{{ path('app_schedule_manage', {date, class_id: class.id}) }}#">
+            <img id="create-handle" class="position-absolute top-0 end-0 img-medium" src="{{ asset('images/dashboard/plus.png/') }}"/>
+         </a>
       </div>
 
       {% if schedule.lessons|length > 0 %}
@@ -108,7 +110,7 @@
                            <td>
                               <div class="d-flex">
                                  <a href="{{ path('app_lesson_edit', {id: lesson.id}) }}#" class="me-3">
-                                    <img class="img-small{{ lesson.id == cid ? " handle" : null }}" src="{{ asset('images/settings.png/') }}"/>
+                                    <img id="{{ lesson.id == cid ? "edit-handle" : null }}" class="img-small" src="{{ asset('images/settings.png/') }}"/>
                                  </a>
                                  <form action="{{ path('app_lesson_delete', {id: lesson.id}) }}" method="post">
                                     <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>
