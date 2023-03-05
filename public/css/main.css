@@ -42,10 +42,6 @@ button.clear{
 
 /* Table */
 
-table thead th {
-   /* text-transform: uppercase */
-}
-
 table tr td{
    border-color: black;
 } 
@@ -75,6 +71,6 @@ img {
    filter: blur(10px);
 }
 
-.form{
+.z-index-10{
    z-index: 10;
 }
