@@ -4,31 +4,48 @@
    Lista przedmiotów
 {% endblock %}
 
+{% block javascripts %}
+   <script src="{{ asset("js/autoform.js") }}"></script>
+{% endblock %}
+
 {% form_theme form _self %}
 
 {% block form %}
    {% block form_content %}
-      <h2 class="form-title">{{ form_label(form) }}</h2>
+      <div class="form d-none">
+         <h2 class="form-title">{{ form_label(form) }}</h2>
 
-      {{ form_start(form) }}
-      <div class="w-100 mb-2">
-         <label class="fw-bold w-100">{{ form_label(form.name) }}</label>
-         {{ form_widget(form.name) }}
-         {{ form_errors(form.name) }}
+         {{ form_start(form) }}
+         <div class="w-100 mb-2">
+            <label class="fw-bold w-100">{{ form_label(form.name) }}</label>
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+         </div>
+
+         <div class="d-flex">
+            <div class="col-8">
+               {{ form_widget(form.submit) }}
+            </div>
+            <div class="col-3 offset-1">
+               <button id="cancel-handle" type="button" class="btn btn-danger w-100">ANULUJ</button>
+            </div>
+         </div>
+         {{ form_end(form) }}
       </div>
-
-      <div class="w-100">{{ form_widget(form.submit) }}</div>
-
-      {{ form_end(form) }}
    {% endblock %}
 {% endblock %}
 
 {% block body %}
    <div id="schoolSubjectList">
-      <h1 id="main-title">Lista Przedmiotów</h1>
-
+      <div class="position-relative">
+         <h1 id="main-title">Lista Przedmiotów</h1>
+         <a href="{{ path('app_subject_list') }}#">
+            <img id="create-handle" class="position-absolute top-0 end-0 img-medium" src="{{ asset('images/dashboard/plus.png/') }}"/>
+         </a>
+      </div>
       <div class="container-fluid">
          <div id="grid" class="row g-4">
+            {% set cid = form.vars.value.id %}
             {% for item in subjects %}
                <div class="col-12 col-md-6 col-xl-4 col-xxl-3">
                   <div class="card">
@@ -36,8 +53,8 @@
                         <h5 class="card-title me-auto">{{ item.name }}</h5>
 
                         <div class="d-flex">
-                           <a class="me-1" href="{{ path('app_subject_edit', { id: item.id}) }}">
-                              <img class="img-small" src="{{ asset('images/settings.png') }}"/>
+                           <a class="me-1" href="{{ path('app_subject_edit', { id: item.id}) }}#">
+                              <img id="{{ item.id == cid ? "edit-handle" : null }}" class="img-small" src="{{ asset('images/settings.png') }}"/>
                            </a>
 
                            <form action="{{ path('app_subject_delete', {id: item.id}) }}" method="POST">
@@ -51,6 +68,6 @@
          </div>
       </div>
    </div>
-{% endblock %}
 
-{% block stylesheets %}{% endblock %}
+   <div id="type" class="d-none">{{ type }}</div>
+{% endblock %}

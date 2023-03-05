@@ -45,10 +45,10 @@ class SchoolClassController extends AbstractController
 
       return $this->render('schoolClass/admin/list.html.twig', [
          'form' => $form->createView(),
-         'classes' => $this->em->getRepository(SchoolClass::class)->findALl()
+         'classes' => $this->em->getRepository(SchoolClass::class)->findALl(),
+         'type' => "create"
       ]);
    }
-
 
    /**
     * @IsGranted("ROLE_ADMIN")
@@ -109,7 +109,8 @@ class SchoolClassController extends AbstractController
 
       return $this->render('schoolClass/admin/list.html.twig', [
          'form' => $form->createView(),
-         'classes' => $this->em->getRepository(SchoolClass::class)->findALl()
+         'classes' => $this->em->getRepository(SchoolClass::class)->findALl(),
+         'type' => "edit"
       ]);
    }
 

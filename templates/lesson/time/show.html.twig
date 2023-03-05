@@ -4,37 +4,64 @@
    Rozkład zajęć szkolnych
 {% endblock %}
 
+{% block stylesheets %}
+   <style>
+      select {
+         width: calc(50% - 2px);
+         padding: 4px;
+         height: 100%;
+      }
+   </style>
+{% endblock %}
+
+{% block javascripts %}
+   <script src="{{ asset("js/autoform.js") }}"></script>
+{% endblock %}
+
 {% form_theme form _self %}
 
 {% block form %}
    {% block form_content %}
-      <h2 class="form-title">{{ form_label(form) }}</h2>
+      <div class="form d-none">
+         <h2 class="form-title">{{ form_label(form) }}</h2>
 
-      {{ form_start(form) }}
+         {{ form_start(form) }}
+         <div class="row mb-2">
+            <div class="col-6">
+               {{ form_widget(form.fromTime) }}
+               {{ form_errors(form.fromTime) }}
+            </div>
 
-      <div class="row mb-2">
-         <div class="col-6">
-            {{ form_widget(form.fromTime) }}
-            {{ form_errors(form.fromTime) }}
+            <div class="col-6">
+               {{ form_widget(form.toTime) }}
+               {{ form_errors(form.toTime) }}
+            </div>
          </div>
 
-         <div class="col-6">
-            {{ form_widget(form.toTime) }}
-            {{ form_errors(form.toTime) }}
+         <div class="d-flex">
+            <div class="col-8">
+               {{ form_widget(form.submit) }}
+            </div>
+            <div class="col-3 offset-1">
+               <button id="cancel-handle" type="button" class="btn btn-danger w-100">ANULUJ</button>
+            </div>
          </div>
+         {{ form_end(form) }}
       </div>
-
-      <div class="col-12">
-         {{ form_widget(form.submit) }}
-      </div>
-      {{ form_end(form) }}
    {% endblock %}
 {% endblock %}
 
 {% block body %}
    <div id="lessonTimeShow" class="col-12 col-lg-8 col-xxl-6 mx-auto">
-      <h1 id="main-title" class="fs-5">Terminy zajęć</h1>
 
+      <div class="position-relative">
+         <h1 id="main-title" class="fs-5">Terminy zajęć</h1>
+         <a href="{{ path('app_lessonTime_list') }}#">
+            <img id="create-handle" class="position-absolute top-0 end-0 img-medium" src="{{ asset('images/dashboard/plus.png/') }}"/>
+         </a>
+      </div>
+
+      {% set cid = form.vars.value.id %}
       {% for lessonTime in lessonTimes %}
          <div class="row mx-auto gx-2 mb-1">
             <div class="text-center bg-light py-2 border col-1">{{ loop.index }}</div>
@@ -45,8 +72,8 @@
             </div>
             <div class="text-center border py-2 col-1 d-flex flex-wrap bg-light">
                <div class="col-12 col-sm-6">
-                  <a href="{{ path('app_lessonTime_edit', {id: lessonTime.id}) }}">
-                     <img class="img-very-small" src="{{ asset('images/settings.png') }}"/>
+                  <a href="{{ path('app_lessonTime_edit', {id: lessonTime.id}) }}#">
+                     <img id="{{ lessonTime.id == cid ? "edit-handle" : null }}" class="img-very-small" src="{{ asset('images/settings.png') }}"/>
                   </a>
                </div>
                <div class="col-12 col-sm-6">
@@ -58,14 +85,5 @@
          </div>
       {% endfor %}
    </div>
-{% endblock %}
-
-{% block stylesheets %}
-   <style>
-      select {
-         width: calc(50% - 2px);
-         padding: 4px;
-         height: 100%;
-      }
-   </style>
+   <div id="type" class="d-none">{{ type }}</div>
 {% endblock %}

@@ -6,72 +6,85 @@
 
 {% form_theme form _self %}
 
+{% block javascripts %}
+   <script src="{{ asset("js/autoform.js") }}"></script>
+{% endblock %}
+
 {% block form %}
    {% block form_content %}
-      <h1 class="form-title">{{ form_label(form) }}</h1>
+      <div class="form d-none">
+         <h1 class="form-title">{{ form_label(form) }}</h1>
 
-      {{ form_start(form) }}
-      <div class="w-100 mb-2">
-         <label class="fw-bold w-100">{{ form_label(form.name) }}</label>
-         {{ form_widget(form.name) }}
-         {{ form_errors(form.name) }}
+         {{ form_start(form) }}
+         <div class="w-100 mb-2">
+            <label class="fw-bold w-100">{{ form_label(form.name) }}</label>
+            {{ form_widget(form.name) }}
+            {{ form_errors(form.name) }}
+         </div>
+
+         <div class="w-100 mb-2">
+            <label class="fw-bold w-100">{{ form_label(form.teacher) }}</label>
+            {{ form_widget(form.teacher) }}
+            {{ form_errors(form.teacher) }}
+         </div>
+
+         <div class="d-flex">
+            <div class="col-8">
+               {{ form_widget(form.submit) }}
+            </div>
+            <div class="col-3 offset-1">
+               <button id="cancel-handle" type="button" class="btn btn-danger w-100">ANULUJ</button>
+            </div>
+         </div>
+         {{ form_end(form) }}
       </div>
-
-      <div class="w-100 mb-2">
-         <label class="fw-bold w-100">{{ form_label(form.teacher) }}</label>
-         {{ form_widget(form.teacher) }}
-         {{ form_errors(form.teacher) }}
-      </div>
-
-      <div class="w-100">
-         {{ form_widget(form.submit) }}
-      </div>
-
-      {{ form_end(form) }}
    {% endblock %}
 {% endblock %}
 
 {% block body %}
    <div id="schoolClassList">
-      <h1 id="main-title">Lista klas</h1>
+      <div class="position-relative">
+         <h1 id="main-title">Lista klas</h1>
+         <a href="{{ path('app_class_list') }}#">
+            <img id="create-handle" class="position-absolute top-0 end-0 img-medium" src="{{ asset('images/dashboard/plus.png/') }}"/>
+         </a>
+      </div>
 
+      <div class="container-fluid">
+         <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4">
+            {% set cid = form.vars.value.id %}
+            {% for class in classes %}
+               <div class="col mb-4">
+                  <div class="card">
+                     <div class="card-body position-relative">
+                        <h5 class="card-title">
+                           <a href="{{ path('app_class_show', {id: class.id}) }}">
+                              {{ class.name }}
+                           </a>
+                        </h5>
+                        <div class="card-text">Wychowawca:
+                           {{ class.teacher ? class.teacher.name : null }}
+                        </div>
+                        <div class="card-text">Liczba uczniów:
+                           {{ class.students ? class.students|length : null }}
+                        </div>
 
-      {% if classes|length > 0 %}
-         <div class="container-fluid">
-            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4">
-               {% for i, class in classes %}
-                  <div class="col mb-4">
-                     <div class="card">
-                        <div class="card-body position-relative">
-                           <h5 class="card-title">
-                              <a href="{{ path('app_class_show', {id: class.id}) }}">
-                                 {{ class.name }}
-                              </a>
-                           </h5>
-                           <div class="card-text">Wychowawca:
-                              {{ class.teacher ? class.teacher.name : null }}
-                           </div>
-                           <div class="card-text">Liczba uczniów:
-                              {{ class.students ? class.students|length : null }}
-                           </div>
+                        <div class="position-absolute end-0 bottom-0 me-2 mb-2">
+                           <a href="{{ path('app_scheduleTemplate_show', { class_id: class.id, day: "monday" }) }}">
+                              <img class="img-small" src="{{ asset('images/schedule.png') }}"/>
+                           </a>
 
-                           <div class="position-absolute end-0 bottom-0 me-2 mb-2">
-                              <a href="{{ path('app_scheduleTemplate_show', { class_id: class.id, day: "monday" }) }}">
-                                 <img class="img-small" src="{{ asset('images/schedule.png') }}"/>
-                              </a>
-
-                              <a href="{{ path('app_class_edit', { id: class.id }) }}">
-                                 <img class="img-small" src="{{ asset('images/settings.png') }}"/>
-                              </a>
-                           </div>
+                           <a href="{{ path('app_class_edit', { id: class.id }) }}#">
+                              <img id="{{ class.id == cid ? "edit-handle" : null }}" class="img-small" src="{{ asset('images/settings.png') }}"/>
+                           </a>
                         </div>
                      </div>
                   </div>
-               {% endfor %}
-            </div>
+               </div>
+            {% endfor %}
          </div>
-      {% else %}
-         Tu jeszcze nic nie ma
-      {% endif %}
+      </div>
    </div>
+
+   <div id="type" class="d-none">{{ type }}</div>
 {% endblock %}

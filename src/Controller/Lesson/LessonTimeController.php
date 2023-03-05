@@ -29,7 +29,7 @@ class LessonTimeController extends AbstractController
    /**
     * @Route("/list", name="app_lessonTime_list")
     */
-   public function show(FormBuilder $builder, FormErrors $formErrors)
+   public function list(FormBuilder $builder, FormErrors $formErrors)
    {
       $lessonTime = new LessonTime();
 
@@ -43,7 +43,8 @@ class LessonTimeController extends AbstractController
 
       return $this->render('lesson/time/show.html.twig', [
          'lessonTimes' => $this->em->getRepository(LessonTime::class)->findAll(),
-         'form' => $form->createView()
+         'form' => $form->createView(),
+         'type' => "create"
       ]);
    }
 
@@ -97,7 +98,8 @@ class LessonTimeController extends AbstractController
 
       return $this->render('lesson/time/show.html.twig', [
          'lessonTimes' => $this->em->getRepository(LessonTime::class)->findAll(),
-         'form' => $form->createView()
+         'form' => $form->createView(),
+         'type' => "edit"
       ]);
    }
 

@@ -8,54 +8,56 @@
 
 {% block form %}
    {% block form_content %}
-      <h1 class="form-title">{{ form_label(form) }}</h1>
+      <div class="form">
+         <h1 class="form-title">{{ form_label(form) }}</h1>
 
-      {{ form_start(form) }}
-      <div class="w-100 mb-2 d-flex">
-         <div class="w-50 me-2">
-            <label class="fw-bold w-100">{{ form_label(form.firstName) }}</label>
-            {{ form_widget(form.firstName) }}
-            {{ form_errors(form.firstName) }}
-         </div>
-
-         <div class="w-50 ms-2">
-            <label class="fw-bold w-100">{{ form_label(form.lastName) }}</label>
-            {{ form_widget(form.lastName) }}
-            {{ form_errors(form.lastName) }}
-         </div>
-      </div>
-
-      <div class="w-100 mb-2">
-         <label class="fw-bold w-100">Email</label>
-         <input class="form-control" type="text" value="{{ user.email }}" disabled/>
-      </div>
-
-      <div class="w-100 mb-2">
-         <label class="fw-bold w-100">Rola</label>
-         <input class="form-control" type="text" value="{{ user.role.description }}" disabled/>
-      </div>
-
-      {% block classes %}{% endblock %}
-
-      <div class="w-100 mb-2">
-         <label class="fw-bold w-100">{{ form_label(form.pesel) }}</label>
-         {{ form_widget(form.pesel) }}
-         {{ form_errors(form.pesel) }}
-      </div>
-
-      <div class="container-fluid p-0">
-         <div class="row">
-            <div class="col-6">
-               {{ form_widget(form.submit) }}
+         {{ form_start(form) }}
+         <div class="w-100 mb-2 d-flex">
+            <div class="w-50 me-2">
+               <label class="fw-bold w-100">{{ form_label(form.firstName) }}</label>
+               {{ form_widget(form.firstName) }}
+               {{ form_errors(form.firstName) }}
             </div>
-            <div class="col-6">
-               <a href="{{ path('app_list_' ~ user.role.name ) }}">
-                  <button class="w-100 btn btn-primary fw-bold" type="button">Powrót</button>
-               </a>
+
+            <div class="w-50 ms-2">
+               <label class="fw-bold w-100">{{ form_label(form.lastName) }}</label>
+               {{ form_widget(form.lastName) }}
+               {{ form_errors(form.lastName) }}
             </div>
          </div>
-      </div>
 
+         <div class="w-100 mb-2">
+            <label class="fw-bold w-100">Email</label>
+            <input class="form-control" type="text" value="{{ user.email }}" disabled/>
+         </div>
+
+         <div class="w-100 mb-2">
+            <label class="fw-bold w-100">Rola</label>
+            <input class="form-control" type="text" value="{{ user.role.description }}" disabled/>
+         </div>
+
+         {% block classes %}{% endblock %}
+
+         <div class="w-100 mb-2">
+            <label class="fw-bold w-100">{{ form_label(form.pesel) }}</label>
+            {{ form_widget(form.pesel) }}
+            {{ form_errors(form.pesel) }}
+         </div>
+
+         <div class="container-fluid p-0">
+            <div class="row">
+               <div class="col-6">
+                  {{ form_widget(form.submit) }}
+               </div>
+               <div class="col-6">
+                  <a href="{{ path('app_list_' ~ user.role.name ) }}">
+                     <button class="w-100 btn btn-primary fw-bold" type="button">Powrót</button>
+                  </a>
+               </div>
+            </div>
+         </div>
+
+      </div>
       {{ form_end(form) }}
    {% endblock %}
 {% endblock %}

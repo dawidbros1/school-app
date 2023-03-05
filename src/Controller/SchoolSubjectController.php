@@ -30,10 +30,9 @@ class SchoolSubjectController extends AbstractController
    /**
     * @Route("/list", name="app_subject_list")
     */
-   public function list(Request $request, FormBuilder $builder, FormErrors $formErrors)
+   public function list(FormBuilder $builder, FormErrors $formErrors)
    {
       $subject = new SchoolSubject();
-
       $form = $this->createForm(SchoolSubjectFormType::class, $subject, [
          'label' => "Tworzenie przedmiotu",
          'action' => $this->generateUrl("app_subject_create")
@@ -43,8 +42,9 @@ class SchoolSubjectController extends AbstractController
       $builder->addButton("Dodaj przedmiot")->build($form);
 
       return $this->render('schoolSubject/list.html.twig', [
+         'form' => $form->createView(),
          'subjects' => $this->em->getRepository(SchoolSubject::class)->findAll(),
-         'form' => $form->createView()
+         'type' => "create"
       ]);
    }
 
@@ -96,6 +96,7 @@ class SchoolSubjectController extends AbstractController
       return $this->render('schoolSubject/list.html.twig', [
          'subjects' => $this->em->getRepository(SchoolSubject::class)->findAll(),
          'form' => $form->createView(),
+         'type' => "edit"
       ]);
    }
 
