@@ -28,8 +28,6 @@ class DashboardController extends AbstractController
     */
    public function index()
    {
-      // ONLY FOR LOGGED IN
-
       if ($this->isGranted('ROLE_OWNER')) {
          $this->ownerDashboard();
       } else if ($this->isGranted('ROLE_ADMIN')) {
@@ -39,7 +37,6 @@ class DashboardController extends AbstractController
       } else if ($this->isGranted('ROLE_STUDENT')) {
          $this->studentDashboard();
       }
-
 
       return $this->render('dashboard.html.twig', [
          'simpleBoxes' => $this->simpleBoxes,
@@ -63,12 +60,16 @@ class DashboardController extends AbstractController
    private function teacherDashboard()
    {
       $this->myClass();
+      $this->teacherSchedule();
    }
 
    private function studentDashboard()
    {
       $this->myClass();
+      $this->studentSchedule();
    }
+
+   // ===== //
 
    private function createSimpleBox(array $data)
    {
@@ -101,6 +102,8 @@ class DashboardController extends AbstractController
       array_push($this->complexBoxes, $obj);
       return $this;
    }
+
+   // ===== //
 
    private function admins()
    {
@@ -205,6 +208,45 @@ class DashboardController extends AbstractController
          'description' => "Tutaj ustalisz godziny zajęć",
          'route' => "app_lessonTime_list",
          'image' => "clock.png"
+      ]);
+   }
+
+   // SCHEDULE //
+   private function studentSchedule()
+   {
+      $this->createSimpleBox([
+         'title' => "Plan lekcji",
+         'description' => "Tutaj wyświetlisz plan lekcji w wersji na duże ekrany",
+         'route' => "app_student_schedule",
+         'params' => ["device" => "desktop"],
+         'image' => "desktop.png"
+      ]);
+
+      return $this->createSimpleBox([
+         'title' => "Plan lekcji (mobilny)",
+         'description' => "Tutaj wyświetlisz plan lekcji dostosowany do urządzenia mobilnego",
+         'route' => "app_student_schedule",
+         'params' => ["device" => "mobile"],
+         'image' => "mobile.png"
+      ]);
+   }
+
+   private function teacherSchedule()
+   {
+      $this->createSimpleBox([
+         'title' => "Plan lekcji",
+         'description' => "Tutaj wyświetlisz plan lekcji w wersji na duże ekrany",
+         'route' => "app_teacher_schedule",
+         'params' => ["device" => "desktop"],
+         'image' => "desktop.png"
+      ]);
+
+      return $this->createSimpleBox([
+         'title' => "Plan lekcji",
+         'description' => "Tutaj wyświetlisz plan lekcji dostosowany do urządzenia mobilnego",
+         'route' => "app_teacher_schedule",
+         'params' => ["device" => "mobile"],
+         'image' => "mobile.png"
       ]);
    }
 }

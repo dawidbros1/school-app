@@ -1,0 +1,17 @@
+#schedule-mobile {
+   max-width: 600px;
+   font-size: 14px;
+}
+
+#dates div{
+   text-align: center;
+   padding: 5px;
+}
+
+.active{
+   background-color: lightblue;
+}
+
+#dates div{
+   user-select: none;
+}

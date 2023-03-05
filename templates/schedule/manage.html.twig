@@ -13,57 +13,74 @@
    </style>
 {% endblock %}
 
+{% block javascripts %}
+   <script src="{{ asset("js/autoform.js") }}"></script>
+{% endblock %}
+
 {% block form %}
    {% block form_content %}
-      <h2 class="form-title">{{ form_label(form) }}</h2>
-      {{ form_start(form) }}
+      <div class="form d-none">
+         <h2 class="form-title">{{ form_label(form) }}</h2>
+         {{ form_start(form) }}
 
-      <div class="mb-2">
-         <div class="mb-2 row">
-            <div class="col-6">
-               {{ form_widget(form.lessonTime) }}
-               {{ form_errors(form.lessonTime) }}
+         <div class="mb-2">
+            <div class="mb-2 row">
+               <div class="col-6">
+                  {{ form_widget(form.lessonTime) }}
+                  {{ form_errors(form.lessonTime) }}
+               </div>
+
+               <div class="col-6">
+                  {{ form_widget(form.subject) }}
+                  {{ form_errors(form.subject) }}
+               </div>
             </div>
 
-            <div class="col-6">
-               {{ form_widget(form.subject) }}
-               {{ form_errors(form.subject) }}
+            <div class="row">
+               <div class="col-6">
+                  {{ form_widget(form.teacher) }}
+                  {{ form_errors(form.teacher) }}
+               </div>
+
+               <div class="col-6 ">
+                  {{ form_widget(form.place) }}
+                  {{ form_errors(form.place) }}
+               </div>
             </div>
+
+            {% if form.lessonStatus is defined %}
+               <div class="col-12 mt-2">
+                  {{ form_widget(form.lessonStatus) }}
+                  {{ form_errors(form.lessonStatus) }}
+               </div>
+            {% endif %}
          </div>
 
-         <div class="row">
-            <div class="col-6">
-               {{ form_widget(form.teacher) }}
-               {{ form_errors(form.teacher) }}
+         <div class="d-flex">
+            <div class="col-8">
+               {{ form_widget(form.submit) }}
             </div>
-
-            <div class="col-6 ">
-               {{ form_widget(form.place) }}
-               {{ form_errors(form.place) }}
+            <div class="col-3 offset-1">
+               <button id="cancel-handle" type="button" class="btn btn-danger w-100">ANULUJ</button>
             </div>
          </div>
-
-         {% if form.lessonStatus is defined %}
-            <div class="col-12 mt-2">
-               {{ form_widget(form.lessonStatus) }}
-               {{ form_errors(form.lessonStatus) }}
-            </div>
-         {% endif %}
+         {{ form_end(form) }}
       </div>
-
-      <div class="col-12">
-         {{ form_widget(form.submit) }}
-      </div>
-      {{ form_end(form) }}
    {% endblock %}
 {% endblock %}
 
 {% block body %}
    <div id="sheduleManage">
-      <h1 id="main-title">Harmonogram zajęć -
-         {{ class.name }}
-         ({{ date }})
-      </h1>
+      <div class="position-relative">
+         <h1 id="main-title">Harmonogram zajęć -
+            {{ class.name }}
+            ({{ date }})
+         </h1>
+
+         <a href="{{ path('app_schedule_manage', {date, class_id: class.id}) }}#">
+            <img id="create-handle" class="position-absolute top-0 end-0 img-medium" src="{{ asset('images/dashboard/plus.png/') }}"/>
+         </a>
+      </div>
 
       {% if schedule.lessons|length > 0 %}
          <div>
@@ -80,6 +97,7 @@
                   </tr>
                </thead>
                <tbody>
+                  {% set cid = form.vars.value.id %}
                   {% for lesson in schedule.lessons %}
                      <tr>
                         {% if lesson != null %}
@@ -91,8 +109,8 @@
                            <td>{{ lesson.lessonStatus.description }}</td>
                            <td>
                               <div class="d-flex">
-                                 <a href="{{ path('app_lesson_edit', {id: lesson.id}) }}" class="me-3">
-                                    <img class="img-small" src="{{ asset('images/settings.png/') }}"/>
+                                 <a href="{{ path('app_lesson_edit', {id: lesson.id}) }}#" class="me-3">
+                                    <img id="{{ lesson.id == cid ? "edit-handle" : null }}" class="img-small" src="{{ asset('images/settings.png/') }}"/>
                                  </a>
                                  <form action="{{ path('app_lesson_delete', {id: lesson.id}) }}" method="post">
                                     <button class="clear" type="submit"><img class="img-small" src="{{ asset('images/trash.png') }}"/></button>
@@ -120,4 +138,6 @@
          <button type="button" class="btn btn-primary w-100 fw-bold">Powrót</button>
       </a>
    </div>
+
+   <div id="type" class="d-none">{{ type }}</div>
 {% endblock %}

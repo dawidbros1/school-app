@@ -90,6 +90,11 @@ class InitDatabaseCommand extends Command
                     "id" => 3,
                     "name" => "modificated",
                     "description" => "zmodyfikowane",
+                ],
+                [
+                    "id" => 4,
+                    "name" => "new",
+                    "description" => "nowe",
                 ]
             ];
 

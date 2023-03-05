@@ -18,10 +18,6 @@
                {% for lessonTime in lessonTimes %}
                   <th>{{ lessonTime.time }}</th>
                {% endfor %}
-
-               {% if is_granted('ROLE_ADMIN') %}
-                  <td></td>
-               {% endif %}
             </tr>
          </thead>
 
@@ -45,23 +41,16 @@
                                  <span class="fw-bold">{{ lesson.subject.name }}</span>
                                  ({{ lesson.place }})
                               </div>
-                              <div>({{ lesson.teacher.name }})</div>
+
+                              {% if display == "class" %}
+                                 {{ lesson.class.name }}
+                              {% elseif (display == "teacher") %}
+                                 {{ lesson.teacher.name }}
+                              {% endif %}
                            </div>
                         </td>
                      {% endif %}
                   {% endfor %}
-
-                  {% if is_granted('ROLE_ADMIN') %}
-                     <td class="item position-relative icon-column">
-                        <div class="center">
-                           {% if schedule.canManage == true %}
-                              <a href="{{ path('app_schedule_manage', {class_id: class.id, date: schedule.date|date("Y-m-d") }) }}">
-                                 <img class="img-medium" src="{{ asset('images/settings.png') }}"/>
-                              </a>
-                           </div>
-                        {% endif %}
-                     </td>
-                  {% endif %}
                </tr>
             {% endfor %}
          </tbody>

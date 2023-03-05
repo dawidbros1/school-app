@@ -57,10 +57,10 @@ class LessonFormProvider extends AbstractFormProvider
       return $form;
    }
 
-   private function getAvailableLessonTimes($class, $date, $data, $lesson)
+   private function getAvailableLessonTimes(SchoolClass $class, \DateTime $date, array $data, Lesson $lesson)
    {
       $lessonTimes = $data['lessonTimes'] ?? $this->em->getRepository(LessonTime::class)->findAll();
-      $schedule = new Schedule($this->em->getRepository(Lesson::class)->getIn($class, [$date]));
+      $schedule = new Schedule($this->em->getRepository(Lesson::class)->class($class, [$date]));
 
       return $this->filter($schedule, $lesson, $lessonTimes);
    }

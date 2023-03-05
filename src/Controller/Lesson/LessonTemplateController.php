@@ -80,7 +80,7 @@ class LessonTemplateController extends AbstractController
       }
 
       $schedule = new ScheduleTemplate($this->em->getRepository(LessonTemplate::class)->findBy(['day' => $lesson->getDay(), 'class' => $lesson->getClass()]));
-      $schedule->sortBy($lessonTimes);
+      $schedule->include($lessonTimes);
 
       return $this->render('schedule/template/show.html.twig', [
          'form' => $form->createView(),
@@ -88,7 +88,8 @@ class LessonTemplateController extends AbstractController
          'schedule' => $schedule,
          'day' => $lesson->getDay(),
          'class_id' => $lesson->getClass()->getId(),
-         'lessonTimes' => $lessonTimes
+         'lessonTimes' => $lessonTimes,
+         'type' => "edit"
       ]);
    }
 

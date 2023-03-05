@@ -10,8 +10,8 @@ use App\Entity\Schedule\Schedule;
 use App\Service\Entity\EntityProvider;
 use App\Service\Form\FormErrors;
 use App\Service\Form\Provider\LessonFormProvider;
-use App\Service\Form\Provider\LessonTemplateFormProvider;
 use App\Service\Form\Provider\ScheduleDateRangeFormProvider;
+use App\Service\Shared\ScheduleSharedCode;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -37,40 +37,23 @@ class ScheduleController extends AbstractController
    /**
     * @Route("/show/{class_id}", name="app_schedule_show")
     */
-   public function show(Request $request)
+   public function show(Request $request, ScheduleSharedCode $code)
    {
       $class = $this->entityProvider->getSchoolClass($request->get('class_id'));
-
       $date = new \DateTime($request->get('date', 'now'));
-      $dates = $this->getWeek($date->format("Y-m-d"));
-      $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
-      $lessons = $this->em->getRepository(Lesson::class)->getIn($class, $dates);
 
-      $nextDate = clone $date->modify("+7 days");
-      $prevDate = clone $date->modify("-14 days");
-
-      $schedules = [];
-
-      foreach ($dates as $date) {
-         $schedules[$date->format("Y-m-d")] = new Schedule();
-      }
-
-      foreach ($lessons as $lesson) {
-         foreach ($dates as $date) {
-            switch ($lesson->getDate()->format('Y-m-d')) {
-               case $date->format("Y-m-d"):
-                  $schedules[$date->format("Y-m-d")]->addLesson($lesson);
-                  break;
-            }
-         }
-      }
+      [$schedules, $prevDate, $nextDate] = $code->getData("class", $class, $date);
 
       return $this->render('schedule/show.html.twig', [
+         'title' => "Plan zajęć [ " . $class->getName() . " ]",
          'class' => $class,
          'schedules' => $schedules,
-         'lessonTimes' => $lessonTimes,
-         'nextDate' => $nextDate->format("Y-m-d"),
-         'prevDate' => $prevDate->format("Y-m-d")
+         'lessonTimes' => $this->em->getRepository(LessonTime::class)->findAll(),
+         'lessonStatuses' => $this->em->getRepository(LessonStatus::class)->findAll(),
+         'nextPage' => $this->generateUrl("app_schedule_show", ['class_id' => $class->getId(), 'date' => $nextDate->format("Y-m-d")]),
+         'prevPage' => $this->generateUrl("app_schedule_show", ['class_id' => $class->getId(), 'date' => $prevDate->format("Y-m-d")]),
+         'back' => $this->generateUrl("app_scheduleTemplate_show", ['class_id' => $class->getId(), 'day' => "monday"]),
+         'backButtonText' => "Powrót do harmonogramu"
       ]);
    }
 
@@ -95,7 +78,6 @@ class ScheduleController extends AbstractController
       $lesson = new Lesson();
       $class = $this->entityProvider->getSchoolClass($request->get('class_id'));
       $schedule = new Schedule($this->em->getRepository(Lesson::class)->findBy(['class' => $class, 'date' => $date]));
-
       $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
 
       $form = $formProvider->getCreateFormType($lesson, $class, $date, [
@@ -103,14 +85,15 @@ class ScheduleController extends AbstractController
       ]);
 
 
-      $schedule->sortBy($lessonTimes);
+      $schedule->include($lessonTimes);
 
       return $this->render('schedule/manage.html.twig', [
          'form' => $form->createView(),
          'schedule' => $schedule,
          'class' => $class,
          'date' => $date->format("Y-m-d"),
-         'lessonTimes' => $lessonTimes
+         'lessonTimes' => $lessonTimes,
+         'type' => "create"
       ]);
    }
 
@@ -169,22 +152,5 @@ class ScheduleController extends AbstractController
       }
 
       return $this->redirectToRoute('app_scheduleTemplate_show', ['day' => $day, 'class_id' => $class->getId()]);
-   }
-
-   private function getWeek($date)
-   {
-      $date = new \DateTime($date);
-      $dates = [];
-
-      while ($date->format("N") != 1) {
-         $date->modify("-1 day");
-      }
-
-      while ($date->format("N") <= 5) {
-         $dates[] = clone ($date);
-         $date->modify("+1 day");
-      }
-
-      return $dates;
    }
 }

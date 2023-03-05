@@ -44,7 +44,7 @@ class LessonController extends AbstractController
       $form->handleRequest($request);
 
       if ($form->isSubmitted() && $form->isValid()) {
-         $status = $this->em->getRepository(LessonStatus::class)->findOneBy(['id' => 1]);
+         $status = $this->em->getRepository(LessonStatus::class)->findOneBy(['id' => 4]); // 4 => new
 
          $lesson->setDate($date);
          $lesson->setClass($class);
@@ -79,14 +79,15 @@ class LessonController extends AbstractController
 
       $schedule = new Schedule($this->em->getRepository(Lesson::class)->findBy(['date' => $lesson->getDate(), 'class' => $lesson->getClass()]));
       $lessonTimes = $this->em->getRepository(LessonTime::class)->findAll();
-      $schedule->sortBy($lessonTimes);
+      $schedule->include($lessonTimes);
 
       return $this->render('schedule/manage.html.twig', [
          'form' => $form->createView(),
          'schedule' => $schedule,
          'class' => $lesson->getClass(),
          'date' => $lesson->getDate()->format("Y-m-d"),
-         'lessonTimes' => $lessonTimes
+         'lessonTimes' => $lessonTimes,
+         'type' => "edit"
       ]);
    }
 

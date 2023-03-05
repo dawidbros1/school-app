@@ -2,6 +2,8 @@
      padding: 20px 0px !important;
 }  
 
+/* BGC FOR LESSONS */
+
 .cancelled{
    background-color: rgb(249, 66, 66);
 }
@@ -11,5 +13,41 @@
 }
 
 .accordingi-to-plan {
-   background-color: lightgreen !important;
+   background-color: lightgreen;
+}
+
+.new {
+   background-color: orange;
+}
+
+.empty {
+   /* background-color: rgb(241, 241, 241); */
+}
+
+.square{
+   width: 20px;
+   height: 20px;
+   border: 1px solid black;
+}
+
+#legend{
+   width: 400px;
+   background-color: lightblue;
+   border: 1px solid black;
+}
+
+#schedule table{
+   /* min-height: 540px; */
+}
+
+.icon-column{
+   width: 50px;
+}
+
+.empty-column{
+   width: 25px;
+}
+
+table *{
+   font-size: 14px;
 }
