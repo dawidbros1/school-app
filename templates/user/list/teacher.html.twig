@@ -49,14 +49,16 @@
                   {% endif %}
                </td>
 
-               <td class="text-center d-flex flex-wrap">
-                  <a class="me-2" href="{{ path('app_teacher_id_schedule', { teacher_id: user.id }) }}">
-                     <img class="img-small" src="{{ asset("images/schedule.png") }}"/>
-                  </a>
+               <td class="text-center">
+                  <div class="d-flex flex-wrap">
+                     <a class="me-2" href="{{ path('app_teacher_id_schedule', { teacher_id: user.id }) }}">
+                        <img class="img-small" src="{{ asset("images/schedule.png") }}"/>
+                     </a>
 
-                  <a href="{{ path('app_user_edit', { id: user.id, UserType: user.role.name }) }}">
-                     <img class="img-small" src="{{ asset("images/edit.png") }}"/>
-                  </a>
+                     <a href="{{ path('app_user_edit', { id: user.id, UserType: user.role.name }) }}">
+                        <img class="img-small" src="{{ asset("images/edit.png") }}"/>
+                     </a>
+                  </div>
                </td>
             </tr>
          {% endfor %}
