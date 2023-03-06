@@ -7,11 +7,13 @@ use App\Entity\Lesson\LessonStatus;
 use App\Entity\Lesson\LessonTemplate;
 use App\Entity\Lesson\LessonTime;
 use App\Entity\Schedule\Schedule;
+use App\Enum\UserType;
 use App\Service\Entity\EntityProvider;
 use App\Service\Form\FormErrors;
 use App\Service\Form\Provider\LessonFormProvider;
 use App\Service\Form\Provider\ScheduleDateRangeFormProvider;
 use App\Service\Shared\ScheduleSharedCode;
+use App\Service\User\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -50,10 +52,30 @@ class ScheduleController extends AbstractController
          'schedules' => $schedules,
          'lessonTimes' => $this->em->getRepository(LessonTime::class)->findAll(),
          'lessonStatuses' => $this->em->getRepository(LessonStatus::class)->findAll(),
-         'nextPage' => $this->generateUrl("app_schedule_show", ['class_id' => $class->getId(), 'date' => $nextDate->format("Y-m-d")]),
-         'prevPage' => $this->generateUrl("app_schedule_show", ['class_id' => $class->getId(), 'date' => $prevDate->format("Y-m-d")]),
          'back' => $this->generateUrl("app_scheduleTemplate_show", ['class_id' => $class->getId(), 'day' => "monday"]),
          'backButtonText' => "Powrót do harmonogramu"
+      ]);
+   }
+
+   /**
+    * @Route("/teacher/show/{teacher_id}", name="app_teacher_id_schedule")
+    */
+   public function teacherSchedule(Request $request, ScheduleSharedCode $code, UserManager $userManager)
+   {
+      $teacher = $userManager->getRepository(UserType::TEACHER)->findOneBy(['id' => $request->get("teacher_id")]);
+      $date = new \DateTime($request->get('date', 'now'));
+      [$schedules, $prevDate, $nextDate, $lessonTimes] = $code->getData("teacher", $teacher, $date);
+
+      return $this->render("schedule/user/desktop.html.twig", [
+         'title' => "Plan zajęć - " . $teacher->name(),
+         'schedules' => $schedules,
+         'display' => "class",
+         'lessonTimes' => $lessonTimes,
+         'lessonStatuses' => $this->em->getRepository(LessonStatus::class)->findAll(),
+         'nextPage' => $this->generateUrl("app_teacher_id_schedule", ['date' => $nextDate->format("Y-m-d"), 'teacher_id' => $teacher->getId()]),
+         'prevPage' => $this->generateUrl("app_teacher_id_schedule", ['date' => $prevDate->format("Y-m-d"), 'teacher_id' => $teacher->getId()]),
+         'back' => $this->generateUrl("app_list_teacher"),
+         'backButtonText' => "Powrót"
       ]);
    }
 
