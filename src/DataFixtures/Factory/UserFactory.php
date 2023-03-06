@@ -48,12 +48,11 @@ class UserFactory
    private function randUserType()
    {
       $max = 1000;
-
       $number = rand(1, $max);
 
-      if ($number >= 1 && $number < ($max * 0.01)) {
+      if ($number >= 1 && $number < ($max * 0.02)) {
          return UserType::ADMIN;
-      } else if ($number >= ($max * 0.01) && $number < ($max * 0.03)) {
+      } else if ($number >= ($max * 0.02) && $number < ($max * 0.05)) {
          return UserType::TEACHER;
       } else
          return UserType::STUDENT;
