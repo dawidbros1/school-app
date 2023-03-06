@@ -95,10 +95,10 @@ class ScheduleController extends AbstractController
          if ($HTTP_REFERER = $request->server->get("HTTP_REFERER")) {
             return $this->redirect($HTTP_REFERER);
          } else {
-            return $this->redirectToRoute("app_class_schedule_show", ['class_id' => $request->get("class_id")]);
+            return $this->redirectToRoute("app_class_id_schedule", ['class_id' => $request->get("class_id")]);
          }
       }
-
+      
       $lesson = new Lesson();
       $class = $this->entityProvider->getSchoolClass($request->get('class_id'));
       $schedule = new Schedule($this->em->getRepository(Lesson::class)->findBy(['class' => $class, 'date' => $date]));
