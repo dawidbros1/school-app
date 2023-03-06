@@ -2,7 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\UserType\Student;
+use App\Entity\UserType\Teacher;
 use App\Enum\UserType;
+use App\Interfaces\CustomUserInterface;
 use App\Service\User\UserManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,14 +31,16 @@ class DashboardController extends AbstractController
     */
    public function index()
    {
+      $user = $this->userManager->getUser();
+
       if ($this->isGranted('ROLE_OWNER')) {
          $this->ownerDashboard();
       } else if ($this->isGranted('ROLE_ADMIN')) {
          $this->adminDashboard();
       } else if ($this->isGranted('ROLE_TEACHER')) {
-         $this->teacherDashboard();
+         $this->teacherDashboard($user);
       } else if ($this->isGranted('ROLE_STUDENT')) {
-         $this->studentDashboard();
+         $this->studentDashboard($user);
       }
 
       return $this->render('dashboard.html.twig', [
@@ -43,34 +48,6 @@ class DashboardController extends AbstractController
          'complexBoxes' => $this->complexBoxes
       ]);
    }
-
-   private function ownerDashboard()
-   {
-      $this->admins();
-      $this->adminDashboard();
-   }
-
-   private function adminDashboard()
-   {
-      $this->teachers()->students();
-      $this->classes()->listSubjects();
-      $this->listLessonTimes();
-   }
-
-   private function teacherDashboard()
-   {
-      $this->myClass();
-      $this->teacherSchedule();
-   }
-
-   private function studentDashboard()
-   {
-      $this->myClass();
-      $this->studentSchedule();
-   }
-
-   // ===== //
-
    private function createSimpleBox(array $data)
    {
       $obj = new \stdClass();
@@ -103,11 +80,9 @@ class DashboardController extends AbstractController
       return $this;
    }
 
-   // ===== //
-
-   private function admins()
+   private function ownerDashboard()
    {
-      return $this->createComplexBox([
+      $this->createComplexBox([
          'title' => "Administratorzy systemu",
          'description' => "Tutaj zobaczysz listę administratorow systemu",
          'links' => [
@@ -123,11 +98,13 @@ class DashboardController extends AbstractController
          ],
          'image' => "admin.png"
       ]);
+
+      $this->adminDashboard();
    }
 
-   private function teachers()
+   private function adminDashboard()
    {
-      return $this->createComplexBox([
+      $this->createComplexBox([
          'title' => "Nauczyciele",
          'description' => "Tutaj zobaczysz listę zatrudnionych nauczycieli",
          'links' => [
@@ -143,11 +120,8 @@ class DashboardController extends AbstractController
          ],
          'image' => "teacher.png"
       ]);
-   }
 
-   private function students()
-   {
-      return $this->createComplexBox([
+      $this->createComplexBox([
          'title' => "Uczniowie",
          'description' => "Tutaj zobaczysz listę uczniów",
          'links' => [
@@ -163,47 +137,22 @@ class DashboardController extends AbstractController
          ],
          'image' => "student.png"
       ]);
-   }
 
-   private function classes()
-   {
-      return $this->createSimpleBox([
+      $this->createSimpleBox([
          'title' => "Lista klas",
          'description' => "Tutaj wyświetlisz wszystkie klasy w szkole",
          'route' => "app_class_list",
          'image' => "class.png"
       ]);
-   }
 
-   private function myClass()
-   {
-      $user = $this->userManager->getUser(); // Student or Teacher has method getClass()
-
-      if ($user->getClass() == null)
-         return $this;
-      else {
-         return $this->createSimpleBox([
-            'title' => "Moja klasa",
-            'description' => "Tutaj zobaczysz swoją klasę",
-            'route' => "app_my_class_show",
-            'image' => "class.png"
-         ]);
-      }
-   }
-
-   private function listSubjects()
-   {
-      return $this->createSimpleBox([
+      $this->createSimpleBox([
          'title' => "Lista przedmiotów",
          'description' => "Tutaj zobaczysz listę przedmiotów",
          'route' => "app_subject_list",
          'image' => "books.png"
       ]);
-   }
 
-   private function listLessonTimes()
-   {
-      return $this->createSimpleBox([
+      $this->createSimpleBox([
          'title' => "Rozkład zajęć",
          'description' => "Tutaj ustalisz godziny zajęć",
          'route' => "app_lessonTime_list",
@@ -211,9 +160,31 @@ class DashboardController extends AbstractController
       ]);
    }
 
-   // SCHEDULE //
-   private function studentSchedule()
+   private function teacherDashboard(Teacher $user)
    {
+      $this->addClassToBox($user, "app_teacher_class");
+
+      $this->createSimpleBox([
+         'title' => "Plan lekcji",
+         'description' => "Tutaj wyświetlisz plan lekcji w wersji na duże ekrany",
+         'route' => "app_teacher_schedule",
+         'params' => ["device" => "desktop"],
+         'image' => "desktop.png"
+      ]);
+
+      return $this->createSimpleBox([
+         'title' => "Plan lekcji",
+         'description' => "Tutaj wyświetlisz plan lekcji dostosowany do urządzenia mobilnego",
+         'route' => "app_teacher_schedule",
+         'params' => ["device" => "mobile"],
+         'image' => "mobile.png"
+      ]);
+   }
+
+   private function studentDashboard(Student $user)
+   {
+      $this->addClassToBox($user, "app_student_class");
+
       $this->createSimpleBox([
          'title' => "Plan lekcji",
          'description' => "Tutaj wyświetlisz plan lekcji w wersji na duże ekrany",
@@ -231,22 +202,17 @@ class DashboardController extends AbstractController
       ]);
    }
 
-   private function teacherSchedule()
-   {
-      $this->createSimpleBox([
-         'title' => "Plan lekcji",
-         'description' => "Tutaj wyświetlisz plan lekcji w wersji na duże ekrany",
-         'route' => "app_teacher_schedule",
-         'params' => ["device" => "desktop"],
-         'image' => "desktop.png"
-      ]);
+   // ===== //
 
-      return $this->createSimpleBox([
-         'title' => "Plan lekcji",
-         'description' => "Tutaj wyświetlisz plan lekcji dostosowany do urządzenia mobilnego",
-         'route' => "app_teacher_schedule",
-         'params' => ["device" => "mobile"],
-         'image' => "mobile.png"
-      ]);
+   private function addClassToBox(CustomUserInterface $user, string $route)
+   {
+      if ($user->getClass() != null) {
+         $this->createSimpleBox([
+            'title' => "Moja klasa",
+            'description' => "Tutaj zobaczysz swoją klasę",
+            'route' => $route,
+            'image' => "class.png"
+         ]);
+      }
    }
 }
