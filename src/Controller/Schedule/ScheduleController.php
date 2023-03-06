@@ -24,7 +24,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 
 /**
  * @IsGranted("ROLE_ADMIN")
- * @Route("/class/schedule")
+ * @Route("/schedule")
  */
 class ScheduleController extends AbstractController
 {
@@ -37,9 +37,9 @@ class ScheduleController extends AbstractController
    }
 
    /**
-    * @Route("/show/{class_id}", name="app_schedule_show")
+    * @Route("/class/show/{class_id}", name="app_class_id_schedule")
     */
-   public function show(Request $request, ScheduleSharedCode $code)
+   public function classSchedule(Request $request, ScheduleSharedCode $code)
    {
       $class = $this->entityProvider->getSchoolClass($request->get('class_id'));
       $date = new \DateTime($request->get('date', 'now'));
@@ -52,6 +52,8 @@ class ScheduleController extends AbstractController
          'schedules' => $schedules,
          'lessonTimes' => $this->em->getRepository(LessonTime::class)->findAll(),
          'lessonStatuses' => $this->em->getRepository(LessonStatus::class)->findAll(),
+         'nextPage' => $this->generateUrl("app_class_id_schedule", ['class_id' => $class->getId(), 'date' => $nextDate->format("Y-m-d")]),
+         'prevPage' => $this->generateUrl("app_class_id_schedule", ['class_id' => $class->getId(), 'date' => $prevDate->format("Y-m-d")]),
          'back' => $this->generateUrl("app_scheduleTemplate_show", ['class_id' => $class->getId(), 'day' => "monday"]),
          'backButtonText' => "Powrót do harmonogramu"
       ]);
