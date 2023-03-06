@@ -31,3 +31,78 @@ The application is a software solution designed to assist schools with managing 
 1. Login as administrator/owner and go to dashboard
 2. Create class times 
 3. Create list of subjects
+
+## Screenshots [ 06.03.2023 ]
+
+### dashboard
+
+* dashboard - admin panel
+
+![](docs/images/dashboard/admin.png)
+
+* dashboard - student/teacher panel
+
+![](docs/images/dashboard/student.png)
+
+### users
+
+* list of students - admin
+
+![](docs/images/list/user/students.png)
+
+* list of teachers - admin
+
+![](docs/images/list/user/teachers.png)
+
+### school subjects 
+
+![](docs/images/list/subjects.png)
+
+### lesson times
+
+![](docs/images/list/lessonTimes.png)
+
+### class
+
+* class list - admin
+
+![](docs/images/class/list.png)
+
+* class show - admin
+
+![](docs/images/class/admin.png)  
+
+* class show - student/teacher
+
+![](docs/images/class/student.png)  
+
+### schedule template
+
+![](docs/images/schedule/template/show.png)
+
+### schedule
+
+* class schedule - admin
+
+![](docs/images/schedule/orig/admin/class.png)
+
+* teacher schedule - admin
+
+![](docs/images/schedule/orig/admin/teacher.png)
+
+* schedule management - admin
+
+![](docs/images/schedule/orig/admin/manage.png)
+
+* add lesson to schedule - admin
+
+![](docs/images/schedule/orig/admin/create.png)
+
+* schedule - student/teacher (desktop)
+
+![](docs/images/schedule/orig/student/desktop.png)
+
+* schedule - student/teacher (mobile)
+
+![](docs/images/schedule/orig/student/mobile.png)  
+
