@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Lesson\LessonStatus;
-use App\Entity\Lesson\LessonTime;
 use App\Service\Shared\ScheduleSharedCode;
 use App\Service\User\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -46,6 +45,24 @@ class StudentController extends AbstractController
          'prevPage' => $this->generateUrl("app_student_schedule", ['date' => $prevDate->format("Y-m-d"), 'device' => $device]),
          'back' => $this->generateUrl("app_dashboard"),
          'backButtonText' => "Powrót do Dashboard"
+      ]);
+   }
+
+   /**
+    * @IsGranted("ROLE_STUDENT")
+    * @Route("/class/show", name="app_student_class")
+    */
+   public function class(UserManager $userManager)
+   {
+      $user = $userManager->getUser();
+
+      if ($user->getClass() == null) {
+         $this->addFlash('error', "Nie posiadasz przypisanej klasy");
+         return $this->redirectToRoute('app_dashboard');
+      }
+
+      return $this->render("schoolClass/student/show.html.twig", [
+         'class' => $user->getClass()
       ]);
    }
 }

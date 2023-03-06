@@ -49,4 +49,22 @@ class TeacherController extends AbstractController
          'backButtonText' => "Powrót do Dashboard"
       ]);
    }
+
+   /**
+    * @IsGranted("ROLE_TEACHER")
+    * @Route("/class/show", name="app_teacher_class")
+    */
+   public function class(UserManager $userManager)
+   {
+      $user = $userManager->getUser();
+
+      if ($user->getClass() == null) {
+         $this->addFlash('error', "Nie posiadasz przypisanej klasy");
+         return $this->redirectToRoute('app_dashboard');
+      }
+
+      return $this->render("schoolClass/teacher/show.html.twig", [
+         'class' => $user->getClass()
+      ]);
+   }
 }
